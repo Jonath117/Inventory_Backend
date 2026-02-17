@@ -9,58 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ca48b81-eca3-4bf9-af0d-17311743b7b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/BackendApi.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/BackendApi.http" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/Program.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/Properties/launchSettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/appsettings.Development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/appsettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.deps.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.runtimeconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/BackendApi.staticwebassets.endpoints.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/Microsoft.AspNetCore.OpenApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/Microsoft.OpenApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/appsettings.Development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/bin/Debug/net10.0/appsettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/BackendApi.csproj.nuget.dgspec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/BackendApi.csproj.nuget.g.props" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/BackendApi.csproj.nuget.g.targets" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.AssemblyInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.AssemblyInfoInputs.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.GlobalUsings.g.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.MvcApplicationPartsAssemblyInfo.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.MvcApplicationPartsAssemblyInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.assets.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.csproj.AssemblyReference.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.csproj.CoreCompileInputs.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.csproj.FileListAbsolute.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.csproj.Up2Date" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.genruntimeconfig.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/BackendApi.sourcelink.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/apphost.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/ref/BackendApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/refint/BackendApi.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/staticwebassets.build.endpoints.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/staticwebassets.build.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/staticwebassets.build.json.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/Debug/net10.0/swae.build.ex.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/project.assets.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/project.nuget.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/project.packagespec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/rider.project.model.nuget.info" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendApi/obj/rider.project.restore.info" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1.sln" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +22,15 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Category.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Company.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/InventoryMovement.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/InventoryStock.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Product.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Warehouse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Infrastructure/Data/ApplicationDBContext.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 2
@@ -95,6 +54,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -139,7 +99,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771038109591</updated>
-      <workItem from="1771038111567" duration="700000" />
+      <workItem from="1771038111567" duration="7683000" />
     </task>
     <servers />
   </component>

@@ -1,4 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using WebApp1.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// 1. Conexión a Base de Datos (PostgreSQL)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+//builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
