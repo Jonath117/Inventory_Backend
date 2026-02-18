@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WebApp1.Core.Interfaces;
 using WebApp1.Infrastructure.Data;
+using WebApp1.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         .UseSnakeCaseNamingConvention()
     );
 
-//builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+
 
 
 builder.Services.AddControllers();
@@ -24,6 +27,20 @@ builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +50,11 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
+
+
+app.MapControllers();
 
 var summaries = new[]
 {

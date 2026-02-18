@@ -22,11 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Core\DTOs\" />
-      <Folder Include="Core\Interfaces\" />
       <Folder Include="Infrastructure\Repositories\" />
-      <Folder Include="Infrastructure\Services\" />
     </ItemGroup>
 
 </Project>

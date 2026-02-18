@@ -10,20 +10,15 @@
   <component name="ChangeListManager">
     <list default="true" id="4ca48b81-eca3-4bf9-af0d-17311743b7b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/Core/Entities/Warehouse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/Core/Entities/Warehouse.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.exe" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.sourcelink.json" afterDir="false" />
@@ -32,13 +27,6 @@
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/refint/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/refint/WebApp1.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rpswa.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/WebApp1.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/WebApp1.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp1/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,14 +40,25 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/httpRequests/2026-02-18T021040.200.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Controllers/InventoryController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/DTOs/DashboardDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Category.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Company.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/InventoryMovement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/InventoryStock.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Product.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Warehouse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp1/Core/Interfaces/IInventoryService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Infrastructure/Data/ApplicationDBContext.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="HttpClientOnboardingState"><![CDATA[{
+  "isOnboardingCommentShown": true
+}]]></component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -71,12 +70,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.WebApp1: http.executor": "Run",
+    "HTTP Request.All in pruebas.executor": "Run",
+    "HTTP Request.pruebas | US-02: Obtener Dashboard (Con US-01: Header de Empresa).executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "feat/select-empresa",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -86,7 +87,27 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <map>
+              <entry key="All in pruebas" value="STOPPED" />
+              <entry key="pruebas | US-02: Obtener Dashboard (Con US-01: Header de Empresa)" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebApp1: http">
+    <configuration name="All in pruebas" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/WebApp1/pruebas.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="pruebas | US-02: Obtener Dashboard (Con US-01: Header de Empresa)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/WebApp1/pruebas.http" executionIdentifier="US-02: Obtener Dashboard (Con US-01: Header de Empresa)" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="WebApp1: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp1/WebApp1.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
@@ -119,6 +140,12 @@
         <option name="Build" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP Request.pruebas | US-02: Obtener Dashboard (Con US-01: Header de Empresa)" />
+        <item itemvalue="HTTP Request.All in pruebas" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -128,7 +155,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771038109591</updated>
       <workItem from="1771038111567" duration="7683000" />
-      <workItem from="1771287633512" duration="4832000" />
+      <workItem from="1771287633512" duration="16134000" />
     </task>
     <servers />
   </component>

@@ -3,7 +3,7 @@ namespace WebApp1.Core.Entities;
 public class Warehouse
 {
     public int Id { get; set; }
-    public int CompnayId { get; set; }
+    public int CompanyId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Address { get; set; }
     public bool IsActive { get; set; } = true;

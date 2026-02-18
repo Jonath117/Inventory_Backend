@@ -1,0 +1,4 @@
+### US-02: Obtener Dashboard (Con US-01: Header de Empresa)
+GET http://localhost:5290/api/inventory/dashboard
+x-company-id: 1
+Accept: application/json
