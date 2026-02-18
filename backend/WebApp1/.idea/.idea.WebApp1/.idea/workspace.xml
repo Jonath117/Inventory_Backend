@@ -10,7 +10,35 @@
   <component name="ChangeListManager">
     <list default="true" id="4ca48b81-eca3-4bf9-af0d-17311743b7b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebApp1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/WebApp1.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.exe" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/WebApp1.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/bin/Debug/net10.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/WebApp1.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/ref/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/ref/WebApp1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/refint/WebApp1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/refint/WebApp1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/Debug/net10.0/rpswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/WebApp1.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/WebApp1.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp1/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp1/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,9 +60,9 @@
     <setting file="file://$PROJECT_DIR$/WebApp1/Core/Entities/Warehouse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp1/Infrastructure/Data/ApplicationDBContext.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="39du8FwXRga4PtUR7xwIluKSfJQ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -100,6 +128,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771038109591</updated>
       <workItem from="1771038111567" duration="7683000" />
+      <workItem from="1771287633512" duration="4832000" />
     </task>
     <servers />
   </component>

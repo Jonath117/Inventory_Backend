@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "/XRHqqfPjVA=",
+  "dgSpecHash": "InIrsureGd8=",
   "success": true,
   "projectFilePath": "C:\\Users\\MSI\\Documents\\U\\7mo_semestre\\Taller_2\\Gestion_Inventarios_Taller_II\\backend\\WebApp1\\WebApp1\\WebApp1.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\MSI\\.nuget\\packages\\efcore.namingconventions\\10.0.1\\efcore.namingconventions.10.0.1.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.3\\microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",

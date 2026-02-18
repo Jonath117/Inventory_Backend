@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Conexión a Base de Datos (PostgreSQL)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options
+        .UseNpgsql(connectionString)
+        .UseSnakeCaseNamingConvention()
+    );
 
 //builder.Services.AddScoped<IInventoryService, InventoryService>();
 
@@ -49,6 +52,34 @@ app.MapGet("/weatherforecast", () =>
         return forecast;
     })
     .WithName("GetWeatherForecast");
+
+app.MapGet("/api/test-db", async (ApplicationDbContext context) =>
+{
+    try
+    {
+        bool canConnect =  await context.Database.CanConnectAsync();
+
+        if (!canConnect)
+        {
+            return Results.Problem("Could not connect to database");
+        }
+        
+        var company = await context.Companies.FirstOrDefaultAsync();
+        if (company != null)
+        {
+            return Results.Ok(new
+            {
+                Mensaje = "Coneccion exitosa",
+                EmpresaEncontrada = company.Name
+            });
+        }
+        return Results.Ok("Coneccion exitosa, tablas vacias");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error al conectar {ex.Message}");
+    }
+});
 
 app.Run();
 

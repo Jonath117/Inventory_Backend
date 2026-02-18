@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebApp1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+320785ab08396e38af7f5d50154db56ee1d940b8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23efd44649d95801d5d5a23a0c5670b8d5249f86")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebApp1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebApp1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
