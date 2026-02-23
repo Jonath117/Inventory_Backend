@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp1.Core.Interfaces;
+using WebApp1.Business.Services;
+using WebApp1.Domain.Interfaces;
 using WebApp1.Infrastructure.Data;
-using WebApp1.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     );
 
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 
 

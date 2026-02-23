@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApp1.Core.Interfaces;
+using WebApp1.Domain.Interfaces;
 
 namespace WebApp1.Controllers;
 

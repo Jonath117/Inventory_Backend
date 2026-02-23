@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp1.Core.Entities;
+using WebApp1.Domain.Entities;
 
 namespace WebApp1.Infrastructure.Data;
 

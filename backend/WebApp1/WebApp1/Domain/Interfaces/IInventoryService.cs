@@ -1,6 +1,6 @@
-using WebApp1.Core.DTOs;
+using WebApp1.Domain.DTOs;
 
-namespace WebApp1.Core.Interfaces;
+namespace WebApp1.Domain.Interfaces;
 
 public interface IInventoryService
 {

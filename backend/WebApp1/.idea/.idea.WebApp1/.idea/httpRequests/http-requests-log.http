@@ -1,3 +1,43 @@
+GET http://localhost:5290/api/company
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2025.3.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2026-02-22T185232.200.json
+
+###
+
+GET http://localhost:5290/api/company/active-companies
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2025.3.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+###
+
+GET http://localhost:5290/api/company/active-companies
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2025.3.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+###
+
+GET http://localhost:5290/api/company/active-companies
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2025.3.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+###
+
+GET http://localhost:5290/api/inventory/dashboard
+x-company-id: 1
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2025.3.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2026-02-22T184908.200.json
+
+###
+
 GET http://localhost:5290/api/inventory/dashboard
 x-company-id: 1
 Accept: application/json

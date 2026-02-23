@@ -1,4 +1,4 @@
-namespace WebApp1.Core.Entities;
+namespace WebApp1.Domain.Entities;
 
 public class InventoryStock
 {

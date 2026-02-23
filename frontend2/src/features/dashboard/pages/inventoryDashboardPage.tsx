@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { getDashboard } from "../../../services/DashboardServices";
 
+
 interface DashboardData {
     totalProducts: number;
-    totalWarehouses: number;
-    totalStockQuantity: number;
     lowStockAlerts: number;
 
 }
@@ -13,7 +12,7 @@ export const DashboardPage = () => {
     const [dashboard, setDasboard] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const companyId = 1; // Reemplaza con el ID de la empresa seleccionada
+    const companyId = JSON.parse(localStorage.getItem("activeCompany") || "{}").id;
 
     useEffect(() => {
         getDashboard(companyId)
@@ -27,15 +26,13 @@ export const DashboardPage = () => {
             });
     }, [companyId]);
 
-    if(loading) return <div>Cargando...</div>;
+    if(loading) return <div className="flex h-screen text-center items-center justify-center text-4xl">Cargando...</div>;
 
     return(
-        <div>
-            <h1>Dashboard</h1>
-                <p>Total de productos: {dashboard?.totalProducts}</p>
-                <p>Total de almacenes: {dashboard?.totalWarehouses}</p>
-                <p>Total de cantidad en stock: {dashboard?.totalStockQuantity}</p>
-                <p>Alertas de bajo stock: {dashboard?.lowStockAlerts}</p>
+        <div className="text-center">
+            <h1 className="text-3xl font-bold text-blue-600">Dashboard de Inventario</h1>
+                <p className="text-lg text-gray-800">Total de productos: {dashboard?.totalProducts}</p>
+                <p className="text-lg text-gray-800">Alertas de bajo stock: {dashboard?.lowStockAlerts}</p>
         </div>
     )
 }

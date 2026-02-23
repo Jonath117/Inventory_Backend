@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp1.Core.DTOs;
-using WebApp1.Core.Interfaces;
+using WebApp1.Domain.DTOs;
+using WebApp1.Domain.Interfaces;
 using WebApp1.Infrastructure.Data;
 
-namespace WebApp1.Infrastructure.Services;
+namespace WebApp1.Business.Services;
 
 public class InventoryService : IInventoryService
 {

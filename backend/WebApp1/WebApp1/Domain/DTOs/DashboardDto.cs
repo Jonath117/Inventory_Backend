@@ -1,4 +1,4 @@
-namespace WebApp1.Core.DTOs;
+namespace WebApp1.Domain.DTOs;
 
 public class DashboardDto
 {
