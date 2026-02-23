@@ -4,6 +4,7 @@ import { getDashboard } from "../../../services/DashboardServices";
 
 interface DashboardData {
     totalProducts: number;
+    totalStockQuantity: number;
     lowStockAlerts: number;
 
 }
@@ -32,6 +33,7 @@ export const DashboardPage = () => {
         <div className="text-center">
             <h1 className="text-3xl font-bold text-blue-600">Dashboard de Inventario</h1>
                 <p className="text-lg text-gray-800">Total de productos: {dashboard?.totalProducts}</p>
+                <p className="text-lg text-gray-800">Stock total: {dashboard?.totalStockQuantity}</p>
                 <p className="text-lg text-gray-800">Alertas de bajo stock: {dashboard?.lowStockAlerts}</p>
         </div>
     )
