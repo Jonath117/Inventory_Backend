@@ -1,5 +1,6 @@
 import type { Company } from "../types/company";
 import {useNavigate} from "react-router-dom";
+import { useCompany } from "../pages/CompanyContext.tsx";
 
 interface Props {
     company: Company;
@@ -7,9 +8,10 @@ interface Props {
 
 export const CompanyCard = ({ company }: Props) => {
     const Navigate = useNavigate();
+    const { setSelectedCompany } = useCompany();
 
     const handleSelect = () => {
-        localStorage.setItem("activeCompany", JSON.stringify(company));
+        setSelectedCompany(company);
         Navigate("/dashboard");
         
     };
