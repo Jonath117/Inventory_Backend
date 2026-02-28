@@ -18,6 +18,7 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAdjustmentService, AdjustmentService>();
 builder.Services.AddScoped<IGetStockService, GetStockService>();
+builder.Services.AddScoped<ILookUpService, LookUpService>();
 
 
 builder.Services.AddControllers();
