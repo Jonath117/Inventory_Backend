@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { AdjustmentPayload } from "../types/inventory";
+import { getProductandWarehouses } from "../../../services/DropDown";
 
 interface Props {
     companyId: number;
@@ -8,17 +9,41 @@ interface Props {
     onSubmit: (data: AdjustmentPayload) => Promise<void>;
 }
 
-export const AdjustmentModal = ({ onClose, onSubmit }: Props) => {
+export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
     const [form, setForm] = useState<AdjustmentPayload>({
         productId: 0,
         warehouseId: 0,
         quantity: 0,
         reason: "",
     });
+
+    // --- NUEVOS ESTADOS PARA LOS DROPDOWNS ---
+    const [products, setProducts] = useState<any[]>([]);
+    const [warehouses, setWarehouses] = useState<any[]>([]);
+    const [loadingData, setLoadingData] = useState(true); // Para mostrar un "Cargando..." mientras traemos las listas
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // --- NUEVO: EFECTO PARA CARGAR DATOS AL ABRIR EL MODAL ---
+    useEffect(() => {
+        const loadDropdownData = async () => {
+            try {
+                const data = await getProductandWarehouses(companyId);
+                setProducts(data.products);
+                setWarehouses(data.warehouses);
+            } catch (err) {
+                console.error("Error cargando listas:", err);
+                setError("No se pudieron cargar los productos y bodegas.");
+            } finally {
+                setLoadingData(false);
+            }
+        };
+
+        loadDropdownData();
+    }, [companyId]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({
             ...prev,
@@ -53,32 +78,50 @@ export const AdjustmentModal = ({ onClose, onSubmit }: Props) => {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="text-xs text-gray-400 mb-1 block">ID Producto</label>
-                            <input
-                                type="number"
-                                name="productId"
-                                value={form.productId || ""}
-                                onChange={handleChange}
-                                required
-                                min={1}
-                                className="w-full bg-[#0f172a] border border-[#374151] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                            />
+                    
+                    
+                    {loadingData ? (
+                        <div className="text-sm text-gray-400 text-center py-4">Cargando catálogo...</div>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="text-xs text-gray-400 mb-1 block">Producto</label>
+                                {/* --- CAMBIO: INPUT POR SELECT --- */}
+                                <select
+                                    name="productId"
+                                    value={form.productId || ""}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-[#0f172a] border border-[#374151] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                                >
+                                    <option value="" disabled>Seleccione...</option>
+                                    {products.map((p) => (
+                                        <option key={p.id} value={p.id}>
+                                            {p.sku} - {p.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-xs text-gray-400 mb-1 block">Bodega</label>
+                                {/* --- CAMBIO: INPUT POR SELECT --- */}
+                                <select
+                                    name="warehouseId"
+                                    value={form.warehouseId || ""}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-[#0f172a] border border-[#374151] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                                >
+                                    <option value="" disabled>Seleccione...</option>
+                                    {warehouses.map((w) => (
+                                        <option key={w.id} value={w.id}>
+                                            {w.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label className="text-xs text-gray-400 mb-1 block">ID Bodega</label>
-                            <input
-                                type="number"
-                                name="warehouseId"
-                                value={form.warehouseId || ""}
-                                onChange={handleChange}
-                                required
-                                min={1}
-                                className="w-full bg-[#0f172a] border border-[#374151] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                            />
-                        </div>
-                    </div>
+                    )}
 
                     <div>
                         <label className="text-xs text-gray-400 mb-1 block">Cantidad</label>
@@ -121,7 +164,7 @@ export const AdjustmentModal = ({ onClose, onSubmit }: Props) => {
                         </button>
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading || loadingData} 
                             className="flex-1 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Registrando..." : "Registrar"}
