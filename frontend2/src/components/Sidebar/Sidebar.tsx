@@ -16,8 +16,8 @@ import { useCompany } from "../../features/company/pages/CompanyContext.tsx";
 const navigation = [
   { name: "Inicio", href: "/", icon: HomeIcon },
   { name: "Team", href: "/team", icon: UsersIcon },
-  { name: "Productos", href: "/products", icon: FolderIcon, badge: 12 },
-  { name: "Stock", href: "/stock", icon: CalendarIcon, badge: "20+" },
+  { name: "Productos", href: "/inventory", icon: FolderIcon},
+  { name: "Stock", href: "/stock", icon: CalendarIcon },
   { name: "Documents", href: "/documents", icon: DocumentDuplicateIcon },
   { name: "Kardex", href: "/kardex", icon: ChartPieIcon },
 ];
@@ -104,7 +104,7 @@ const SideBar = () => {
                     <span className="flex-1">{item.name}</span>
                     {"badge" in item && item.badge !== undefined && (
                       <span className="text-xs font-semibold bg-[#1a2232] border border-[#2d3748] text-gray-300 rounded-full px-2 py-0.5 min-w-[1.5rem] text-center">
-                        {item.badge}
+                        
                       </span>
                     )}
                   </>

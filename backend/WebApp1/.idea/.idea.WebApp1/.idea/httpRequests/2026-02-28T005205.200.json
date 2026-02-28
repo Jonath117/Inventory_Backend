@@ -1,0 +1,32 @@
+[
+  {
+    "productId": 1,
+    "sku": "LAP-001",
+    "productName": "Laptop Gamer X1",
+    "warehouseName": "Bodega Central",
+    "currentStock": 10.00,
+    "unitOfMeasure": "UNIDAD",
+    "minStockAlert": 2,
+    "lastUpdated": "2026-02-28T04:16:47.867171"
+  },
+  {
+    "productId": 2,
+    "sku": "MON-001",
+    "productName": "Monitor 27\" 4K",
+    "warehouseName": "Bodega Central",
+    "currentStock": 15.00,
+    "unitOfMeasure": "UNIDAD",
+    "minStockAlert": 5,
+    "lastUpdated": "2026-02-22T19:26:59.990443"
+  },
+  {
+    "productId": 3,
+    "sku": "MOU-001",
+    "productName": "Mouse Inalámbrico",
+    "warehouseName": "Bodega Central",
+    "currentStock": 4.00,
+    "unitOfMeasure": "UNIDAD",
+    "minStockAlert": 10,
+    "lastUpdated": "2026-02-22T19:27:00.041493"
+  }
+]
