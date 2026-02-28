@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAdjustmentService, AdjustmentService>();
 builder.Services.AddScoped<IGetStockService, GetStockService>();
 builder.Services.AddScoped<ILookUpService, LookUpService>();
+builder.Services.AddScoped<IGetProductKardexService, GetProductKardexService>();
 
 
 builder.Services.AddControllers();

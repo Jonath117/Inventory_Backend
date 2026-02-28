@@ -8,6 +8,9 @@ import {
   ChartPieIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
+  Squares2X2Icon, // Dashboard
+  ArchiveBoxIcon
+
 } from "@heroicons/react/24/outline";
 import { useCompany } from "../../features/company/pages/CompanyContext.tsx";
 
@@ -15,10 +18,8 @@ import { useCompany } from "../../features/company/pages/CompanyContext.tsx";
 
 const navigation = [
   { name: "Inicio", href: "/", icon: HomeIcon },
-  { name: "Team", href: "/team", icon: UsersIcon },
-  { name: "Productos", href: "/inventory", icon: FolderIcon},
-  { name: "Stock", href: "/stock", icon: CalendarIcon },
-  { name: "Documents", href: "/documents", icon: DocumentDuplicateIcon },
+  { name: "Dashboard", href: "/dashboard", icon: Squares2X2Icon },
+  { name: "Productos", href: "/inventory", icon: ArchiveBoxIcon},
   { name: "Kardex", href: "/kardex", icon: ChartPieIcon },
 ];
 

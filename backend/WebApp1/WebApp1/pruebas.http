@@ -29,3 +29,8 @@ Accept: application/json
 GET http://localhost:5290/api/GetStock?warehouseId=1
 x-company-id: 1
 Accept: application/json
+
+### US-08: Ver Kardex del Producto 1 (La Laptop)
+GET http://localhost:5290/api/Kardex/1
+x-company-id: 1
+Accept: application/json
