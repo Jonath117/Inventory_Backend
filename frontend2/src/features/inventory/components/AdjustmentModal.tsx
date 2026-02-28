@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { AdjustmentPayload } from "../types/inventory";
 import { getProductandWarehouses } from "../../../services/DropDown";
+import { useToast } from "../../../components/Toast";
 
 interface Props {
     companyId: number;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
+    const toast = useToast(); 
+
     const [form, setForm] = useState<AdjustmentPayload>({
         productId: 0,
         warehouseId: 0,
@@ -17,29 +20,23 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
         reason: "",
     });
 
-    // --- NUEVOS ESTADOS PARA LOS DROPDOWNS ---
     const [products, setProducts] = useState<any[]>([]);
     const [warehouses, setWarehouses] = useState<any[]>([]);
-    const [loadingData, setLoadingData] = useState(true); // Para mostrar un "Cargando..." mientras traemos las listas
-    
+    const [loadingData, setLoadingData] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    // --- NUEVO: EFECTO PARA CARGAR DATOS AL ABRIR EL MODAL ---
     useEffect(() => {
         const loadDropdownData = async () => {
             try {
                 const data = await getProductandWarehouses(companyId);
                 setProducts(data.products);
                 setWarehouses(data.warehouses);
-            } catch (err) {
-                console.error("Error cargando listas:", err);
-                setError("No se pudieron cargar los productos y bodegas.");
+            } catch {
+                toast.error("Error al cargar catálogo", "No se pudieron cargar los productos y bodegas.");
             } finally {
                 setLoadingData(false);
             }
         };
-
         loadDropdownData();
     }, [companyId]);
 
@@ -54,12 +51,12 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError(null);
         try {
             await onSubmit(form);
+            toast.success("Ajuste registrado", "El stock fue actualizado correctamente.");
             onClose();
         } catch {
-            setError("Error al registrar el ajuste. Intenta nuevamente.");
+            toast.error("Error al registrar", "No se pudo registrar el ajuste. Intenta nuevamente.");
         } finally {
             setLoading(false);
         }
@@ -78,15 +75,15 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
-                    
-                    
                     {loadingData ? (
-                        <div className="text-sm text-gray-400 text-center py-4">Cargando catálogo...</div>
+                        <div className="flex items-center justify-center gap-2 py-6 text-sm text-gray-400">
+                            <div className="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                            Cargando catálogo...
+                        </div>
                     ) : (
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="text-xs text-gray-400 mb-1 block">Producto</label>
-                                {/* --- CAMBIO: INPUT POR SELECT --- */}
                                 <select
                                     name="productId"
                                     value={form.productId || ""}
@@ -96,15 +93,12 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
                                 >
                                     <option value="" disabled>Seleccione...</option>
                                     {products.map((p) => (
-                                        <option key={p.id} value={p.id}>
-                                            {p.sku} - {p.name}
-                                        </option>
+                                        <option key={p.id} value={p.id}>{p.sku} - {p.name}</option>
                                     ))}
                                 </select>
                             </div>
                             <div>
                                 <label className="text-xs text-gray-400 mb-1 block">Bodega</label>
-                                {/* --- CAMBIO: INPUT POR SELECT --- */}
                                 <select
                                     name="warehouseId"
                                     value={form.warehouseId || ""}
@@ -114,9 +108,7 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
                                 >
                                     <option value="" disabled>Seleccione...</option>
                                     {warehouses.map((w) => (
-                                        <option key={w.id} value={w.id}>
-                                            {w.name}
-                                        </option>
+                                        <option key={w.id} value={w.id}>{w.name}</option>
                                     ))}
                                 </select>
                             </div>
@@ -148,12 +140,6 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
                         />
                     </div>
 
-                    {error && (
-                        <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
-                            {error}
-                        </p>
-                    )}
-
                     <div className="flex gap-3 pt-1">
                         <button
                             type="button"
@@ -164,7 +150,7 @@ export const AdjustmentModal = ({ companyId, onClose, onSubmit }: Props) => {
                         </button>
                         <button
                             type="submit"
-                            disabled={loading || loadingData} 
+                            disabled={loading || loadingData}
                             className="flex-1 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Registrando..." : "Registrar"}

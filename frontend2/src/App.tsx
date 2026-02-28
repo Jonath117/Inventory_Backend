@@ -5,19 +5,22 @@ import { DashboardPage } from './features/dashboard/pages/inventoryDashboardPage
 import { SelectedCompanyPages } from './features/company/pages/SelectedCompanyPages.tsx';
 import { CompanyProvider } from './features/company/pages/CompanyContext.tsx';
 import { InventoryPage } from './features/inventory/pages/inventoryPage.tsx';
+import { ToastProvider } from './components/Toast.tsx';
 
 function App() {
 
   return (
     <BrowserRouter>
     <CompanyProvider>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<SelectedCompanyPages />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
-        </Route>
-      </Routes>
+      <ToastProvider>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<SelectedCompanyPages />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+          </Route>
+        </Routes>
+      </ToastProvider>
     </CompanyProvider>
     </BrowserRouter>
   )
