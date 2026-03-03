@@ -57,7 +57,9 @@ export const KardexPage = () => {
 
     return(
         <div className="max-w-6xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6 text-white">Historial de Movimientos (Kardex)</h1>
+            <h1 className="text-2xl md:text-4xl text-center font-extrabold text-white tracking-tight mb-10">
+                Historial de Movimientos (Kardex)
+            </h1>
 
             
             <div className="mb-6 bg-[#111827] p-4 rounded-xl border border-[#1f2937] flex items-center gap-4 shadow-sm">
@@ -123,7 +125,7 @@ export const KardexPage = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-right font-medium text-white">{entry.quantity}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-gray-500">{entry.previousStock}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right font-semibold text-emerald-400">{entry.newStock}</td>
-                                        <td className="px-6 py-4 min-w-[200px]">{entry.reason}</td>
+                                        <td className="px-6 py-4 min-w-50">{entry.reason}</td>
                                     </tr>
                                 ))
                             )}

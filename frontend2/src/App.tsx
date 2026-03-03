@@ -7,6 +7,7 @@ import { CompanyProvider } from './features/company/pages/CompanyContext.tsx';
 import { InventoryPage } from './features/inventory/pages/inventoryPage.tsx';
 import { ToastProvider } from './components/Toast.tsx';
 import { KardexPage } from './features/inventory-movements/pages/KardexPage.tsx';
+import { MovementPage } from './features/in-out/pages/MovementPage.tsx';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
             <Route path="/kardex" element={<KardexPage />} />
+            <Route path="/in-out" element={<MovementPage />} />
           </Route>
         </Routes>
       </ToastProvider>

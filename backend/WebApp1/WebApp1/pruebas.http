@@ -34,3 +34,32 @@ Accept: application/json
 GET http://localhost:5290/api/Kardex/1
 x-company-id: 1
 Accept: application/json
+
+
+### Ingreso de Producto (Compra)
+POST http://localhost:5290/api/Movement
+Content-Type: application/json
+x-company-id: 1
+
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "movementType": "IN",
+  "quantity": 50,
+  "reference": "Factura FAC-9900",
+  "reason": "Compra mensual a distribuidor"
+}
+
+### Salida de Producto (Venta)
+POST http://localhost:5290/api/Movement
+Content-Type: application/json
+x-company-id: 1
+
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "movementType": "OUT",
+  "quantity": 2,
+  "reference": "Ticket T-0012",
+  "reason": "Venta al cliente final"
+}

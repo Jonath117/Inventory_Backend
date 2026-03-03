@@ -19,8 +19,9 @@ import { useCompany } from "../../features/company/pages/CompanyContext.tsx";
 const navigation = [
   { name: "Inicio", href: "/", icon: HomeIcon },
   { name: "Dashboard", href: "/dashboard", icon: Squares2X2Icon },
-  { name: "Productos", href: "/inventory", icon: ArchiveBoxIcon},
+  { name: "Inventario", href: "/inventory", icon: ArchiveBoxIcon},
   { name: "Kardex", href: "/kardex", icon: ChartPieIcon },
+  {name: "Movimientos", href: "/in-out", icon: DocumentDuplicateIcon },
 ];
 
 const SideBar = () => {
