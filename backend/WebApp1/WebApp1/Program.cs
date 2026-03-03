@@ -6,7 +6,7 @@ using WebApp1.Infrastructure.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// 1. Conexión a Base de Datos (PostgreSQL)
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options
