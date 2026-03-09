@@ -33,7 +33,7 @@ export const CompanyCard = ({ company }: Props) => {
                         {company.name}
                     </h2>
                     <p className="text-sm text-gray-400">
-                        ID: {company.id} • Toca para ingresar
+                        • Toca para ingresar
                     </p>
                 </div>
             </div>

@@ -82,14 +82,14 @@ export const MovementForm = () => {
             );
 
             setMessage({ text: "Movimiento registrado con éxito.", type: "success" });
-            
+                
             
             setForm(prev => ({ ...prev, productId: "", quantity: "", reference: "", reason: "" }));
         } catch (error) {
             setMessage({ text: "Error al registrar el movimiento.", type: "error" });
         } finally {
             setLoading(false);
-        }
+            }
     };
 
     
