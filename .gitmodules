@@ -1,0 +1,3 @@
+[submodule "backend/backend/src/Modules/Sales"]
+	path = backend/backend/src/Modules/Sales
+	url = https://github.com/Jonath117/Sales_Backend.git
