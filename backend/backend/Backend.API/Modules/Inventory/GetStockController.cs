@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApp1.Domain.Interfaces;
 
-namespace WebApp1.Application;
+namespace Backend.API.Modules.Inventory;
 
 [ApiController]
 [Route("api/[controller]")]
