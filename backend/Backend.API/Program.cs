@@ -34,6 +34,9 @@ builder.Services.AddScoped<ILookUpService, LookUpService>();
 builder.Services.AddScoped<IMovementRepository, MovementRepository>();
 builder.Services.AddScoped<IMovementService, MovementService>();
 
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
