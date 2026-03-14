@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApp1.Domain.DTOs;
-using WebApp1.Domain.Interfaces;
+
+using Inventory.Domain.Interfaces.IServices;
+using Inventory.Domain.DTOs;
+
 
 namespace Backend.API.Modules.Inventory;
 

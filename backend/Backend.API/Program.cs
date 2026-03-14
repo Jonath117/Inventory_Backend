@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-
-using WebApp1.Business.Services;
-using WebApp1.Domain.Interfaces;
-using WebApp1.Infrastructure.Data;
+using Inventory.Application.Services;
+using Inventory.Domain.Interfaces.IRepositories;
+using Inventory.Domain.Interfaces.IServices;
+using Inventory.Infrastructure.Data;
+using Inventory.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +16,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         .UseSnakeCaseNamingConvention()
     );
 
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IAdjustmentRepository, AdjustmentRepository>();
 builder.Services.AddScoped<IAdjustmentService, AdjustmentService>();
-builder.Services.AddScoped<IGetStockService, GetStockService>();
-builder.Services.AddScoped<ILookUpService, LookUpService>();
+
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+
+builder.Services.AddScoped<IGetProductKardexRepository, GetProductKardexRepository>();
 builder.Services.AddScoped<IGetProductKardexService, GetProductKardexService>();
+
+builder.Services.AddScoped<IGetStockRepository, GetStockRepository>();
+builder.Services.AddScoped<IGetStockService, GetStockService>();
+
+builder.Services.AddScoped<ILookUpRepository, LookUpRepository>();
+builder.Services.AddScoped<ILookUpService, LookUpService>();
+
+builder.Services.AddScoped<IMovementRepository, MovementRepository>();
 builder.Services.AddScoped<IMovementService, MovementService>();
 
 

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApp1.Domain.Interfaces;
+using Inventory.Domain.Interfaces.IServices;
 
 namespace Backend.API.Modules.Inventory;
 
