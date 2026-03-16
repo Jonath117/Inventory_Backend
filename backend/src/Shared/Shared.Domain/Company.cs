@@ -1,4 +1,4 @@
-namespace Inventory.Domain.Entities;
+namespace Shared.Domain;
 
 public class Company
 {

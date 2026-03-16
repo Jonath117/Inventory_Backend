@@ -1,4 +1,4 @@
-using Inventory.Domain.Entities;
+using Shared.Domain;
 using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

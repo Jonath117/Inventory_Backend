@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using Inventory.Domain.Entities;
+using Shared.Domain;
 
 namespace Inventory.Infrastructure.Data;
 

@@ -1,3 +1,5 @@
+using Shared.Domain;
+
 namespace Inventory.Domain.Entities;
 
 public class InventoryStock

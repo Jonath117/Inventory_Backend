@@ -1,4 +1,4 @@
-using Inventory.Domain.Entities;
+using Shared.Domain;
 
 namespace Inventory.Domain.Interfaces.IRepositories;
 
