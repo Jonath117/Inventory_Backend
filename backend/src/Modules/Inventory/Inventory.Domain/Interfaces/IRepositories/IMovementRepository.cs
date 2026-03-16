@@ -4,7 +4,7 @@ namespace Inventory.Domain.Interfaces.IRepositories;
 
 public interface IMovementRepository
 {
-    Task<InventoryStock?> GetStockAsync(int productId, int warehouseId);
+    Task<InventoryStock?> GetStockAsync(int companyId, int productId, int warehouseId);
 
     Task AddStockAsync(InventoryStock stock);
 

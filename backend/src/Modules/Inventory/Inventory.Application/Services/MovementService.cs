@@ -3,6 +3,8 @@ using Inventory.Domain.Entities;
 using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Domain.Interfaces.IServices;
 
+using System.Globalization;
+
 namespace Inventory.Application.Services;
 
 public class MovementService: IMovementService
@@ -26,9 +28,9 @@ public class MovementService: IMovementService
 
         try
         {
-            var stockRecord = await _repository.GetStockAsync(companyId, request.ProductId);
+            var stockRecord = await _repository.GetStockAsync(companyId, request.ProductId, request.WarehouseId);
 
-            decimal previousStock = stockRecord?.CurrentStock ?? 0;
+            var previousStock = stockRecord?.CurrentStock ?? 0;
             decimal newStock;
 
             if (request.MovementType == "IN")
@@ -41,8 +43,11 @@ public class MovementService: IMovementService
 
                 if (newStock < 0)
                 {
+                    string stockFormateado = previousStock.ToString("0.##", CultureInfo.InvariantCulture);
+                    string cantidadFormateada = request.Quantity.ToString("0.##", CultureInfo.InvariantCulture);
+
                     throw new Exception(
-                        $"Stock insuficiente. Tienes {previousStock} y quieres sacar {request.Quantity}.");
+                        $"Stock insuficiente. Tienes {stockFormateado} y quieres sacar {cantidadFormateada}.");
                 }
             }
 

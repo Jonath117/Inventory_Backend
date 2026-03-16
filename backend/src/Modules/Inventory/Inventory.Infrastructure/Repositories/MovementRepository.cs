@@ -34,10 +34,11 @@ public class MovementRepository : IMovementRepository
             await _transaction.RollbackAsync();
     }
 
-    public async Task<InventoryStock?> GetStockAsync(int productId, int warehouseId)
+    public async Task<InventoryStock?> GetStockAsync(int companyId, int productId, int warehouseId)
     {
         return await _context.InventoryStocks
             .FirstOrDefaultAsync(s =>
+                s.CompanyId == companyId &&
                 s.ProductId == productId &&
                 s.WarehouseId == warehouseId);
     }
