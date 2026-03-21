@@ -23,7 +23,7 @@ public class GetStockService: IGetStockService
             ProductName = s.Product.Name,
             WarehouseName = s.Warehouse!.Name,
             CurrentStock = s.CurrentStock,
-            UnitOfMeasure = s.Product.UnitOfMeasure,
+            UnitOfMeasure = s.Product.Unit?.Name ?? "Sin unidad ",
             MinStockAlert = s.Product.MinStockAlert,
             LastUpdated =  s.LastUpdated,
         }).ToList();

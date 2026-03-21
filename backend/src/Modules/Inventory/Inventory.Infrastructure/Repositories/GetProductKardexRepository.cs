@@ -7,9 +7,9 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class GetProductKardexRepository : IGetProductKardexRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     
-    public GetProductKardexRepository(ApplicationDbContext context)
+    public GetProductKardexRepository(InventoryDbContext context)
     {
         _context = context;
     }

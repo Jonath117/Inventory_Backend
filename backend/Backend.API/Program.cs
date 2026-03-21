@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<InventoryDbContext>(options =>
     options
         .UseNpgsql(connectionString)
         .UseSnakeCaseNamingConvention()
@@ -23,12 +23,10 @@ Action<DbContextOptionsBuilder> npgsqlOptions = options =>
         .UseSnakeCaseNamingConvention();
 
 
-builder.Services.AddDbContext<ApplicationDbContext>(npgsqlOptions);
+builder.Services.AddDbContext<InventoryDbContext>(npgsqlOptions);
 builder.Services.AddDbContext<CoreDbContext>(npgsqlOptions);
 // builder.Services.AddDbContext<InventoryDbContext>(npgsqlOptions);
 // builder.Services.AddDbContext<SalesDbContext>(npgsqlOptions);
-
-
 
 builder.Services.AddScoped<IAdjustmentRepository, AdjustmentRepository>();
 builder.Services.AddScoped<IAdjustmentService, AdjustmentService>();
@@ -50,6 +48,9 @@ builder.Services.AddScoped<IMovementService, MovementService>();
 
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 builder.Services.AddControllers();
@@ -109,7 +110,7 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast");
 
-app.MapGet("/api/test-db", async (ApplicationDbContext context) =>
+app.MapGet("/api/test-db", async (InventoryDbContext context) =>
 {
     try
     {

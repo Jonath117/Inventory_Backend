@@ -8,10 +8,10 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class MovementRepository : IMovementRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     private IDbContextTransaction? _transaction;
     
-    public MovementRepository(ApplicationDbContext context)
+    public MovementRepository(InventoryDbContext context)
     {
         _context = context;
     }

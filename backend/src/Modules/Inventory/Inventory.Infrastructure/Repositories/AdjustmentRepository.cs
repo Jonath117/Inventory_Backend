@@ -8,10 +8,10 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class AdjustmentRepository : IAdjustmentRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     private IDbContextTransaction? _transaction;
 
-    public AdjustmentRepository(ApplicationDbContext context)
+    public AdjustmentRepository(InventoryDbContext context)
     {
         _context = context;
     }

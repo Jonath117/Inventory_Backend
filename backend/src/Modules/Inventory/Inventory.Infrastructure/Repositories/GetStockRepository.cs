@@ -7,9 +7,9 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class GetStockRepository: IGetStockRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     
-    public GetStockRepository(ApplicationDbContext context)
+    public GetStockRepository(InventoryDbContext context)
     {
         _context = context;
     }
@@ -18,6 +18,7 @@ public class GetStockRepository: IGetStockRepository
     {
         var query = _context.InventoryStocks
             .Include(s => s.Product)
+                .ThenInclude(p => p.Unit)
             .Include(s => s.Warehouse)
             .Where(s => s.CompanyId == companyId)
             .AsQueryable();

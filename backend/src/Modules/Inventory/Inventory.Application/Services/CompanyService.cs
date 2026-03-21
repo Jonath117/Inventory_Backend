@@ -18,9 +18,9 @@ public class CompanyService: ICompanyService
     {
         var companies = await _repository.GetActiveCompaniesAsync();
 
-        if (companies.Count == 0)
+        if (companies == null || companies.Count == 0)
         {
-            throw new Exception("No se encontraron empresas activas");
+            return new List<CompanyDto>();
         }
 
         return companies.Select(c => new CompanyDto

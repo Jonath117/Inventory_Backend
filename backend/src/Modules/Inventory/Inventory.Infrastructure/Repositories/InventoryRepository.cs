@@ -6,9 +6,9 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class InventoryRepository : IInventoryRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     
-    public InventoryRepository(ApplicationDbContext context)
+    public InventoryRepository(InventoryDbContext context)
     {
         _context = context;
     }

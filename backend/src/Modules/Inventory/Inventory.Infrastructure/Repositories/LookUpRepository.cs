@@ -7,9 +7,9 @@ namespace Inventory.Infrastructure.Repositories;
 
 public class LookUpRepository : ILookUpRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly InventoryDbContext _context;
     
-    public LookUpRepository(ApplicationDbContext context)
+    public LookUpRepository(InventoryDbContext context)
     {
         _context = context;
     }

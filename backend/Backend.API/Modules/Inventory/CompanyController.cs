@@ -20,7 +20,7 @@ public class CompanyController : ControllerBase
         try
         {
             var companies = await _inventoryService.GetCompanyAsync();
-            if (companies.Count == 0)
+            if (companies.Count == null || !companies.Any())
             {
                 return NoContent();
             }
@@ -28,7 +28,8 @@ public class CompanyController : ControllerBase
         }  
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            Console.WriteLine($"error: {ex.ToString()}");
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 
