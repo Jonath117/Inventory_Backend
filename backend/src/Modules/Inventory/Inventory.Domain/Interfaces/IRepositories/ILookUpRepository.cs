@@ -1,10 +1,10 @@
-using Inventory.Domain.DTOs;
+using Inventory.Domain.Entities;
 
 namespace Inventory.Domain.Interfaces.IRepositories;
 
 public interface ILookUpRepository
 {
-    Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdownAsync(int companyId);
+    Task<IEnumerable<Product>> GetProductsForDropdownAsync(int companyId);
     
-    Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdownAsync(int companyId);
+    Task<IEnumerable<Warehouse>> GetWarehouseForDropdownAsync(int companyId);
 }

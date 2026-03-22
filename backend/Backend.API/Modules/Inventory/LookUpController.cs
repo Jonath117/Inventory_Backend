@@ -19,7 +19,7 @@ public class LookUpController : ControllerBase
     public async Task<IActionResult> GetProductsForDropdownAsync([FromHeader(Name = "x-company-id")] int companyId)
     {
         if (companyId <= 0) return BadRequest("Id de compania invalido");
-        var products = await _lookUpService.GetProductsForDropdownAsync(companyId);
+        var products = await _lookUpService.GetProductsForDropdown(companyId);
         return Ok(products);
     }
 
@@ -27,7 +27,7 @@ public class LookUpController : ControllerBase
     public async Task<IActionResult> GetWarehouseForDropdownAsync([FromHeader(Name = "x-company-id")] int companyId)
     {
         if(companyId <= 0) return BadRequest("Id de la compañia invalido");
-        var warehouses = await _lookUpService.GetWarehouseForDropdownAsync(companyId);
+        var warehouses = await _lookUpService.GetWarehouseForDropdown(companyId);
         return Ok(warehouses);
     }
 }

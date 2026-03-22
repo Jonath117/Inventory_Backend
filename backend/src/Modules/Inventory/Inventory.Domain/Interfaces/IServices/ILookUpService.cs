@@ -4,7 +4,7 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface ILookUpService
 {
-    Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdownAsync(int companyId);
+    Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdown(int companyId);
     
-    Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdownAsync(int companyId);
+    Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdown(int companyId);
 }

@@ -13,13 +13,17 @@ public class LookUpService: ILookUpService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdownAsync(int companyId)
+    public async Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdown(int companyId)
     {
-        return await _repository.GetProductsForDropdownAsync(companyId);
+        var products = await _repository.GetProductsForDropdownAsync(companyId);
+        
+        return products.Select(p => new ProductLookUpDto(p.Id, p.Sku, p.Name)).ToList();
     }
 
-    public async Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdownAsync(int companyId)
+    public async Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdown(int companyId)
     {
-        return await _repository.GetWarehouseForDropdownAsync(companyId);
+        var warehouses = await _repository.GetWarehouseForDropdownAsync(companyId);
+        
+        return warehouses.Select(w => new WarehouseLookUpDto(w.Id, w.Name)).ToList();
     }
 }

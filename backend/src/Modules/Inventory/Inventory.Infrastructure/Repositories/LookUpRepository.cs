@@ -1,4 +1,4 @@
-using Inventory.Domain.DTOs;
+using Inventory.Domain.Entities;
 using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -14,26 +14,17 @@ public class LookUpRepository : ILookUpRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<ProductLookUpDto>> GetProductsForDropdownAsync(int companyId)
+    public async Task<IEnumerable<Product>> GetProductsForDropdownAsync(int companyId)
     {
         return await _context.Products
             .Where(p => p.CompanyId == companyId && p.IsActive)
-            .Select(p => new ProductLookUpDto
-            {
-                Id = p.Id,
-                Sku = p.Sku,
-                Name = p.Name,
-            }).ToListAsync();
+            .ToListAsync();
     }
 
-    public async Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdownAsync(int companyId)
+    public async Task<IEnumerable<Warehouse>> GetWarehouseForDropdownAsync(int companyId)
     {
         return await _context.Warehouses
             .Where(w => w.CompanyId == companyId && w.IsActive)
-            .Select(w => new WarehouseLookUpDto
-            {
-                Id = w.Id,
-                Name =  w.Name,
-            }).ToListAsync();
+            .ToListAsync();
     }
 }
