@@ -15,10 +15,10 @@ public class CategoryService : ICategoryService
     }
     
     
-    public async Task<IEnumerable<CategoryLookupDto>> GetCategoryAsync(int companyId)
+    public async Task<IEnumerable<CategoryLookupDto>> GetCategoriesAsync(int companyId)
     {
         var categories = await _repository.GetCategories(companyId);
-        return categories.Select(c => new CategoryLookupDto(c.Id, c.Name)).ToList();
+        return categories.Select(c => new CategoryLookupDto(c.Id, c.Name, c.Description)).ToList();
         
     }
 

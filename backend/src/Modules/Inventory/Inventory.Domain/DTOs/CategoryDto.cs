@@ -1,7 +1,7 @@
 namespace Inventory.Domain.DTOs;
 
 
-public record CategoryLookupDto(int Id, string Name);
+public record CategoryLookupDto(int Id, string Name, string? Description);
 
 public record CategoryCreateDto(int CompanyId, string Name, string? Description);
 

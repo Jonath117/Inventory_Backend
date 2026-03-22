@@ -5,7 +5,7 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface ICategoryService
 {
-    Task<IEnumerable<CategoryLookupDto>> GetCategoryAsync(int companyId);
+    Task<IEnumerable<CategoryLookupDto>> GetCategoriesAsync(int companyId);
     
     Task CreateCategoryAsync(CategoryCreateDto dto);
     

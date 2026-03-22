@@ -26,7 +26,7 @@ public class CategoryController: ControllerBase
                 return BadRequest("Company Id invalido");
             }
             
-            var categories = await _categoryService.GetCategoryAsync(companyId);
+            var categories = await _categoryService.GetCategoriesAsync(companyId);
             return Ok(categories);
         }
         catch (Exception ex)
@@ -58,6 +58,30 @@ public class CategoryController: ControllerBase
         catch(Exception ex)
         {
             return BadRequest(new {error = ex.Message});
+        }
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> UpdateCategory([FromHeader(Name = "x-company-id")] int companyId,
+        [FromBody] CategoryUpdateDto dto)
+    {
+        try
+        {
+            if (companyId <= 0)
+            {
+                return BadRequest(new {error = "Company Id invalido"});
+            }
+            
+            var finalDto = dto with {CompanyId = companyId};
+            
+            await _categoryService.UpdateCategoryAsync(finalDto);
+            
+            return Ok(new {message = "Categoria actualizada correctamente"});
+
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new{error = e.Message});
         }
     }
 }
