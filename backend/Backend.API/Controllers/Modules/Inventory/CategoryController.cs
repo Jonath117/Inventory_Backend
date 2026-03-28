@@ -2,7 +2,7 @@ using Inventory.Domain.DTOs;
 using Inventory.Domain.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.API.Modules.Inventory;
+namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
 [Route("api/[controller]")]

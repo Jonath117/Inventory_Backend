@@ -4,7 +4,7 @@ using Inventory.Domain.Interfaces.IServices;
 using Inventory.Domain.DTOs;
 
 
-namespace Backend.API.Modules.Inventory;
+namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
 [Route("api/[controller]")]

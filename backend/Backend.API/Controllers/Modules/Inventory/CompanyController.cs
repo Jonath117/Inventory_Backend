@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.Interfaces.IServices;
 
-namespace Backend.API.Modules.Inventory;
+namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -20,7 +20,7 @@ public class CompanyController : ControllerBase
         try
         {
             var companies = await _inventoryService.GetCompanyAsync();
-            if (companies.Count == null || !companies.Any())
+            if (!companies.Any())
             {
                 return NoContent();
             }

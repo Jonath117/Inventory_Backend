@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
 
-namespace Backend.API.Modules.Inventory;
+namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
 [Route("api/[controller]")]
