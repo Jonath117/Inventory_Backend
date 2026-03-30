@@ -63,4 +63,11 @@ public class MovementRepository : IMovementRepository
     {
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<decimal> GetTotalStockAsync(int companyId, int productId)
+    {
+        return await _context.InventoryStocks
+            .Where(s => s.CompanyId == companyId && s.ProductId == productId)
+            .SumAsync(s => s.CurrentStock);
+    }
 }

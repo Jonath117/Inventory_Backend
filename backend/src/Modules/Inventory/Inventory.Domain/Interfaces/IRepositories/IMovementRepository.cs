@@ -19,4 +19,6 @@ public interface IMovementRepository
     Task RollbackTransactionAsync();
 
     Task SaveChangesAsync();
+    
+    Task<decimal> GetTotalStockAsync(int companyId, int productId);
 }

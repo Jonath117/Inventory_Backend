@@ -10,10 +10,12 @@ namespace Inventory.Application.Services;
 public class MovementService: IMovementService
 {
     private readonly IMovementRepository _repository;
+    private readonly IProductRepository _productRepository;
 
-    public MovementService(IMovementRepository repository)
+    public MovementService(IMovementRepository repository, IProductRepository productRepository)
     {
         _repository = repository;
+        _productRepository = productRepository;
     }
 
     public async Task RegisterMovement(int companyId, MovementDto request)
@@ -85,8 +87,18 @@ public class MovementService: IMovementService
                 CreatedAt = DateTime.UtcNow
             };
             await _repository.AddMovementAsync(movement);
-
             await _repository.SaveChangesAsync();
+
+            var product = await _productRepository.GetByIdAsync(companyId, request.ProductId);
+            
+            if (product != null)
+            {
+                var totalGlobalStock = await _repository.GetTotalStockAsync(companyId, request.ProductId);
+                product.IsSoldOut = totalGlobalStock <= 0;
+                
+                await _productRepository.UpdateAsync(product);
+            }
+            
             await _repository.CommitTransactionAsync();
         }
         catch
