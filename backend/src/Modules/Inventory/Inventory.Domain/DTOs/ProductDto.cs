@@ -24,7 +24,9 @@ public record ProductDto(
     int MinStockAlert, 
     bool IsActive, 
     bool IsSoldOut, 
-    string CategoryName, 
+    int CategoryId,
+    string CategoryName,
+    int UnitId,
     string UnitName      
 );
 
@@ -36,5 +38,20 @@ public record ProductCreateDto(
     decimal SalePrice, 
     int MinStockAlert, 
     int CategoryId, 
-    int UnitId
+    int UnitId,
+    bool IsActive = true,
+    int CompanyId = 0
+);
+
+public record ProductUpdateDto(
+    string Sku, 
+    string Name, 
+    string? Description, 
+    decimal Price, 
+    decimal SalePrice, 
+    int MinStockAlert, 
+    int CategoryId, 
+    int UnitId,
+    bool IsActive,
+    int CompanyId = 0 
 );
