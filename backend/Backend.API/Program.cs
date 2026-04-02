@@ -4,11 +4,10 @@ using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Domain.Interfaces.IServices;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Repositories;
+using Sales.Infrastructure.Persistence;
 using Shared.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -18,6 +17,8 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
         .UseSnakeCaseNamingConvention()
     );
 
+
+
 Action<DbContextOptionsBuilder> npgsqlOptions = options => 
     options.UseNpgsql(connectionString)
         .UseSnakeCaseNamingConvention();
@@ -25,8 +26,7 @@ Action<DbContextOptionsBuilder> npgsqlOptions = options =>
 
 builder.Services.AddDbContext<InventoryDbContext>(npgsqlOptions);
 builder.Services.AddDbContext<CoreDbContext>(npgsqlOptions);
-// builder.Services.AddDbContext<InventoryDbContext>(npgsqlOptions);
-// builder.Services.AddDbContext<SalesDbContext>(npgsqlOptions);
+builder.Services.AddDbContext<SalesDbContext>(npgsqlOptions);
 
 builder.Services.AddScoped<IAdjustmentRepository, AdjustmentRepository>();
 builder.Services.AddScoped<IAdjustmentService, AdjustmentService>();
