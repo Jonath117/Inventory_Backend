@@ -4,7 +4,9 @@ using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Domain.Interfaces.IServices;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Repositories;
+using Sales.Domain.Interfaces;
 using Sales.Infrastructure.Persistence;
+using Sales.Infrastructure.Persistence.Repositories;
 using Shared.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,8 +18,6 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
         .UseNpgsql(connectionString)
         .UseSnakeCaseNamingConvention()
     );
-
-
 
 Action<DbContextOptionsBuilder> npgsqlOptions = options => 
     options.UseNpgsql(connectionString)
@@ -61,16 +61,16 @@ builder.Services.AddScoped<IUnitService, UnitService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddScoped<ISalesRepository, SalesRepository>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 
 builder.Services.AddCors(options =>
 {
@@ -83,73 +83,18 @@ builder.Services.AddCors(options =>
         });
 });
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 //app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
-
-
 app.MapControllers();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
-
-app.MapGet("/api/test-db", async (InventoryDbContext context) =>
-{
-    try
-    {
-        bool canConnect =  await context.Database.CanConnectAsync();
-
-        if (!canConnect)
-        {
-            return Results.Problem("Could not connect to database");
-        }
-        
-        var company = await context.Companies.FirstOrDefaultAsync();
-        if (company != null)
-        {
-            return Results.Ok(new
-            {
-                Mensaje = "Coneccion exitosa",
-                EmpresaEncontrada = company.Name
-            });
-        }
-        return Results.Ok("Coneccion exitosa, tablas vacias");
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem($"Error al conectar {ex.Message}");
-    }
-});
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
