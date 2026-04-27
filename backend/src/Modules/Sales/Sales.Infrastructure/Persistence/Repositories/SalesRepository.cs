@@ -26,7 +26,7 @@ public class SalesRepository : ISalesRepository
             .Where(t => t.CompanyId == companyId && t.CreatedAt >= today)
             .CountAsync(cancellationToken);
 
-        return $"TCK-{today:yyyy MMMM dd}-{(count + 1):D4}";
+        return $"TCK-{today:yyyyMMMdd}-{(count + 1):D4}";
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
