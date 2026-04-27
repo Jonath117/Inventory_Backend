@@ -62,6 +62,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<ISalesRepository, SalesRepository>();
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(Sales.Application.Features.Tickets.CreateTicket.CreateTicketCommandHandler).Assembly);
+});
 
 
 builder.Services.AddControllers();
