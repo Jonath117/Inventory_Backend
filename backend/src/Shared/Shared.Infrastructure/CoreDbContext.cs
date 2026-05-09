@@ -13,7 +13,12 @@ public class CoreDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.HasDefaultSchema("core");
-        
-        modelBuilder.Entity<Company>().ToTable("companies");
+
+        modelBuilder.Entity<Company>(entity =>
+        {
+            entity.ToTable("companies");
+            entity.Property(c => c.Cen).HasMaxLength(50).IsRequired();
+            entity.HasIndex(c => c.Cen).IsUnique();
+        });
     }
 }
