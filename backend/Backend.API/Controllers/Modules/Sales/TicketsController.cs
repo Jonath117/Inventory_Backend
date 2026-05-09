@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Application.Features.Tickets.CreateTicket;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Sales;
 
@@ -9,23 +10,22 @@ namespace Backend.API.Controllers.Modules.Sales;
 public class TicketsController: ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ICurrentCompanyProvider _companyProvider;
 
-    public TicketsController(IMediator mediator)
+    public TicketsController(IMediator mediator, ICurrentCompanyProvider companyProvider)
     {
         _mediator = mediator;
+        _companyProvider = companyProvider;
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTicket([FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> CreateTicket()
     {
-        if (companyId <= 0)
-        {
-            return BadRequest(new { error = "Id de compañia Invalido" });
-        }
+        int internalCompanyId = _companyProvider.CompanyId;
         
-        var command = new CreateTicketCommand(companyId);
+        var command = new CreateTicketCommand(internalCompanyId);
         var ticketId = await _mediator.Send(command);
-        
-        return Created($"/api/sales/tickets/{companyId}", new {TicketId = ticketId});
+          
+        return Created($"/api/sales/tickets/{internalCompanyId}", new {TicketId = ticketId});
     }
 }
