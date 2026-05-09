@@ -1,3 +1,4 @@
+using Backend.API.Filters;
 using Microsoft.EntityFrameworkCore;
 using Inventory.Application.Services;
 using Inventory.Domain.Interfaces.IRepositories;
@@ -7,7 +8,9 @@ using Inventory.Infrastructure.Repositories;
 using Sales.Domain.Interfaces;
 using Sales.Infrastructure.Persistence;
 using Sales.Infrastructure.Persistence.Repositories;
+using Shared.Application.Interfaces;
 using Shared.Infrastructure;
+using Shared.Infrastructure.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,8 +69,12 @@ builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(Sales.Application.Features.Tickets.CreateTicket.CreateTicketCommandHandler).Assembly);
 });
 
+builder.Services.AddScoped<ICurrentCompanyProvider, CurrentCompanyProvider>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => 
+{
+    options.Filters.Add<CompanyTenantFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
