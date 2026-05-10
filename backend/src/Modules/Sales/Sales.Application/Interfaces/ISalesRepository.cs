@@ -1,6 +1,6 @@
 using Sales.Domain.Entities;
 
-namespace Sales.Domain.Interfaces;
+namespace Sales.Application.Interfaces;
 
 public interface ISalesRepository
 {
