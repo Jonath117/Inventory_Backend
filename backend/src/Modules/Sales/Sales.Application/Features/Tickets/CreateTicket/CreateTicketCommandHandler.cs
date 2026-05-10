@@ -1,6 +1,6 @@
 using MediatR;
+using Sales.Application.Interfaces;
 using Sales.Domain.Entities;
-using Sales.Domain.Interfaces;
 
 namespace Sales.Application.Features.Tickets.CreateTicket;
 
