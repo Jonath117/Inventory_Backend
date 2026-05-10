@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Sales.Application.Interfaces;
 using Sales.Domain.Entities;
-using Sales.Domain.Interfaces;
 
 namespace Sales.Infrastructure.Persistence.Repositories;
 
