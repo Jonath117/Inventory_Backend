@@ -1,30 +1,30 @@
 using Inventory.Domain.DTOs;
 using Inventory.Domain.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies/{companyCen}/categories")]
 public class CategoryController: ControllerBase
 {
     private readonly ICategoryService _categoryService;
+    private readonly ICurrentCompanyProvider _companyProvider;
     
-    public CategoryController(ICategoryService categoryService)
+    public CategoryController(ICategoryService categoryService, ICurrentCompanyProvider companyProvider)
     {
         _categoryService = categoryService;
+        _companyProvider = companyProvider;
     }
 
-
     [HttpGet]
-    public async Task<IActionResult> GetCategories([FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> GetCategories()
     {
         try
         {
-            if (companyId <= 0)
-            {
-                return BadRequest("Company Id invalido");
-            }
+            int companyId = _companyProvider.CompanyId;
             
             var categories = await _categoryService.GetCategoriesAsync(companyId);
             return Ok(categories);
@@ -37,16 +37,11 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory(
-        [FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] CategoryCreateDto dto)
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDto dto)
     {
         try
         {
-            if (companyId <= 0)
-            {
-                return BadRequest(new {error = "Company Id invalido"});
-            }
+            int companyId = _companyProvider.CompanyId;
             
             var finalDto = dto with {CompanyId = companyId};
             
@@ -62,15 +57,11 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPatch]
-    public async Task<IActionResult> UpdateCategory([FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] CategoryUpdateDto dto)
+    public async Task<IActionResult> UpdateCategory([FromBody] CategoryUpdateDto dto)
     {
         try
         {
-            if (companyId <= 0)
-            {
-                return BadRequest(new {error = "Company Id invalido"});
-            }
+            int companyId = _companyProvider.CompanyId;
             
             var finalDto = dto with {CompanyId = companyId};
             

@@ -2,29 +2,30 @@ using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.DTOs;
 using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies/{companyCen}/documents")]
 public class MovementController : ControllerBase
 {
     private readonly IMovementService _movementService;
+    private readonly ICurrentCompanyProvider _companyProvider;
 
-    public MovementController(IMovementService movementService)
+    public MovementController(IMovementService movementService, ICurrentCompanyProvider companyProvider)
     {
         _movementService = movementService;
+        _companyProvider = companyProvider;
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterMovement(
-        [FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] MovementDto request
-    )
+    public async Task<IActionResult> RegisterMovement([FromBody] MovementDto request)
     {
         try
         {
-            if (companyId <= 0) return BadRequest("Header x-company-id requerido");
+            int companyId = _companyProvider.CompanyId;
 
             await _movementService.RegisterMovement(companyId, request);
 

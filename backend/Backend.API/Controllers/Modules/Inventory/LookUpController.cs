@@ -1,32 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies/{companyCen}/lookups")]
 public class LookUpController : ControllerBase
 {
     private readonly ILookUpService _lookUpService;
+    private readonly ICurrentCompanyProvider _companyProvider;
     
-    public LookUpController(ILookUpService lookUpService)
+    public LookUpController(ILookUpService lookUpService, ICurrentCompanyProvider companyProvider)
     {
         _lookUpService = lookUpService;
+        _companyProvider = companyProvider;
     }
 
     [HttpGet("lookup-products")]
-    public async Task<IActionResult> GetProductsForDropdownAsync([FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> GetProductsForDropdownAsync()
     {
-        if (companyId <= 0) return BadRequest("Id de compania invalido");
+        int companyId = _companyProvider.CompanyId;
         var products = await _lookUpService.GetProductsForDropdown(companyId);
         return Ok(products);
     }
 
     [HttpGet("lookup-warehouses")]
-    public async Task<IActionResult> GetWarehouseForDropdownAsync([FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> GetWarehouseForDropdownAsync()
     {
-        if(companyId <= 0) return BadRequest("Id de la compañia invalido");
+        int companyId = _companyProvider.CompanyId;
         var warehouses = await _lookUpService.GetWarehouseForDropdown(companyId);
         return Ok(warehouses);
     }

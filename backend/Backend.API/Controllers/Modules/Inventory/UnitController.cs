@@ -1,19 +1,22 @@
 using Inventory.Domain.DTOs;
 using Inventory.Domain.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
-public class UnitController(IUnitService uniteService) : ControllerBase
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies/{companyCen}/units")]
+public class UnitController(IUnitService uniteService, ICurrentCompanyProvider companyProvider) : ControllerBase
 {
+    
     [HttpGet]
-    public async Task<IActionResult> GetUnits([FromHeader(Name = "x-company-id")]int companyId)
+    public async Task<IActionResult> GetUnits()
     {
         try
         {
-            if (companyId <= 0) return BadRequest("Company id invalido");
+            int companyId = companyProvider.CompanyId;
 
             var units = await uniteService.GetUnitsAsync(companyId);
             return Ok(units);
@@ -25,12 +28,11 @@ public class UnitController(IUnitService uniteService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatUnit([FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] UnitCreateDto dto)
+    public async Task<IActionResult> CreatUnit([FromBody] UnitCreateDto dto)
     {
         try
         {
-            if (companyId <= 0) return BadRequest("Company id invalido");
+            int companyId = companyProvider.CompanyId;
 
             var finalDto = dto with { CompanyId = companyId };
             var createdUnit = await uniteService.CreateUnitAsync(finalDto);

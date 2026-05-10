@@ -4,7 +4,8 @@ using Inventory.Domain.Interfaces.IServices;
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies")]
 public class CompanyController : ControllerBase
 {
     private readonly ICompanyService _inventoryService;
