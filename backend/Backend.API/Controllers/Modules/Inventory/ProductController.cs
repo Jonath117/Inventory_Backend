@@ -1,29 +1,30 @@
 using Inventory.Domain.DTOs;
 using Inventory.Domain.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiExplorerSettings(GroupName = "inventory")]
+[Route("api/inventory/companies/{companyCen}/products")]
 public class ProductController: ControllerBase
 {
     private readonly IProductService _service;
+    private readonly ICurrentCompanyProvider _currentCompanyProvider;
 
-    public ProductController(IProductService service)
+    public ProductController(IProductService service, ICurrentCompanyProvider companyProvider)
     {
         _service = service;
+        _currentCompanyProvider = companyProvider;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProducts([FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> GetProducts()
     {
         try
         {
-            if (companyId <= 0)
-            {
-                return BadRequest(new { error = "Id de compañia Invalido" });
-            }
+            int companyId = _currentCompanyProvider.CompanyId;
 
             var productList = await _service.GetProductsAsync(companyId);
             return Ok(productList);
@@ -36,15 +37,11 @@ public class ProductController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] ProductCreateDto dto)
+    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto dto)
     {
         try
         {
-            if (companyId <= 0)
-            {
-                return BadRequest(new { error = "Id de compañia Invalido" });
-            }
+            int companyId = _currentCompanyProvider.CompanyId;
 
             var finalDto = dto with { CompanyId = companyId };
             
@@ -69,12 +66,11 @@ public class ProductController: ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditProduct(int id, [FromHeader(Name = "x-company-id")] int companyId,
-        [FromBody] ProductUpdateDto dto)
+    public async Task<IActionResult> EditProduct(int id, [FromBody] ProductUpdateDto dto)
     {
         try
         {
-            if (companyId <= 0) return BadRequest(new { error = "Company Id invalido" });
+            int companyId = _currentCompanyProvider.CompanyId;
 
             var finalDto = dto with { CompanyId = companyId };
             var updatedProduct = await _service.EditProductAsync(id, finalDto);
@@ -96,11 +92,11 @@ public class ProductController: ControllerBase
     }
 
     [HttpPatch("{id}/deactivate")]
-    public async Task<IActionResult> DeactivateProduct(int id, [FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> DeactivateProduct(int id)
     {
         try
         {
-            if (companyId <= 0) return BadRequest(new { error = "Company Id invalido" });
+            int companyId = _currentCompanyProvider.CompanyId;
             
             await _service.DesactiveProductAsync(companyId, id);
 
@@ -117,11 +113,11 @@ public class ProductController: ControllerBase
     }
     
     [HttpPatch("{id}/activate")]
-    public async Task<IActionResult> ActivateProduct(int id, [FromHeader(Name = "x-company-id")] int companyId)
+    public async Task<IActionResult> ActivateProduct(int id)
     {
         try
         {
-            if (companyId <= 0) return BadRequest(new { error = "Company Id invalido" });
+            int companyId = _currentCompanyProvider.CompanyId;
             
             await _service.ActivateProductAsync(companyId, id);
             
