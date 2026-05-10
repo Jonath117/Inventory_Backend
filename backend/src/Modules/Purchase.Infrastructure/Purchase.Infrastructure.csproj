@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Purchase.Application\Purchase.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ExternalServices\" />
+      <Folder Include="Persistence\Configurations\" />
+      <Folder Include="Persistence\Repositories\" />
+    </ItemGroup>
+
 </Project>
