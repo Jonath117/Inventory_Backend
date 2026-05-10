@@ -25,7 +25,7 @@ public class CompanyTenantFilter : IAsyncActionFilter
         {
             var company = await _context.Companies
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Id == int.Parse(companyCen));
+                .FirstOrDefaultAsync(c => c.Cen == companyCen);
 
             if (company == null)
             {
