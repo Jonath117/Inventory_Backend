@@ -11,7 +11,10 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<PurchaseDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), 
+                    x => x.MigrationsHistoryTable("__ef_migrations_history", "public"))
+                .UseSnakeCaseNamingConvention()
+            );
 
         return services;
     }
