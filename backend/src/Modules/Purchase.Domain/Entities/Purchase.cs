@@ -5,6 +5,7 @@ namespace Purchase.Domain.Entities;
 public class Purchase
 {
     public int Id { get; private set; }
+    public int CompanyId { get; private set; }
     public string Supplier { get; private set; }
     public DateTime Date { get; private set; }
     public StatusPurchase Status { get; private set; }
@@ -13,8 +14,9 @@ public class Purchase
     
     private Purchase() {}
 
-    internal Purchase(string supplier, DateTime date, StatusPurchase status)
+    internal Purchase(int companyId, string supplier)
     {
+        CompanyId = companyId;
         Supplier = supplier;
         Date = DateTime.UtcNow;
         Status = StatusPurchase.Pending;
