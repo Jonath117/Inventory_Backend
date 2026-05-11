@@ -1,6 +1,7 @@
 using Backend.API.Filters;
 using Inventory.Application;
 using Inventory.Infrastructure;
+using Purchase.Infrastructure;
 using Sales.Application;
 using Sales.Infrastructure;
 using Shared.Application;
@@ -14,6 +15,7 @@ builder.Services.AddSalesInfrastructure(builder.Configuration);
 builder.Services.AddSalesApplication();
 builder.Services.AddCoreInfrastructure(builder.Configuration);
 builder.Services.AddCoreApplication();
+builder.Services.AddPurchaseInfrastructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
