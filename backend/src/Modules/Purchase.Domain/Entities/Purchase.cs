@@ -4,10 +4,12 @@ namespace Purchase.Domain.Entities;
 
 public class Purchase
 {
-    int Id { get;}
+    public int Id { get; private set; }
     public string Supplier { get; private set; }
     public DateTime Date { get; private set; }
     public StatusPurchase Status { get; private set; }
+
+    public List<PurchaseItem> Items { get; private set; } = new();
     
     private Purchase() {}
 
