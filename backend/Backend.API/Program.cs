@@ -11,11 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInventoryInfrastructure(builder.Configuration);
 builder.Services.AddInventoryApplication();
+
 builder.Services.AddSalesInfrastructure(builder.Configuration);
 builder.Services.AddSalesApplication();
+
 builder.Services.AddCoreInfrastructure(builder.Configuration);
 builder.Services.AddCoreApplication();
+
 builder.Services.AddPurchaseInfrastructure(builder.Configuration);
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
