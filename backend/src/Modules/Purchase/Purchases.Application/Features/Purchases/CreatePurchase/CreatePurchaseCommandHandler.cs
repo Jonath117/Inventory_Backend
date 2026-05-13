@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Purchase.Application.Features.Purchases.CreatePurchase;
+namespace Purchases.Application.Features.Purchases.CreatePurchase;
 
 public class CreatePurchaseCommandHandler : IRequestHandler<CreatePurchaseCommand, int>
 {

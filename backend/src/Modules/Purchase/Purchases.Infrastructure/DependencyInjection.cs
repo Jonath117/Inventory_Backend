@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Purchase.Infrastructure.Persistence;
+using Purchases.Infrastructure.Persistence;
 
-namespace Purchase.Infrastructure;
+namespace Purchases.Infrastructure;
 
 public static class DependencyInjection
 {

@@ -1,6 +1,6 @@
 using MediatR;
-using Purchase.Domain.Entities;
+using Purchases.Domain.Entities;
 
-namespace Purchase.Application.Features.Purchases.CreatePurchase;
+namespace Purchases.Application.Features.Purchases.CreatePurchase;
 
 public record CreatePurchaseCommand(string supplier, List<PurchaseItem> Items) : IRequest<int>;

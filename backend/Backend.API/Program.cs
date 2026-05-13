@@ -1,7 +1,7 @@
 using Backend.API.Filters;
 using Inventory.Application;
 using Inventory.Infrastructure;
-using Purchase.Infrastructure;
+using Purchases.Infrastructure;
 using Sales.Application;
 using Sales.Infrastructure;
 using Shared.Application;

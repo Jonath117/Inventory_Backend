@@ -1,6 +1,6 @@
-using Purchase.Domain.Enums;
+using Purchases.Domain.Enums;
 
-namespace Purchase.Domain.Entities;
+namespace Purchases.Domain.Entities;
 
 public class Purchase
 {

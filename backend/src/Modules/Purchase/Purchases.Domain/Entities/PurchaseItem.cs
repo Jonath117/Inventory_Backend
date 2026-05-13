@@ -1,4 +1,4 @@
-namespace Purchase.Domain.Entities;
+namespace Purchases.Domain.Entities;
 
 public class PurchaseItem
 {

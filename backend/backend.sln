@@ -30,13 +30,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Infrastructure", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Application", "src\Shared\Shared.Application\Shared.Application.csproj", "{3E0244B6-4693-43D4-8C3B-BC158246B5B2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Purchase", "Purchase", "{12664D35-1AE0-412D-8ADE-0EDA918BEC97}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Purchases", "Purchases", "{12664D35-1AE0-412D-8ADE-0EDA918BEC97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchase.Domain", "src\Modules\Purchase\Purchase.Domain\Purchase.Domain.csproj", "{5B529A22-65DA-4E4C-8FD5-9A2EEF9557A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchases.Domain", "src\Modules\Purchase\Purchases.Domain\Purchases.Domain.csproj", "{5B529A22-65DA-4E4C-8FD5-9A2EEF9557A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchase.Application", "src\Modules\Purchase\Purchase.Application\Purchase.Application.csproj", "{8270504E-FB33-48D1-99AC-FCD619B22C56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchases.Application", "src\Modules\Purchase\Purchases.Application\Purchases.Application.csproj", "{8270504E-FB33-48D1-99AC-FCD619B22C56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchase.Infrastructure", "src\Modules\Purchase\Purchase.Infrastructure\Purchase.Infrastructure.csproj", "{11F83731-CC7E-4F15-93F8-C34851CFA198}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purchases.Infrastructure", "src\Modules\Purchase\Purchases.Infrastructure\Purchases.Infrastructure.csproj", "{11F83731-CC7E-4F15-93F8-C34851CFA198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

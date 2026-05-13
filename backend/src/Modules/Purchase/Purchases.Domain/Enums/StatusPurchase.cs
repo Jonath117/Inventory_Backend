@@ -1,4 +1,4 @@
-namespace Purchase.Domain.Enums;
+namespace Purchases.Domain.Enums;
 
 public enum StatusPurchase
 {

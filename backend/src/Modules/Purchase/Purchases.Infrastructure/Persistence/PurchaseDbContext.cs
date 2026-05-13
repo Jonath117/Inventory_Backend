@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Purchase.Domain.Entities;
+using Purchases.Domain.Entities;
 
-namespace Purchase.Infrastructure.Persistence;
+namespace Purchases.Infrastructure.Persistence;
 
 public class PurchaseDbContext : DbContext
 {
@@ -9,7 +9,7 @@ public class PurchaseDbContext : DbContext
     {
     }
 
-    public DbSet<Purchase.Domain.Entities.Purchase> Purchases { get; set; }
+    public DbSet<Purchases.Domain.Entities.Purchase> Purchases { get; set; }
     public DbSet<PurchaseItem> PurchaseItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

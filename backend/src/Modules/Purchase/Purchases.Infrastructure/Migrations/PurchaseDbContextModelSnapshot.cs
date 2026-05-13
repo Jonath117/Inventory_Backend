@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Purchase.Infrastructure.Persistence;
+using Purchases.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Purchase.Infrastructure.Migrations
+namespace Purchases.Infrastructure.Migrations
 {
     [DbContext(typeof(PurchaseDbContext))]
     partial class PurchaseDbContextModelSnapshot : ModelSnapshot
@@ -23,7 +23,7 @@ namespace Purchase.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Purchase.Domain.Entities.Purchase", b =>
+            modelBuilder.Entity("Purchases.Domain.Entities.Purchase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace Purchase.Infrastructure.Migrations
                     b.ToTable("purchases", "purchases");
                 });
 
-            modelBuilder.Entity("Purchase.Domain.Entities.PurchaseItem", b =>
+            modelBuilder.Entity("Purchases.Domain.Entities.PurchaseItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,9 +89,9 @@ namespace Purchase.Infrastructure.Migrations
                     b.ToTable("purchase_items", "purchases");
                 });
 
-            modelBuilder.Entity("Purchase.Domain.Entities.PurchaseItem", b =>
+            modelBuilder.Entity("Purchases.Domain.Entities.PurchaseItem", b =>
                 {
-                    b.HasOne("Purchase.Domain.Entities.Purchase", "Purchase")
+                    b.HasOne("Purchases.Domain.Entities.Purchase", "Purchase")
                         .WithMany("Items")
                         .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -101,7 +101,7 @@ namespace Purchase.Infrastructure.Migrations
                     b.Navigation("Purchase");
                 });
 
-            modelBuilder.Entity("Purchase.Domain.Entities.Purchase", b =>
+            modelBuilder.Entity("Purchases.Domain.Entities.Purchase", b =>
                 {
                     b.Navigation("Items");
                 });

@@ -1,4 +1,4 @@
-namespace Purchase.Application;
+namespace Purchases.Application;
 
 public class DependencyInjection
 {
