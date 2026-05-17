@@ -26,6 +26,7 @@ public class CompanyService: ICompanyService
         return companies.Select(c => new CompanyDto
         {
             Id = c.Id,
+            CompanyCen = c.Cen,
             Name = c.Name
         }).ToList();
     }
