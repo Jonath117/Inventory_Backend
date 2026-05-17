@@ -17,7 +17,7 @@ public class LookUpService: ILookUpService
     {
         var products = await _repository.GetProductsForDropdownAsync(companyId);
         
-        return products.Select(p => new ProductLookUpDto(p.Id, p.ProductCen, p.Sku, p.Name)).ToList();
+        return products.Select(p => new ProductLookUpDto(p.ProductCen, p.Sku, p.Name)).ToList();
     }
 
     public async Task<IEnumerable<WarehouseLookUpDto>> GetWarehouseForDropdown(int companyId)
