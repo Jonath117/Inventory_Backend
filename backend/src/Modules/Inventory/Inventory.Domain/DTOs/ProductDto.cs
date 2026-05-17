@@ -1,6 +1,6 @@
 namespace Inventory.Domain.DTOs;
 
-public record ProductLookUpDto(int id, string ProductCen, string Sku, string Name);
+public record ProductLookUpDto(string ProductCen, string Sku, string Name);
 public record WarehouseLookUpDto(int Id, string Name);
 
 public record StockProductDto(
