@@ -7,7 +7,7 @@ public interface ICategoryService
 {
     Task<IEnumerable<CategoryLookupDto>> GetCategoriesAsync(int companyId);
     
-    Task CreateCategoryAsync(CategoryCreateDto dto);
+    Task<CategoryContractDto> CreateCategoryAsync(CategoryCreateDto dto);
     
     Task UpdateCategoryAsync(CategoryUpdateDto dto);
 }
