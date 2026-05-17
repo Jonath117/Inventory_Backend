@@ -29,38 +29,28 @@ public class AdjustmentService: IAdjustmentService
             decimal previousStock = stockRecord?.CurrentStock ?? 0;
             decimal newStock = previousStock + adjustment.Quantity;
 
-            if (newStock < 0) throw new Exception($"El stock no puede quedar en negativo: Stock actual: ${previousStock}");
-
             if (stockRecord == null)
             {
-                stockRecord = new InventoryStock
-                {
-                    CompanyId = companyId,
-                    ProductId = adjustment.ProductId,
-                    WarehouseId = adjustment.WarehouseId,
-                    CurrentStock = newStock,
-                    LastUpdated = DateTime.UtcNow
-                };
+                stockRecord = new InventoryStock(companyId, adjustment.WarehouseId, adjustment.ProductId, newStock);
                 await _repository.AddStockAsync(stockRecord);
             }
             else
             {
-                stockRecord.CurrentStock = newStock;
-                stockRecord.LastUpdated = DateTime.UtcNow;
+                stockRecord.AdjustStock(newStock);
             }
 
-            var movement = new InventoryMovement
-            {
-                CompanyId = companyId,
-                ProductId = adjustment.ProductId,
-                WarehouseId = adjustment.WarehouseId,
-                MovementType = "Ajuste",
-                Quantity = adjustment.Quantity,
-                PreviousStock = previousStock,
-                NewStock = newStock,
-                Reason = adjustment.Reason,
-                CreatedAt = DateTime.UtcNow
-            };
+            var movement = new InventoryMovement(
+                companyId,
+                adjustment.WarehouseId,
+                adjustment.ProductId,
+                "Ajuste",
+                adjustment.Quantity,
+                previousStock,
+                newStock,
+                adjustment.Reason,
+                null,
+                null
+            );
             
             await _repository.AddMovementAsync(movement);
 
