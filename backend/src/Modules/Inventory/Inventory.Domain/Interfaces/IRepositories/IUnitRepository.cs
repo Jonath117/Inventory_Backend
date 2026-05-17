@@ -9,4 +9,6 @@ public interface IUnitRepository
     Task<bool> ExistsByNameAsync(int companyId, string name);
     
     Task<Unit> AddAsync(Unit unit);
+    
+    Task<(int Id, string Name)> GetInfoByCenAsync(int companyId, string unitCen);
 }
