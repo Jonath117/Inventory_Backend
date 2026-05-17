@@ -7,7 +7,7 @@ namespace Backend.API.Controllers.Modules.Inventory;
 
 [ApiController]
 [ApiExplorerSettings(GroupName = "inventory")]
-[Route("api/inventory/companies/{companyCen}/dashboard")]
+[Route("api/inventory/companies/{companyCen}/")]
 public class InventoryController : ControllerBase
 {
     private readonly IInventoryService _inventoryService;
