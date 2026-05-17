@@ -12,7 +12,6 @@ public interface ICategoryRepository
     
     Task UpdateAsync(Category category);
     
-    Task<Category?> GetByIdAsync(int id, int companyId);
-    
     Task<Category?> GetByCategoryCenAsync(string categoryCen, int companyId);
+    Task<(int Id, string Name)> GetInfoByCenAsync(int companyId, string categoryCen);
 }
