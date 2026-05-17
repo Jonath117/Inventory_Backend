@@ -30,6 +30,12 @@ public class CategoryRepository:  ICategoryRepository
             .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
+    public async Task<Category?> GetByCategoryCenAsync(string categoryCen, int companyId)
+    {
+        return await _context.Categories
+            .FirstOrDefaultAsync(c => c.CategoryCen == categoryCen && c.CompanyId == companyId);
+    }
+
     public async Task AddAsync(Category category)
     {
         await _context.Categories.AddAsync(category);
