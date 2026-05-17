@@ -32,7 +32,7 @@ public class ProductController: ControllerBase
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex}");
-            return StatusCode(500, new { error = "Ocurrió un error interno." });
+            return StatusCode(500, new { error = "Ocurrió un error interno al listar los productos." });
         }
     }
 
