@@ -47,4 +47,16 @@ public class CategoryRepository:  ICategoryRepository
         _context.Categories.Update(category);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<(int Id, string Name)> GetInfoByCenAsync(int companyId, string categoryCen)
+    {
+        var category = await _context.Categories
+            .AsNoTracking()
+            .Where(c => c.CompanyId == companyId && c.CategoryCen == categoryCen)
+            .Select(c => new { c.Id, c.Name })
+            .FirstOrDefaultAsync();
+
+        if (category == null) return (0, string.Empty);
+        return (category.Id, category.Name);
+    }
 }
