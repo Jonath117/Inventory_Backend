@@ -22,34 +22,33 @@ public class CategoryService : ICategoryService
         
     }
 
-    public async Task CreateCategoryAsync(CategoryCreateDto dto)
+    public async Task<CategoryContractDto> CreateCategoryAsync(CategoryCreateDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Name))
-        {
-            throw new ArgumentException("El nommbre de la categoria es obligatorio");
-        }
-
-        var newCategory = new Category
-        {
-            CompanyId = dto.CompanyId,
-            Name = dto.Name,
-            Description = dto.Description,
-        };
+            throw new ArgumentException("El nombre de la categoria es obligatorio");
+        
+        var newCategory = new Category(dto.CompanyId, dto.Name, dto.Description);
         
         await _repository.AddAsync(newCategory);
+        
+        return new CategoryContractDto(
+            newCategory.CategoryCen, 
+            newCategory.Name, 
+            newCategory.Description, 
+            newCategory.IsActive
+        );
     }
 
     public async Task UpdateCategoryAsync(CategoryUpdateDto dto)
     {
-        var category = await _repository.GetByIdAsync(dto.Id, dto.CompanyId);
+        var category = await _repository.GetByCategoryCenAsync(dto.CategoryCen, dto.CompanyId);
 
         if (category == null)
         {
             throw new ArgumentException("Categoria no encontrada");
         }
         
-        category.Name = dto.Name;
-        category.Description = dto.Description;
+        category.Update(dto.Name, dto.Description);
         
         await _repository.UpdateAsync(category);
     }
