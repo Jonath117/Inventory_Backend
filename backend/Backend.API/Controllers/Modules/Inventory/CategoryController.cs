@@ -8,7 +8,7 @@ namespace Backend.API.Controllers.Modules.Inventory;
 [ApiController]
 [ApiExplorerSettings(GroupName = "inventory")]
 [Route("api/inventory/companies/{companyCen}/categories")]
-public class CategoryController: ControllerBase
+public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
     private readonly ICurrentCompanyProvider _companyProvider;
@@ -25,7 +25,6 @@ public class CategoryController: ControllerBase
         try
         {
             int companyId = _companyProvider.CompanyId;
-            
             var categories = await _categoryService.GetCategoriesAsync(companyId);
             return Ok(categories);
         }
@@ -37,42 +36,39 @@ public class CategoryController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDto dto)
+    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
     {
         try
         {
             int companyId = _companyProvider.CompanyId;
             
-            var finalDto = dto with {CompanyId = companyId};
+            var finalDto = new CategoryCreateDto(companyId, request.Name, request.Description);
             
-            await _categoryService.CreateCategoryAsync(finalDto);
+            var createdCategory = await _categoryService.CreateCategoryAsync(finalDto);
             
-            return Ok(new {message = "Categoria creada correctamente"});
-            
+            return StatusCode(201, createdCategory);
         }
         catch(Exception ex)
         {
             return BadRequest(new {error = ex.Message});
         }
     }
-
-    [HttpPatch]
-    public async Task<IActionResult> UpdateCategory([FromBody] CategoryUpdateDto dto)
+    
+    [HttpPut("{categoryCen}")]
+    public async Task<IActionResult> UpdateCategory(string categoryCen, [FromBody] CreateCategoryRequest request)
     {
         try
         {
             int companyId = _companyProvider.CompanyId;
-            
-            var finalDto = dto with {CompanyId = companyId};
+            var finalDto = new CategoryUpdateDto(categoryCen, companyId, request.Name, request.Description);
             
             await _categoryService.UpdateCategoryAsync(finalDto);
             
-            return Ok(new {message = "Categoria actualizada correctamente"});
-
+            return Ok(new { categoryCen = categoryCen, name = request.Name, description = request.Description, isActive = true });
         }
         catch (Exception e)
         {
-            return BadRequest(new{error = e.Message});
+            return BadRequest(new {error = e.Message});
         }
     }
 }

@@ -6,6 +6,8 @@ public class Purchase
 {
     public int Id { get; private set; }
     public int CompanyId { get; private set; }
+    public string OrderCen { get; private set; }
+    public string SupplierCen { get; private set; }
     public string Supplier { get; private set; }
     public DateTime Date { get; private set; }
     public StatusPurchase Status { get; private set; }
@@ -20,6 +22,9 @@ public class Purchase
         Supplier = supplier;
         Date = DateTime.UtcNow;
         Status = StatusPurchase.Pending;
+        
+        string randomSuffix = Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
+        OrderCen = $"ORD-{DateTime.UtcNow:yyyyMMdd}-{randomSuffix}";
     }
 
     public void AddItem(int productId, int quantity)
