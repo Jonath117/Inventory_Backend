@@ -14,4 +14,5 @@ public interface ICategoryRepository
     
     Task<Category?> GetByIdAsync(int id, int companyId);
     
+    Task<Category?> GetByCategoryCenAsync(string categoryCen, int companyId);
 }
