@@ -36,6 +36,8 @@ public class InventoryDbContext : DbContext
             entity.ToTable("categories");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.CategoryCen).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => new { e.CompanyId, e.CategoryCen }).IsUnique();
         });
         
         // Unidades
@@ -74,6 +76,9 @@ public class InventoryDbContext : DbContext
                 .WithMany(u => u.Products)
                 .HasForeignKey(p => p.UnitId)
                 .OnDelete(DeleteBehavior.Restrict); 
+            
+            entity.Property(e => e.ProductCen).IsRequired().HasMaxLength(50);
+            entity.HasIndex(p => new { p.CompanyId, p.ProductCen }).IsUnique();
         });
 
         // Stock único por almacen mas producto
