@@ -55,37 +55,27 @@ public class MovementService: IMovementService
 
             if (stockRecord == null)
             {
-                stockRecord = new InventoryStock
-                {
-                    CompanyId = companyId,
-                    ProductId = request.ProductId,
-                    WarehouseId = request.WarehouseId,
-                    CurrentStock = newStock,
-                    LastUpdated = DateTime.UtcNow
-                };
+                stockRecord = new InventoryStock(companyId, request.WarehouseId, request.ProductId, newStock);
                 await _repository.AddStockAsync(stockRecord);
             }
             else
             {
-                stockRecord.CurrentStock = newStock;
-                stockRecord.LastUpdated = DateTime.UtcNow;
-                
+                stockRecord.AdjustStock(newStock);
                 await _repository.UpdateStockAsync(stockRecord);
             }
 
-            var movement = new InventoryMovement
-            {
-                CompanyId = companyId,
-                ProductId = request.ProductId,
-                WarehouseId = request.WarehouseId,
-                MovementType = request.MovementType,
-                Quantity = request.MovementType == "IN" ? request.Quantity : -request.Quantity,
-                PreviousStock = previousStock,
-                NewStock = newStock,
-                Reason = request.Reason,
-                Reference = request.Reference,
-                CreatedAt = DateTime.UtcNow
-            };
+            var movement = new InventoryMovement(
+                companyId,
+                request.WarehouseId,
+                request.ProductId,
+                request.MovementType,
+                request.MovementType == "IN" ? request.Quantity : -request.Quantity,
+                previousStock,
+                newStock,
+                request.Reason,
+                request.Reference,
+                null
+            );
             await _repository.AddMovementAsync(movement);
             await _repository.SaveChangesAsync();
 
@@ -94,7 +84,7 @@ public class MovementService: IMovementService
             if (product != null)
             {
                 var totalGlobalStock = await _repository.GetTotalStockAsync(companyId, request.ProductId);
-                product.IsSoldOut = totalGlobalStock <= 0;
+                product.MarkSoldOut(totalGlobalStock <= 0);
                 
                 await _productRepository.UpdateAsync(product);
             }
