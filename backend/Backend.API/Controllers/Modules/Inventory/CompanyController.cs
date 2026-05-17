@@ -1,3 +1,4 @@
+using Backend.API.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.Interfaces.IServices;
 
@@ -6,6 +7,7 @@ namespace Backend.API.Controllers.Modules.Inventory;
 [ApiController]
 [ApiExplorerSettings(GroupName = "inventory")]
 [Route("api/inventory/companies")]
+[AllowAnonymousTenant]
 public class CompanyController : ControllerBase
 {
     private readonly ICompanyService _inventoryService;
