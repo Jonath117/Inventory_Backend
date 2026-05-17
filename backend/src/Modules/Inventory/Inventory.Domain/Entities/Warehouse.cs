@@ -4,12 +4,35 @@ namespace Inventory.Domain.Entities;
 
 public class Warehouse
 {
-    public int Id { get; set; }
-    public int CompanyId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string? Address { get; set; }
-    public bool IsActive { get; set; } = true;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int Id { get; private set; }
+    public int CompanyId { get; private set; }
+    public string Name { get; private set; } = null!;
+    public string? Address { get; private set; }
+    public bool IsActive { get; private set; }
+    public DateTime CreatedAt { get; private set; }
     
     public Company? Company { get; set; }
+
+    private Warehouse() { }
+
+    public Warehouse(int companyId, string name, string? address)
+    {
+        CompanyId = companyId;
+        SetName(name);
+        Address = address;
+        IsActive = true;
+        CreatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+    }
+
+    private void SetName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("El nombre del almacen es obligatorio");
+        Name = name.Trim();
+    }
 }
