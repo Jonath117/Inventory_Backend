@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
 using Shared.Application.Interfaces;
 
