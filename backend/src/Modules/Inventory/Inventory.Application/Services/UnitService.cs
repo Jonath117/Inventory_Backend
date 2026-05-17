@@ -23,11 +23,6 @@ public class UnitService : IUnitService
 
     public async Task<UnitLookUpDto> CreateUnitAsync(UnitCreateDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-        {
-            throw new ArgumentException("El nombre de la unidad es obligatorio");
-        }
-
         if (dto.CompanyId <= 0)
         {
             throw new ArgumentException("Id de compañia invalido");
@@ -39,12 +34,7 @@ public class UnitService : IUnitService
             throw new ArgumentException("Ya existe una unidad con ese nombre");
         }
 
-        var newUnit = new Unit
-        {
-            CompanyId = dto.CompanyId,
-            Name = dto.Name.Trim(),
-            Description = dto.Description?.Trim()
-        };
+        var newUnit = new Unit(dto.CompanyId, dto.Name, dto.Description);
 
         var savedUnit = await _repository.AddAsync(newUnit);
         
