@@ -6,6 +6,7 @@ public class Unit
 {
     public int Id { get; private set; }
     public int CompanyId { get; private set; }
+    public string UnitCen { get; private set; } = null!;
     
     public string Name { get; private set; } = null!;
     public string? Description { get; private set; }
@@ -20,6 +21,8 @@ public class Unit
         CompanyId = companyId;
         SetName(name);
         Description = description?.Trim();
+        
+        UnitCen = $"UNI-{Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper()}";
     }
 
     private void SetName(string name)
