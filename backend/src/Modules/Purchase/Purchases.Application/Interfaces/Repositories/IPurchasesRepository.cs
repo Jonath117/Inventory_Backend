@@ -25,4 +25,8 @@ public interface IPurchasesRepository
         CancellationToken cancellationToken);
 
     Task UpdateAsync(Purchase purchase);
+    
+    Task<IEnumerable<Supplier>> GetSuppliersAsync(
+        int companyId, 
+        CancellationToken cancellationToken);
 }  
