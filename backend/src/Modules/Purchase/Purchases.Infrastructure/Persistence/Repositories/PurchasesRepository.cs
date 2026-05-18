@@ -46,4 +46,12 @@ public class PurchasesRepository : IPurchasesRepository
 
         return (totalCount, items);
     }
+
+    public async Task<Purchase?> GetByOrderCenAsync(int companyId, string orderCen, CancellationToken cancellationToken)
+    {
+        return await _context.Purchases
+            .AsNoTracking()
+            .Include(p => p.Items) 
+            .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.OrderCen == orderCen, cancellationToken);
+    }
 }
