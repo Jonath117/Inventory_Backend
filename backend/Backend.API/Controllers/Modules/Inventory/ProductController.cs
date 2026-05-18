@@ -8,7 +8,7 @@ namespace Backend.API.Controllers.Modules.Inventory;
 [ApiController]
 [ApiExplorerSettings(GroupName = "inventory")]
 [Route("api/inventory/companies/{companyCen}/products")]
-public class ProductController: ControllerBase
+public class ProductController : ControllerBase
 {
     private readonly IProductService _service;
     private readonly ICurrentCompanyProvider _currentCompanyProvider;
@@ -37,18 +37,15 @@ public class ProductController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto dto)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductContractRequest request)
     {
         try
         {
             int companyId = _currentCompanyProvider.CompanyId;
 
-            var finalDto = dto with { CompanyId = companyId };
-            
-            var createdProduct = await _service.CreateProductAsync(finalDto);
+            var createdProduct = await _service.CreateProductAsync(companyId, request);
             
             return Created("", createdProduct);
-            
         } 
         catch (InvalidOperationException ex) 
         {
@@ -65,15 +62,14 @@ public class ProductController: ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> EditProduct(int id, [FromBody] ProductUpdateDto dto)
+    [HttpPut("{productCen}")]
+    public async Task<IActionResult> EditProduct(string productCen, [FromBody] UpdateProductContractRequest request)
     {
         try
         {
             int companyId = _currentCompanyProvider.CompanyId;
 
-            var finalDto = dto with { CompanyId = companyId };
-            var updatedProduct = await _service.EditProductAsync(id, finalDto);
+            var updatedProduct = await _service.EditProductAsync(companyId, productCen, request);
 
             return Ok(updatedProduct);
         }
@@ -85,51 +81,39 @@ public class ProductController: ControllerBase
         {
             return BadRequest(new { error = ex.Message });
         }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
         catch (Exception ex)
         {
+            Console.WriteLine($"Error al editar producto: {ex}");
             return StatusCode(500, new { error = "Ocurrió un error interno." });
         }
     }
 
-    [HttpPatch("{id}/deactivate")]
-    public async Task<IActionResult> DeactivateProduct(int id)
+    [HttpPatch("{productCen}/status")]
+    public async Task<IActionResult> UpdateProductStatus(string productCen, [FromBody] UpdateProductStatusContractRequest request)
     {
         try
         {
             int companyId = _currentCompanyProvider.CompanyId;
             
-            await _service.DesactiveProductAsync(companyId, id);
+            var updatedProduct = await _service.UpdateProductStatusAsync(companyId, productCen, request.Status);
 
-            return NoContent();
+            return Ok(updatedProduct); 
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { error = ex.Message });
         }
-        catch (Exception ex)
+        catch (ArgumentException ex) 
         {
-            return StatusCode(500, new { error = "Ocurrio un error interno." });
-        }
-    }
-    
-    [HttpPatch("{id}/activate")]
-    public async Task<IActionResult> ActivateProduct(int id)
-    {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            
-            await _service.ActivateProductAsync(companyId, id);
-            
-            return NoContent();
-            
-        } 
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
+            return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Error al cambiar estado del producto: {ex}");
             return StatusCode(500, new { error = "Ocurrio un error interno." });
         }
     }

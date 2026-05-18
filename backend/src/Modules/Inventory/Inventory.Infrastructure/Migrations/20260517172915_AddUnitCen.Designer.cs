@@ -3,6 +3,7 @@ using System;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517172915_AddUnitCen")]
+    partial class AddUnitCen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,23 +86,17 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("MovementCen")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("movement_cen");
-
                     b.Property<string>("MovementType")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("movement_type");
 
                     b.Property<decimal>("NewStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("new_stock");
 
                     b.Property<decimal>("PreviousStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("previous_stock");
 
                     b.Property<int>("ProductId")
@@ -107,7 +104,7 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnName("product_id");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("quantity");
 
                     b.Property<string>("Reason")
@@ -129,15 +126,14 @@ namespace Inventory.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_inventory_movements");
 
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_inventory_movements_company_id");
+
                     b.HasIndex("ProductId")
                         .HasDatabaseName("ix_inventory_movements_product_id");
 
                     b.HasIndex("WarehouseId")
                         .HasDatabaseName("ix_inventory_movements_warehouse_id");
-
-                    b.HasIndex("CompanyId", "MovementCen")
-                        .IsUnique()
-                        .HasDatabaseName("ix_inventory_movements_company_id_movement_cen");
 
                     b.ToTable("inventory_movements", "inventory");
                 });
@@ -156,7 +152,7 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnName("company_id");
 
                     b.Property<decimal>("CurrentStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("current_stock");
 
                     b.Property<DateTime>("LastUpdated")
@@ -187,97 +183,6 @@ namespace Inventory.Infrastructure.Migrations
                     b.ToTable("inventory_stock", "inventory");
                 });
 
-            modelBuilder.Entity("Inventory.Domain.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer")
-                        .HasColumnName("category_id");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("integer")
-                        .HasColumnName("company_id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
-
-                    b.Property<bool>("IsSoldOut")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_sold_out");
-
-                    b.Property<decimal>("MinStockAlert")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("min_stock_alert");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("price");
-
-                    b.Property<string>("ProductCen")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("product_cen");
-
-                    b.Property<decimal>("SalePrice")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("sale_price");
-
-                    b.Property<string>("Sku")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("sku");
-
-                    b.Property<string>("StationCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("station_code");
-
-                    b.Property<int>("UnitId")
-                        .HasColumnType("integer")
-                        .HasColumnName("unit_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_products");
-
-                    b.HasIndex("CategoryId")
-                        .HasDatabaseName("ix_products_category_id");
-
-                    b.HasIndex("UnitId")
-                        .HasDatabaseName("ix_products_unit_id");
-
-                    b.HasIndex("CompanyId", "ProductCen")
-                        .IsUnique()
-                        .HasDatabaseName("ix_products_company_id_product_cen");
-
-                    b.HasIndex("CompanyId", "Sku")
-                        .IsUnique()
-                        .HasDatabaseName("ix_products_company_id_sku");
-
-                    b.ToTable("products", "inventory");
-                });
-
             modelBuilder.Entity("Inventory.Domain.Entities.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -287,10 +192,6 @@ namespace Inventory.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Abbreviation")
-                        .HasColumnType("text")
-                        .HasColumnName("abbreviation");
-
                     b.Property<int>("CompanyId")
                         .HasColumnType("integer")
                         .HasColumnName("company_id");
@@ -298,10 +199,6 @@ namespace Inventory.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text")
                         .HasColumnName("description");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -359,20 +256,99 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("WarehouseCen")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("warehouse_cen");
-
                     b.HasKey("Id")
                         .HasName("pk_warehouses");
 
-                    b.HasIndex("CompanyId", "WarehouseCen")
-                        .IsUnique()
-                        .HasDatabaseName("ix_warehouses_company_id_warehouse_cen");
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_warehouses_company_id");
 
                     b.ToTable("warehouses", "inventory");
+                });
+
+            modelBuilder.Entity("Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("company_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsSoldOut")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_sold_out");
+
+                    b.Property<int>("MinStockAlert")
+                        .HasColumnType("integer")
+                        .HasColumnName("min_stock_alert");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("price");
+
+                    b.Property<string>("ProductCen")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("product_cen");
+
+                    b.Property<decimal>("SalePrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("sale_price");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("sku");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("integer")
+                        .HasColumnName("unit_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_products");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_products_category_id");
+
+                    b.HasIndex("UnitId")
+                        .HasDatabaseName("ix_products_unit_id");
+
+                    b.HasIndex("CompanyId", "ProductCen")
+                        .IsUnique()
+                        .HasDatabaseName("ix_products_company_id_product_cen");
+
+                    b.HasIndex("CompanyId", "Sku")
+                        .IsUnique()
+                        .HasDatabaseName("ix_products_company_id_sku");
+
+                    b.ToTable("products", "inventory");
                 });
 
             modelBuilder.Entity("Shared.Domain.Company", b =>
@@ -433,7 +409,7 @@ namespace Inventory.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_inventory_movements_companies_company_id");
 
-                    b.HasOne("Inventory.Domain.Entities.Product", "Product")
+                    b.HasOne("Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -463,7 +439,7 @@ namespace Inventory.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_inventory_stock_companies_company_id");
 
-                    b.HasOne("Inventory.Domain.Entities.Product", "Product")
+                    b.HasOne("Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -484,7 +460,31 @@ namespace Inventory.Infrastructure.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Inventory.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Inventory.Domain.Entities.Unit", b =>
+                {
+                    b.HasOne("Shared.Domain.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_units_companies_company_id");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Inventory.Domain.Entities.Warehouse", b =>
+                {
+                    b.HasOne("Shared.Domain.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_warehouses_companies_company_id");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Product", b =>
                 {
                     b.HasOne("Inventory.Domain.Entities.Category", "Category")
                         .WithMany("Products")
@@ -512,30 +512,6 @@ namespace Inventory.Infrastructure.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Entities.Unit", b =>
-                {
-                    b.HasOne("Shared.Domain.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_units_companies_company_id");
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Inventory.Domain.Entities.Warehouse", b =>
-                {
-                    b.HasOne("Shared.Domain.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_warehouses_companies_company_id");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Inventory.Domain.Entities.Category", b =>

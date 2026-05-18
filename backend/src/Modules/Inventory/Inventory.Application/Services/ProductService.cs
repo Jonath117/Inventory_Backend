@@ -7,90 +7,164 @@ namespace Inventory.Application.Services;
 
 public class ProductService : IProductService
 {
-    private readonly IProductRepository _repository;
-    
-    public ProductService(IProductRepository repository)
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IUnitRepository _unitRepository;
+
+    public ProductService(
+        IProductRepository productRepository, 
+        ICategoryRepository categoryRepository,
+        IUnitRepository unitRepository)
     {
-        _repository = repository;
+        _productRepository = productRepository;
+        _categoryRepository = categoryRepository;
+        _unitRepository = unitRepository;
     }
 
-
-    public async Task<IEnumerable<ProductDto>> GetProductsAsync(int companyId)
+    public async Task<IEnumerable<ProductContractDto>> GetProductsAsync(int companyId)
     {
-        var products =  await _repository.GetProductsAsync(companyId);
+        var products = await _productRepository.GetProductsAsync(companyId);
 
         if (products == null || !products.Any())
         {
-            return new List<ProductDto>();
+            return new List<ProductContractDto>();
         }
-        
-        return products.Select(p => new ProductDto(
-            p.Id,
+
+        return products.Select(p => new ProductContractDto(
             p.ProductCen,
             p.Sku,
             p.Name,
             p.Description,
-            p.Price,
-            p.SalePrice,
-            p.MinStockAlert,
-            p.IsActive,
-            p.IsSoldOut,
-            p.CategoryId,
+            p.Category?.CategoryCen ?? string.Empty,
             p.Category?.Name ?? "Sin Categoría",
-            p.UnitId,
-            p.Unit?.Name ?? "Sin Unidad"
-            )).ToList();
-    }
-    public async Task<ProductLookUpDto> CreateProductAsync(ProductCreateDto dto)
-    {
-        bool skuExists = await _repository.ExistsBySkuAsync(dto.CompanyId, dto.Sku);
-        if (skuExists)
-            throw new ArgumentException($"Ya existe un producto con el codigo SKU: {dto.Sku}");
-        
-        var newProduct = new Product(dto.CompanyId, dto.Sku, dto.Name, dto.CategoryId, dto.UnitId,
-            dto.Price, dto.SalePrice, dto.MinStockAlert, dto.Description);
-    
-        var savedProduct = await _repository.AddAsync(newProduct);
-        return new ProductLookUpDto(savedProduct.ProductCen, savedProduct.Sku, savedProduct.Name);
+            p.Unit?.UnitCen ?? string.Empty,
+            p.Unit?.Name ?? "Sin Unidad",
+            p.SalePrice,
+            p.Price,
+            p.MinStockAlert,
+            p.IsActive ? "ACTIVE" : "INACTIVE",
+            p.StationCode
+        )).ToList();
     }
 
-    public async Task<ProductLookUpDto> EditProductAsync(int productId, ProductUpdateDto dto)
+    public async Task<ProductContractDto> CreateProductAsync(int companyId, CreateProductContractRequest request)
     {
-        var product = await _repository.GetByIdAsync(dto.CompanyId, productId);
-        if (product == null)
-            throw new KeyNotFoundException("El producto no existe");
+        bool skuExists = await _productRepository.ExistsBySkuAsync(companyId, request.Sku);
+        if (skuExists) throw new ArgumentException($"Ya existe un producto con el codigo SKU: {request.Sku}");
         
-        bool skuExists = await _repository.ExistsBySkuAsync(dto.CompanyId, dto.Sku, productId);
-        if (skuExists)
-            throw new InvalidOperationException($"El codigo SKU {dto.Sku} ya esta en uso por otro producto");
-        
-        product.Update(dto.Sku, dto.Name, dto.Description, dto.Price, dto.SalePrice,
-            dto.MinStockAlert, dto.CategoryId, dto.UnitId, dto.IsActive);
-        
-        await _repository.UpdateAsync(product);
+        var categoryInfo = await _categoryRepository.GetInfoByCenAsync(companyId, request.CategoryCen);
+        if (categoryInfo.Id == 0) throw new ArgumentException("Categoría no válida");
 
-        return new ProductLookUpDto(product.ProductCen, product.Sku, product.Name);
+        var unitInfo = await _unitRepository.GetInfoByCenAsync(companyId, request.UnitCen);
+        if (unitInfo.Id == 0) throw new ArgumentException("Unidad no válida");
+
+
+        var newProduct = new Product(
+            companyId: companyId,
+            sku: request.Sku,
+            name: request.Name,
+            categoryId: categoryInfo.Id,
+            unitId: unitInfo.Id,
+            price: request.CostPrice ?? 0,
+            salePrice: request.SalePrice,
+            minStockAlert: request.ReorderLevel,
+            description: request.Description,
+            stationCode: request.StationCode
+        );
+        
+        var savedProduct = await _productRepository.AddAsync(newProduct);
+        
+        return new ProductContractDto(
+            savedProduct.ProductCen,
+            savedProduct.Sku,
+            savedProduct.Name,
+            savedProduct.Description,
+            request.CategoryCen,     
+            categoryInfo.Name,       
+            request.UnitCen,         
+            unitInfo.Name,           
+            savedProduct.SalePrice,
+            savedProduct.Price,
+            savedProduct.MinStockAlert,
+            savedProduct.IsActive ? "ACTIVE" : "INACTIVE",
+            savedProduct.StationCode
+        );
     }
 
-    public async Task DesactiveProductAsync(int companyId, int productId)
+    public async Task<ProductContractDto> EditProductAsync(int companyId, string productCen, UpdateProductContractRequest request)
     {
-        var product = await _repository.GetByIdAsync(companyId, productId);
-        if (product == null)
-            throw new KeyNotFoundException("El producto no existe");
-
-        product.Deactivate();
+        var product = await _productRepository.GetByProductCenAsync(companyId, productCen);
+        if (product == null) throw new KeyNotFoundException("El producto no existe");
         
-        await _repository.UpdateAsync(product);
+        bool skuExists = await _productRepository.ExistsBySkuAsync(companyId, request.Sku, productCen);
+        if (skuExists) throw new InvalidOperationException($"El codigo SKU {request.Sku} ya esta en uso por otro producto");
+        
+        var categoryInfo = await _categoryRepository.GetInfoByCenAsync(companyId, request.CategoryCen);
+        if (categoryInfo.Id == 0) throw new ArgumentException("Categoría no válida");
+
+        var unitInfo = await _unitRepository.GetInfoByCenAsync(companyId, request.UnitCen);
+        if (unitInfo.Id == 0) throw new ArgumentException("Unidad no válida");
+        
+        product.Update(
+            sku: request.Sku,
+            name: request.Name,
+            description: request.Description,
+            price: request.CostPrice ?? 0,
+            salePrice: request.SalePrice,
+            minStockAlert: request.ReorderLevel,
+            categoryId: categoryInfo.Id,
+            unitId: unitInfo.Id,
+            isActive: product.IsActive,
+            stationCode: request.StationCode
+        );
+        
+        await _productRepository.UpdateAsync(product);
+        
+        return new ProductContractDto(
+            product.ProductCen,
+            product.Sku,
+            product.Name,
+            product.Description,
+            request.CategoryCen,
+            categoryInfo.Name,
+            request.UnitCen,
+            unitInfo.Name,
+            product.SalePrice,
+            product.Price,
+            product.MinStockAlert,
+            product.IsActive ? "ACTIVE" : "INACTIVE",
+            product.StationCode
+        );
     }
 
-    public async Task ActivateProductAsync(int companyId, int productId)
+    public async Task<ProductContractDto> UpdateProductStatusAsync(int companyId, string productCen, string status)
     {
-        var product = await _repository.GetByIdAsync(companyId, productId);
-        if (product == null)
-            throw new KeyNotFoundException("El producto no existe");
+        var product = await _productRepository.GetByProductCenAsync(companyId, productCen);
+        if (product == null) throw new KeyNotFoundException("El producto no existe");
 
-        product.Activate();
+        if (status.Equals("ACTIVE", StringComparison.OrdinalIgnoreCase))
+            product.Activate();
+        else if (status.Equals("INACTIVE", StringComparison.OrdinalIgnoreCase))
+            product.Deactivate();
+        else
+            throw new ArgumentException("Estado no soportado. Usa ACTIVE o INACTIVE.");
+
+        await _productRepository.UpdateAsync(product);
         
-        await _repository.UpdateAsync(product);
+        return new ProductContractDto(
+            product.ProductCen,
+            product.Sku,
+            product.Name,
+            product.Description,
+            product.Category?.CategoryCen ?? string.Empty,
+            product.Category?.Name ?? "Sin Categoría",
+            product.Unit?.UnitCen ?? string.Empty,
+            product.Unit?.Name ?? "Sin Unidad",
+            product.SalePrice,
+            product.Price,
+            product.MinStockAlert,
+            product.IsActive ? "ACTIVE" : "INACTIVE",
+            product.StationCode
+        );
     }
 }

@@ -8,7 +8,7 @@ namespace Backend.API.Controllers.Modules.Inventory;
 [ApiController]
 [ApiExplorerSettings(GroupName = "inventory")]
 [Route("api/inventory/companies/{companyCen}/units")]
-public class UnitController(IUnitService uniteService, ICurrentCompanyProvider companyProvider) : ControllerBase
+public class UnitController(IUnitService _unitService, ICurrentCompanyProvider _companyProvider) : ControllerBase
 {
     
     [HttpGet]
@@ -16,9 +16,9 @@ public class UnitController(IUnitService uniteService, ICurrentCompanyProvider c
     {
         try
         {
-            int companyId = companyProvider.CompanyId;
+            int companyId = _companyProvider.CompanyId;
 
-            var units = await uniteService.GetUnitsAsync(companyId);
+            var units = await _unitService.GetUnitsAsync(companyId);
             return Ok(units);
             
         } catch (Exception ex)
@@ -28,29 +28,19 @@ public class UnitController(IUnitService uniteService, ICurrentCompanyProvider c
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatUnit([FromBody] UnitCreateDto dto)
+    public async Task<IActionResult> CreateUnit([FromBody] CreateUnitContractRequest request)
     {
-        try
-        {
-            int companyId = companyProvider.CompanyId;
-
-            var finalDto = dto with { CompanyId = companyId };
-            var createdUnit = await uniteService.CreateUnitAsync(finalDto);
-
-            return Created("", createdUnit);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Ocurrio un error interno en el servidor." });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var createdUnit = await _unitService.CreateUnitAsync(companyId, request);
+        return StatusCode(201, createdUnit);
+    }
+    
+    [HttpPut("{unitCen}")]
+    public async Task<IActionResult> UpdateUnit(string unitCen, [FromBody] CreateUnitContractRequest request)
+    {
+        int companyId = _companyProvider.CompanyId;
+        var updatedUnit = await _unitService.UpdateUnitAsync(companyId, unitCen, request);
+        return Ok(updatedUnit);
     }
     
 

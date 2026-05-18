@@ -11,4 +11,7 @@ public interface IUnitRepository
     Task<Unit> AddAsync(Unit unit);
     
     Task<(int Id, string Name)> GetInfoByCenAsync(int companyId, string unitCen);
+    
+    Task<Unit?> GetByUnitCenAsync(int companyId, string unitCen);
+    Task UpdateAsync(Unit unit);
 }

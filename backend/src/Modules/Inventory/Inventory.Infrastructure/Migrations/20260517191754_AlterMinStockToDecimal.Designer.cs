@@ -3,6 +3,7 @@ using System;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517191754_AlterMinStockToDecimal")]
+    partial class AlterMinStockToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,23 +86,17 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("MovementCen")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("movement_cen");
-
                     b.Property<string>("MovementType")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("movement_type");
 
                     b.Property<decimal>("NewStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("new_stock");
 
                     b.Property<decimal>("PreviousStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("previous_stock");
 
                     b.Property<int>("ProductId")
@@ -107,7 +104,7 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnName("product_id");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("quantity");
 
                     b.Property<string>("Reason")
@@ -129,15 +126,14 @@ namespace Inventory.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_inventory_movements");
 
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_inventory_movements_company_id");
+
                     b.HasIndex("ProductId")
                         .HasDatabaseName("ix_inventory_movements_product_id");
 
                     b.HasIndex("WarehouseId")
                         .HasDatabaseName("ix_inventory_movements_warehouse_id");
-
-                    b.HasIndex("CompanyId", "MovementCen")
-                        .IsUnique()
-                        .HasDatabaseName("ix_inventory_movements_company_id_movement_cen");
 
                     b.ToTable("inventory_movements", "inventory");
                 });
@@ -156,7 +152,7 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnName("company_id");
 
                     b.Property<decimal>("CurrentStock")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric")
                         .HasColumnName("current_stock");
 
                     b.Property<DateTime>("LastUpdated")
@@ -359,18 +355,11 @@ namespace Inventory.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("WarehouseCen")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("warehouse_cen");
-
                     b.HasKey("Id")
                         .HasName("pk_warehouses");
 
-                    b.HasIndex("CompanyId", "WarehouseCen")
-                        .IsUnique()
-                        .HasDatabaseName("ix_warehouses_company_id_warehouse_cen");
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_warehouses_company_id");
 
                     b.ToTable("warehouses", "inventory");
                 });

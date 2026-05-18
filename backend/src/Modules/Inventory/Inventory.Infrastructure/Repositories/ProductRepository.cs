@@ -15,7 +15,7 @@ public class ProductRepository : IProductRepository
     }
 
 
-    public async Task<List<Product>> GetProductsAsync(int companyId)
+    public async Task<IEnumerable<Product>> GetProductsAsync(int companyId)
     {
         return await _context.Products
             .Include(p => p.Category)
@@ -23,14 +23,21 @@ public class ProductRepository : IProductRepository
             .Where(p => p.CompanyId == companyId)
             .ToListAsync();
     }
-
-    public async Task<bool> ExistsBySkuAsync(int companyId, string sku, int? excludeProductId = null)
+    
+    public async Task<Product?> GetByProductCenAsync(int companyId, string productCen)
     {
-        var query = _context.Products.Where(p => companyId == p.CompanyId && sku.ToLower() == p.Sku.ToLower());
+        return await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Unit)
+            .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.ProductCen == productCen);
+    }
+    public async Task<bool> ExistsBySkuAsync(int companyId, string sku, string? excludeProductCen = null)
+    {
+        var query = _context.Products.Where(p => p.CompanyId == companyId && p.Sku == sku);
 
-        if (excludeProductId.HasValue)
+        if (!string.IsNullOrEmpty(excludeProductCen))
         {
-            query = query.Where(p => p.Id != excludeProductId.Value);
+            query = query.Where(p => p.ProductCen != excludeProductCen);
         }
 
         return await query.AnyAsync();
@@ -43,15 +50,20 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
+    public async Task UpdateAsync(Product product)
+    {
+        _context.Products.Update(product);
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task<Product?> GetByIdAsync(int companyId, int productId)
     {
         return await _context.Products
             .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.Id == productId);
     }
 
-    public async Task UpdateAsync(Product product)
+    public async Task<(int Id, string Name, string UnitName)> GetProductInfoByCenAsync(int companyId, string productCen)
     {
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync();
+        throw new NotImplementedException();
     }
 }

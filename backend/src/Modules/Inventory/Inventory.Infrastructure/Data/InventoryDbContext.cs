@@ -46,11 +46,20 @@ public class InventoryDbContext : DbContext
             entity.ToTable("units");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UnitCen).IsRequired().HasMaxLength(50);
             
-            // Regla: No se pueden repetir nombres de unidades en la misma empresa
+            // Reglas de negocio
             entity.HasIndex(e => new { e.CompanyId, e.Name }).IsUnique();
+            entity.HasIndex(e => new { e.CompanyId, e.UnitCen }).IsUnique();
         });
         
+        // Almacenes (Bodegas)
+        modelBuilder.Entity<Warehouse>(entity => 
+        {
+            entity.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => new { e.CompanyId, e.WarehouseCen }).IsUnique();
+        });
+
         // Productos
         modelBuilder.Entity<Product>(entity =>
         {
@@ -58,13 +67,18 @@ public class InventoryDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
             
-            // Regla: Precio decimal preciso
+            // Precisión de Decimales
             entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
-            
             entity.Property(e => e.SalePrice).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.MinStockAlert).HasColumnType("decimal(18,2)");
+
+            // Configuración CEN
+            entity.Property(e => e.ProductCen).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.StationCode).HasMaxLength(50);
 
             // Índices Únicos
             entity.HasIndex(p => new { p.CompanyId, p.Sku }).IsUnique();
+            entity.HasIndex(p => new { p.CompanyId, p.ProductCen }).IsUnique();
 
             // Relaciones
             entity.HasOne(p => p.Category)
@@ -76,21 +90,31 @@ public class InventoryDbContext : DbContext
                 .WithMany(u => u.Products)
                 .HasForeignKey(p => p.UnitId)
                 .OnDelete(DeleteBehavior.Restrict); 
-            
-            entity.Property(e => e.ProductCen).IsRequired().HasMaxLength(50);
-            entity.HasIndex(p => new { p.CompanyId, p.ProductCen }).IsUnique();
         });
 
         // Stock único por almacen mas producto
-        modelBuilder.Entity<InventoryStock>()
-            .HasIndex(s => new { s.WarehouseId, s.ProductId })
-            .IsUnique();
+        modelBuilder.Entity<InventoryStock>(entity => 
+        {
+            entity.HasIndex(s => new { s.WarehouseId, s.ProductId }).IsUnique();
+            entity.Property(e => e.CurrentStock).HasColumnType("decimal(18,2)");
+        });
         
-        // Restricción de borrado para movimientos
-        modelBuilder.Entity<InventoryMovement>()
-            .HasOne(m => m.Product)
-            .WithMany()
-            .HasForeignKey(m => m.ProductId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Movimientos de inventario
+        modelBuilder.Entity<InventoryMovement>(entity =>
+        {
+            entity.Property(e => e.MovementCen).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => new { e.CompanyId, e.MovementCen }).IsUnique();
+            
+            // Precisión de Decimales
+            entity.Property(e => e.Quantity).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.PreviousStock).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.NewStock).HasColumnType("decimal(18,2)");
+
+            // Restricción de borrado para movimientos
+            entity.HasOne(m => m.Product)
+                .WithMany()
+                .HasForeignKey(m => m.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }

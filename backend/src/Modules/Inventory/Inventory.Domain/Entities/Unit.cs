@@ -11,16 +11,20 @@ public class Unit
     public string Name { get; private set; } = null!;
     public string? Description { get; private set; }
     
+    public string? Abbreviation { get; private set; } 
+    public bool IsActive { get; private set; }
+    
     public Company? Company { get; set; }
     public ICollection<Product> Products { get; set; } = new List<Product>();
 
     private Unit() { }
 
-    public Unit(int companyId, string name, string? description)
+    public Unit(int companyId, string name, string? abbreviation)
     {
         CompanyId = companyId;
         SetName(name);
-        Description = description?.Trim();
+        Abbreviation = abbreviation?.Trim();
+        
         
         UnitCen = $"UNI-{Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper()}";
     }
@@ -31,4 +35,13 @@ public class Unit
             throw new ArgumentException("El nombre de la unidad es obligatorio");
         Name = name.Trim();
     }
+    
+    public void Update(string name, string? abbreviation)
+    {
+        SetName(name);
+        Abbreviation = abbreviation?.Trim();
+    }
+    
+    public void Deactivate() => IsActive = false;
+    public void Activate() => IsActive = true;
 }

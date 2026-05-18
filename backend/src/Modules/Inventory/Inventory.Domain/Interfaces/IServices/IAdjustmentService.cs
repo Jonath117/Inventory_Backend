@@ -4,5 +4,5 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IAdjustmentService
 {
-    Task RegisterAdjustmentAsync(int companyId, AdjustmentDto adjustment);
+    Task<InventoryAdjustmentContractResponse> RegisterAdjustmentAsync(int companyId, InventoryAdjustmentContractRequest request);
 }

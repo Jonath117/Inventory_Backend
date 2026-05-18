@@ -3,99 +3,154 @@ using Inventory.Domain.Entities;
 using Inventory.Domain.Interfaces.IRepositories;
 using Inventory.Domain.Interfaces.IServices;
 
-using System.Globalization;
-
 namespace Inventory.Application.Services;
 
-public class MovementService: IMovementService
+public class MovementService : IMovementService
 {
     private readonly IMovementRepository _repository;
     private readonly IProductRepository _productRepository;
+    private readonly IWarehouseRepository _warehouseRepository;
 
-    public MovementService(IMovementRepository repository, IProductRepository productRepository)
+    public MovementService(IMovementRepository repository, IProductRepository productRepository, IWarehouseRepository warehouseRepository)
     {
         _repository = repository;
         _productRepository = productRepository;
+        _warehouseRepository = warehouseRepository;
     }
 
-    public async Task RegisterMovement(int companyId, MovementDto request)
+    public async Task<StockConsumeContractResponse> ConsumeStockAsync(int companyId, StockConsumeContractRequest request)
     {
-        if (request.Quantity <= 0)
-            throw new Exception("Cantidad debe ser mayor a cero");
+        var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
+        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
 
-        if (request.MovementType != "IN" && request.MovementType != "OUT")
-            throw new Exception("El tipo de movimiento debe ser 'IN' o 'OUT'.");
+        var requirements = new List<StockRequirementContractDto>();
+        var movementsToSave = new List<InventoryMovement>();
+        var generatedCens = new List<string>();
+        
+        foreach (var item in request.Items)
+        {
+            if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero");
 
+            var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
+            if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+
+            var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
+            decimal currentStock = stockRecord?.CurrentStock ?? 0;
+
+            if (currentStock < item.Quantity)
+            {
+                requirements.Add(new StockRequirementContractDto(
+                    item.ProductCen, productInfo.Name, request.WarehouseCen, item.Quantity, currentStock, 
+                    item.Quantity - currentStock, productInfo.UnitName, "Stock insuficiente"
+                ));
+            }
+        }
+        
+        if (requirements.Any())
+        {
+            return new StockConsumeContractResponse(false, null, null, new List<string>(), requirements);
+        }
+        
         await _repository.BeginTransactionAsync();
-
         try
         {
-            var stockRecord = await _repository.GetStockAsync(companyId, request.ProductId, request.WarehouseId);
+            string documentCen = $"DOC-{Guid.NewGuid():N}"; 
 
-            var previousStock = stockRecord?.CurrentStock ?? 0;
-            decimal newStock;
-
-            if (request.MovementType == "IN")
+            foreach (var item in request.Items)
             {
-                newStock = previousStock + request.Quantity;
-            }
-            else
-            {
-                newStock = previousStock - request.Quantity;
+                var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
+                var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
+                
+                decimal previousStock = stockRecord!.CurrentStock;
+                decimal newStock = previousStock - item.Quantity;
 
-                if (newStock < 0)
-                {
-                    string stockFormateado = previousStock.ToString("0.##", CultureInfo.InvariantCulture);
-                    string cantidadFormateada = request.Quantity.ToString("0.##", CultureInfo.InvariantCulture);
-
-                    throw new Exception(
-                        $"Stock insuficiente. Tienes {stockFormateado} y quieres sacar {cantidadFormateada}.");
-                }
-            }
-
-            if (stockRecord == null)
-            {
-                stockRecord = new InventoryStock(companyId, request.WarehouseId, request.ProductId, newStock);
-                await _repository.AddStockAsync(stockRecord);
-            }
-            else
-            {
                 stockRecord.AdjustStock(newStock);
                 await _repository.UpdateStockAsync(stockRecord);
-            }
 
-            var movement = new InventoryMovement(
-                companyId,
-                request.WarehouseId,
-                request.ProductId,
-                request.MovementType,
-                request.MovementType == "IN" ? request.Quantity : -request.Quantity,
-                previousStock,
-                newStock,
-                request.Reason,
-                request.Reference,
-                null
-            );
-            await _repository.AddMovementAsync(movement);
-            await _repository.SaveChangesAsync();
-
-            var product = await _productRepository.GetByIdAsync(companyId, request.ProductId);
-            
-            if (product != null)
-            {
-                var totalGlobalStock = await _repository.GetTotalStockAsync(companyId, request.ProductId);
-                product.MarkSoldOut(totalGlobalStock <= 0);
+                var movement = new InventoryMovement(
+                    companyId, warehouseInfo.Id, productInfo.Id, "OUT", -item.Quantity, previousStock, newStock, 
+                    request.Reason, request.ReferenceCen, documentCen
+                );
                 
+                await _repository.AddMovementAsync(movement);
+                generatedCens.Add(movement.MovementCen);
+                
+                var product = await _productRepository.GetByIdAsync(companyId, productInfo.Id);
+                var totalGlobalStock = await _repository.GetTotalStockAsync(companyId, productInfo.Id);
+                product!.MarkSoldOut(totalGlobalStock <= 0);
                 await _productRepository.UpdateAsync(product);
             }
-            
+
+            await _repository.SaveChangesAsync();
             await _repository.CommitTransactionAsync();
+
+            return new StockConsumeContractResponse(true, documentCen, request.Source, generatedCens, new List<StockRequirementContractDto>());
         }
         catch
         {
             await _repository.RollbackTransactionAsync();
             throw;
         }
-        
+    }
+
+    public async Task<string> IncreaseStockAsync(int companyId, StockIncreaseContractRequest request)
+    {
+        var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
+        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+
+        await _repository.BeginTransactionAsync();
+        try
+        {
+            string documentCen = $"DOC-{Guid.NewGuid():N}"; 
+
+            foreach (var item in request.Items)
+            {
+                if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero");
+
+                var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
+                if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+
+                var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
+                decimal previousStock = stockRecord?.CurrentStock ?? 0;
+                decimal newStock = previousStock + item.Quantity;
+
+                if (stockRecord == null)
+                {
+                    stockRecord = new InventoryStock(companyId, warehouseInfo.Id, productInfo.Id, newStock);
+                    await _repository.AddStockAsync(stockRecord);
+                }
+                else
+                {
+                    stockRecord.AdjustStock(newStock);
+                    await _repository.UpdateStockAsync(stockRecord);
+                }
+
+                var movement = new InventoryMovement(
+                    companyId, warehouseInfo.Id, productInfo.Id, "IN", item.Quantity, previousStock, newStock, 
+                    request.Reason, request.ReferenceCen, documentCen
+                );
+                
+                await _repository.AddMovementAsync(movement);
+
+                var product = await _productRepository.GetByIdAsync(companyId, productInfo.Id);
+                product!.MarkSoldOut(false); 
+                await _productRepository.UpdateAsync(product);
+            }
+
+            await _repository.SaveChangesAsync();
+            await _repository.CommitTransactionAsync();
+
+            return documentCen; 
+        }
+        catch
+        {
+            await _repository.RollbackTransactionAsync();
+            throw;
+        }
+    }
+
+    public Task RegisterMovement(int companyId, MovementDto request)
+    {
+        throw new NotImplementedException();
     }
 }

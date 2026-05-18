@@ -8,7 +8,9 @@ public class InventoryMovement
     public int CompanyId { get; private set; }
     public int WarehouseId { get; private set; }
     public int ProductId { get; private set; }
-    
+
+    public string MovementCen { get; private set; } = null!;
+
     public string MovementType { get; private set; } = null!;
     public decimal Quantity { get; private set; }
     public decimal PreviousStock { get; private set; }
@@ -35,6 +37,9 @@ public class InventoryMovement
         CompanyId = companyId;
         WarehouseId = warehouseId;
         ProductId = productId;
+        
+        MovementCen = $"MOV-{Guid.NewGuid():N}";
+        
         MovementType = movementType;
         Quantity = quantity;
         PreviousStock = previousStock;

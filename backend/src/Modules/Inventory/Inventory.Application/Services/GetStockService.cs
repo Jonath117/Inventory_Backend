@@ -18,7 +18,7 @@ public class GetStockService: IGetStockService
         
         return stocks.Select(s => new StockProductDto
         (
-            s.ProductId,
+            s.Product!.ProductCen,
             s.Product!.Sku,
             s.Product.Name,
             s.Warehouse!.Name,

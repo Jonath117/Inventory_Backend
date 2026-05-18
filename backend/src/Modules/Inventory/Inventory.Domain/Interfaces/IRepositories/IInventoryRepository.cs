@@ -11,4 +11,5 @@ public interface IInventoryRepository
     Task<decimal> GetTotalStockAsync(int companyId);
 
     Task<int> GetLowStockAlertsAsync(int companyId);
+    
 }

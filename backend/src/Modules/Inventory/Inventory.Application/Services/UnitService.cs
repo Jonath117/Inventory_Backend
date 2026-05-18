@@ -15,29 +15,47 @@ public class UnitService : IUnitService
     }
 
 
-    public async Task<IEnumerable<UnitLookUpDto>> GetUnitsAsync(int companyId)
+    public async Task<IEnumerable<UnitContractDto>> GetUnitsAsync(int companyId)
     {
-        var units = await _repository.GetUnitsAsync(companyId); 
-        return units.Select(u => new UnitLookUpDto(u.Id, u.Name, u.Description)).ToList();
+        var units = await _repository.GetUnitsAsync(companyId);
+        
+        return units.Select(u => new UnitContractDto(
+            u.UnitCen, 
+            u.Name, 
+            u.Abbreviation, 
+            u.IsActive
+        )).ToList();
     }
 
-    public async Task<UnitLookUpDto> CreateUnitAsync(UnitCreateDto dto)
+    public async Task<UnitContractDto> CreateUnitAsync(int companyId, CreateUnitContractRequest request)
     {
-        if (dto.CompanyId <= 0)
-        {
-            throw new ArgumentException("Id de compañia invalido");
-        }
-
-        bool exists = await _repository.ExistsByNameAsync(dto.CompanyId, dto.Name);
-        if (exists)
-        {
-            throw new ArgumentException("Ya existe una unidad con ese nombre");
-        }
-
-        var newUnit = new Unit(dto.CompanyId, dto.Name, dto.Description);
-
+        var newUnit = new Unit(companyId, request.Name, request.Abbreviation);
+        
         var savedUnit = await _repository.AddAsync(newUnit);
         
-        return new UnitLookUpDto(savedUnit.Id, savedUnit.Name, savedUnit.Description);
+        return new UnitContractDto(
+            savedUnit.UnitCen, 
+            savedUnit.Name, 
+            savedUnit.Abbreviation, 
+            savedUnit.IsActive
+        );
+    }
+    public async Task<UnitContractDto> UpdateUnitAsync(int companyId, string unitCen, CreateUnitContractRequest request)
+    {
+        var unit = await _repository.GetByUnitCenAsync(companyId, unitCen);
+
+        if (unit == null)
+            throw new KeyNotFoundException($"La unidad con código {unitCen} no existe.");
+
+        unit.Update(request.Name, request.Abbreviation);
+        
+        await _repository.UpdateAsync(unit);
+
+        return new UnitContractDto(
+            unit.UnitCen, 
+            unit.Name, 
+            unit.Abbreviation, 
+            unit.IsActive
+        );
     }
 }

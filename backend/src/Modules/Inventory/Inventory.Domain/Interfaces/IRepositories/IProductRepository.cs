@@ -4,13 +4,16 @@ namespace Inventory.Domain.Interfaces.IRepositories;
 
 public interface IProductRepository
 {
-    Task<List<Product>> GetProductsAsync(int companyId);
-
-    Task<bool> ExistsBySkuAsync(int companyId, string sku, int? excludeProductId = null);
-
+    Task<IEnumerable<Product>> GetProductsAsync(int companyId);
+    
+    Task<Product?> GetByProductCenAsync(int companyId, string productCen);
+    
+    Task<bool> ExistsBySkuAsync(int companyId, string sku, string? excludeProductCen = null);
+    
     Task<Product> AddAsync(Product product);
-
-    Task<Product?> GetByIdAsync(int companyId, int productId);
-
     Task UpdateAsync(Product product);
+    
+    Task<Product?> GetByIdAsync(int companyId, int productId);
+    
+    Task<(int Id, string Name, string UnitName)> GetProductInfoByCenAsync(int companyId, string productCen);
 }

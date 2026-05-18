@@ -4,7 +4,8 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IUnitService
 {
-    Task<IEnumerable<UnitLookUpDto>> GetUnitsAsync(int companyId);
+    Task<IEnumerable<UnitContractDto>> GetUnitsAsync(int companyId);
     
-    Task<UnitLookUpDto> CreateUnitAsync(UnitCreateDto dto);
+    Task<UnitContractDto> CreateUnitAsync(int companyId, CreateUnitContractRequest request);
+    Task<UnitContractDto> UpdateUnitAsync(int companyId, string unitCen, CreateUnitContractRequest request);
 }

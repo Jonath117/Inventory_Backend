@@ -19,4 +19,5 @@ public interface IAdjustmentRepository
     Task RollbackTransactionAsync();
 
     Task SaveChangesAsync();
+    
 }

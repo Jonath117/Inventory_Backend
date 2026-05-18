@@ -4,9 +4,8 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IProductService
 {
-    Task<IEnumerable<ProductDto>> GetProductsAsync(int companyId);
-    Task<ProductLookUpDto> CreateProductAsync(ProductCreateDto dto);
-    Task<ProductLookUpDto> EditProductAsync(int productId, ProductUpdateDto dto);
-    Task DesactiveProductAsync(int companyId, int productId);
-    Task ActivateProductAsync(int companyId, int productId);
+    Task<IEnumerable<ProductContractDto>> GetProductsAsync(int companyId);
+    Task<ProductContractDto> CreateProductAsync(int companyId, CreateProductContractRequest request);
+    Task<ProductContractDto> EditProductAsync(int companyId, string productCen, UpdateProductContractRequest request);
+    Task<ProductContractDto> UpdateProductStatusAsync(int companyId, string productCen, string status);
 }

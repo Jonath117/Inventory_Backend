@@ -6,6 +6,7 @@ public class Warehouse
 {
     public int Id { get; private set; }
     public int CompanyId { get; private set; }
+    public string WarehouseCen { get; private set; } = null!;
     public string Name { get; private set; } = null!;
     public string? Address { get; private set; }
     public bool IsActive { get; private set; }
@@ -22,6 +23,8 @@ public class Warehouse
         Address = address;
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
+        
+        WarehouseCen = $"WH-{Guid.NewGuid():N}";
     }
 
     public void Deactivate()
