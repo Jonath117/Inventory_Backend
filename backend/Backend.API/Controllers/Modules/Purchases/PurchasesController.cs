@@ -1,13 +1,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Purchases.Application.Features.Purchases.ConfirmPurchase;
 using Purchases.Application.Features.Purchases.CreatePurchase;
+using Purchases.Application.Features.Purchases.GetSuppliers;
+using Purchases.Application.Features.Purchases.GetByIdPurchase;
+using Purchases.Application.Features.Purchases.GetPurchase;
 using Shared.Application.Interfaces;
 
 namespace Backend.API.Controllers.Modules.Purchases;
 
 [ApiController]
 [ApiExplorerSettings(GroupName = "purchases")]
-[Route("api/purchases/companies/{companyCen}/orders")]
+[Route("api/purchases/companies/{companyCen}")]
 public class PurchasesController : ControllerBase
 {
     private readonly ISender _mediator;
@@ -19,36 +23,73 @@ public class PurchasesController : ControllerBase
         _companyProvider = companyProvider;
     }
 
-
-    [HttpPost]
-    public async Task<IActionResult> CreatePurchaseOrder(
-        [FromRoute] string companyCen, 
-        [FromBody] CreatePurchaseRequestDto request)
+    [HttpPost("orders")]
+    public async Task<IActionResult> CreatePurchaseOrder([FromRoute] string companyCen, [FromBody] CreatePurchaseRequestDto request)
     {
         try
         {
-            int companyId = _companyProvider.CompanyId;
-
             var command = new CreatePurchaseCommand(
-                companyId,
+                _companyProvider.CompanyId,
                 request.SupplierCen,
                 request.WarehouseCen,
                 request.Items.Select(i => new CreatePurchaseItemDto(i.ProductCen, i.Quantity)).ToList()
             );
 
             var result = await _mediator.Send(command);
-
             return StatusCode(201, result);
         }
-        catch (ArgumentException ex)
+        catch (ArgumentException ex) { return BadRequest(new { error = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { error = ex.Message }); }
+    }
+
+    [HttpGet("orders")]
+    public async Task<IActionResult> GetPurchaseOrders([FromQuery] int? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] bool sortDescending = true)
+    {
+        try
         {
-            return BadRequest(new { error = ex.Message });
+            var query = new GetPurchaseOrdersQuery(_companyProvider.CompanyId, status, page, pageSize, sortDescending);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
-        catch (Exception ex)
+        catch (Exception ex) { return StatusCode(500, new { error = ex.Message }); }
+    }
+
+    [HttpGet("orders/{orderCen}")]
+    public async Task<IActionResult> GetPurchaseOrderDetail([FromRoute] string orderCen)
+    {
+        try
         {
-            Console.WriteLine($"Error creando orden de compra: {ex}");
-            return StatusCode(500, new { error = "Ocurrio un error interno en el servidor." });
+            var query = new GetPurchaseOrderDetailQuery(_companyProvider.CompanyId, orderCen);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
+        catch (KeyNotFoundException ex) { return NotFound(new { error = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { error = ex.Message }); }
+    }
+
+    [HttpPost("orders/{orderCen}/confirm")]
+    public async Task<IActionResult> ConfirmPurchaseOrder([FromRoute] string companyCen, [FromRoute] string orderCen)
+    {
+        try
+        {
+            var command = new ConfirmPurchaseOrderCommand(_companyProvider.CompanyId, companyCen, orderCen);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException ex) { return NotFound(new { error = ex.Message }); }
+        catch (InvalidOperationException ex) { return BadRequest(new { error = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { error = ex.Message }); }
+    }
+
+    [HttpGet("suppliers")]
+    public async Task<IActionResult> GetSuppliers()
+    {
+        try
+        {
+            var query = new GetSuppliersQuery(_companyProvider.CompanyId);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        catch (Exception ex) { return StatusCode(500, new { error = ex.Message }); }
     }
 }
-
