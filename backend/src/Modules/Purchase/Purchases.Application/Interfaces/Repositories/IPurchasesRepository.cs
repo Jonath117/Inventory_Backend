@@ -18,4 +18,11 @@ public interface IPurchasesRepository
         int companyId, 
         string orderCen, 
         CancellationToken cancellationToken);
+    
+    Task<Purchase?> GetByOrderCenForUpdateAsync(
+        int companyId, 
+        string orderCen, 
+        CancellationToken cancellationToken);
+
+    Task UpdateAsync(Purchase purchase);
 }  
