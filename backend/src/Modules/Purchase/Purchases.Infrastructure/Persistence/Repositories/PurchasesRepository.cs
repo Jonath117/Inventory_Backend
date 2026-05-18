@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Purchases.Application.Interfaces.Repositories;
 using Purchases.Domain.Entities;
 
@@ -17,5 +18,32 @@ public class PurchasesRepository : IPurchasesRepository
         await _context.Purchases.AddAsync(purchase);
         await _context.SaveChangesAsync();
         return purchase;
+    }
+
+    public async Task<(int TotalCount, IEnumerable<Purchase> Items)> GetPagedOrdersAsync(int companyId, int? status, int page, int pageSize, bool sortDescending,
+        CancellationToken cancellationToken)
+    {
+        var query = _context.Purchases
+            .AsNoTracking()
+            .Include(p => p.Items) 
+            .Where(p => p.CompanyId == companyId);
+
+        if (status.HasValue)
+        {
+            query = query.Where(p => (int)p.Status == status.Value);
+        }
+
+        query = sortDescending 
+            ? query.OrderByDescending(p => p.CreatedAt) 
+            : query.OrderBy(p => p.CreatedAt);
+
+        int totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (totalCount, items);
     }
 }
