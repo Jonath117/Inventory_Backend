@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Purchases.Application.Interfaces.ExternalServices;
 using Purchases.Application.Interfaces.Repositories;
+using Purchases.Infrastructure.ExternalServices;
 using Purchases.Infrastructure.Persistence;
 using Purchases.Infrastructure.Persistence.Repositories;
 
@@ -17,6 +19,12 @@ public static class DependencyInjection
                     x => x.MigrationsHistoryTable("__ef_migrations_history", "public"))
                 .UseSnakeCaseNamingConvention()
             );
+        
+        services.AddHttpClient<IInventoryHttpClient, InventoryHttpClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://localhost:5153/"); 
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
 
         services.AddScoped<IPurchasesRepository, PurchasesRepository>();
 
