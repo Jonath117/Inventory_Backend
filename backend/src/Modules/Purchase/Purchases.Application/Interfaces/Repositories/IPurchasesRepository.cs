@@ -13,4 +13,9 @@ public interface IPurchasesRepository
         int pageSize, 
         bool sortDescending, 
         CancellationToken cancellationToken);
+    
+    Task<Purchase?> GetByOrderCenAsync(
+        int companyId, 
+        string orderCen, 
+        CancellationToken cancellationToken);
 }  
