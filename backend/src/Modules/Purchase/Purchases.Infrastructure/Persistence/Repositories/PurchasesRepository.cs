@@ -54,4 +54,20 @@ public class PurchasesRepository : IPurchasesRepository
             .Include(p => p.Items) 
             .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.OrderCen == orderCen, cancellationToken);
     }
+    
+    public async Task<Purchase?> GetByOrderCenForUpdateAsync(
+        int companyId, 
+        string orderCen, 
+        CancellationToken cancellationToken)
+    {
+        return await _context.Purchases
+            .Include(p => p.Items) 
+            .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.OrderCen == orderCen, cancellationToken);
+    }
+
+    public async Task UpdateAsync(Purchase purchase)
+    {
+        _context.Purchases.Update(purchase);
+        await _context.SaveChangesAsync();
+    }
 }
