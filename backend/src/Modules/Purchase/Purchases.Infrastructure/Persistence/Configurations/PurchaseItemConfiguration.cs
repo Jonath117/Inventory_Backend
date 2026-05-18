@@ -10,12 +10,10 @@ public class PurchaseItemConfiguration : IEntityTypeConfiguration<PurchaseItem>
 {
     public void Configure(EntityTypeBuilder<PurchaseItem> builder)
     {
-        builder.ToTable("purchase_items");
+        builder.ToTable("purchase_items", "purchases");
+        builder.HasKey(e => e.Id);
 
-        builder.HasKey(pi => pi.Id);
-
-        builder.Property(pi => pi.Quantity)
-            .IsRequired();
+        builder.Property(e => e.ProductCen).IsRequired().HasMaxLength(50);
         
         builder.HasOne(pi => pi.Purchase)
             .WithMany(p => p.Items)

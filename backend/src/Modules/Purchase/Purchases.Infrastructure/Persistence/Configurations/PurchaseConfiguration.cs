@@ -1,33 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Purchases.Domain.Entities;
 
 namespace Purchases.Infrastructure.Persistence.Configurations;
 
-public class PurchaseConfiguration : IEntityTypeConfiguration<Purchases.Domain.Entities.Purchase>
+public class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
 {
-    public void Configure(EntityTypeBuilder<Purchases.Domain.Entities.Purchase> builder)
+    public void Configure(EntityTypeBuilder<Purchase> builder)
     {
-        builder.ToTable("purchases");
+        builder.ToTable("purchases", "purchases");
+        builder.HasKey(e => e.Id);
 
-        builder.HasKey(p => p.Id);
-        
-        builder.Property(p => p.OrderCen)
-            .IsRequired()
-            .HasMaxLength(50);
+        builder.Property(e => e.OrderCen).IsRequired().HasMaxLength(50);
+        builder.Property(e => e.SupplierCen).IsRequired().HasMaxLength(50);
+        builder.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(50);
 
-        builder.Property(p => p.SupplierCen)
-            .IsRequired()
-            .HasMaxLength(50);
-        
-        builder.Property(p => p.Status)
-            .IsRequired()
-            .HasConversion<int>();
-        
-        builder.HasIndex(p => p.CompanyId);
-        
-        builder.HasIndex(p => new { p.CompanyId, p.OrderCen })
-            .IsUnique();
-        
-        builder.HasIndex(p => p.SupplierCen);
+        builder.HasIndex(e => new { e.CompanyId, e.OrderCen }).IsUnique();
+
+        var navigation = builder.Metadata.FindNavigation(nameof(Purchase.Items));
+        navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

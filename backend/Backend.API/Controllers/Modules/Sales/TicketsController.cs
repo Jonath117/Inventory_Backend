@@ -6,6 +6,7 @@ using Shared.Application.Interfaces;
 namespace Backend.API.Controllers.Modules.Sales;
 
 [ApiController]
+[ApiExplorerSettings(GroupName = "sales")]
 [Route("api/sales/[controller]")]
 public class TicketsController: ControllerBase
 {

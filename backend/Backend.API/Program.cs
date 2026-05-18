@@ -25,11 +25,11 @@ builder.Services.AddPurchaseInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    // El documento por defecto 
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend.API", Version = "v1" });
+    c.SwaggerDoc("sales", new OpenApiInfo { Title = "Modulo Ventas", Version = "v1" });
     
-    // El documento exclusivo para tu módulo de Inventario
     c.SwaggerDoc("inventory", new OpenApiInfo { Title = "Módulo de Inventario", Version = "v1" }); 
+    
+    c.SwaggerDoc("purchases", new OpenApiInfo { Title = "Módulo de Compra", Version = "v1" }); 
 });
 
 // Add services to the container.
@@ -52,16 +52,15 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<CompanyTenantFilter>();
 });
 
-
 var app = builder.Build();
 
 app.UseSwaggerUI(c =>
 {
-    // El endpoint visual por defecto
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend.API v1");
+    c.SwaggerEndpoint("/swagger/sales/swagger.json", "Modulo Ventas");
     
-    // NUEVO: Agregamos el endpoint visual para Inventario en el menú desplegable
-    c.SwaggerEndpoint("/swagger/inventory/swagger.json", "Módulo de Inventario");
+    c.SwaggerEndpoint("/swagger/inventory/swagger.json", "Modulo de Inventario");
+    
+    c.SwaggerEndpoint("/swagger/purchases/swagger.json", "Modulo de Compras");
 });
 
 // Configure the HTTP request pipeline.

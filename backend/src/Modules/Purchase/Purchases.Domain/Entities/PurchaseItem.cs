@@ -4,15 +4,17 @@ public class PurchaseItem
 {
     public int Id { get; private set; }
     public int PurchaseId { get; private set; }
-    public int ProductId { get; private set; }
+    
+    public string ProductCen { get; private set; } = null!; 
+    
     public int Quantity { get; private set; }
-    public Purchase Purchase { get; private set; }
+    public Purchase Purchase { get; private set; } = null!;
     
     private PurchaseItem() { }
 
-    internal PurchaseItem(int productId, int quantity)
+    internal PurchaseItem(string productCen, int quantity)
     {
-        ProductId = productId;
+        ProductCen = productCen;
         Quantity = quantity;
     }
 }
