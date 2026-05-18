@@ -70,4 +70,15 @@ public class PurchasesRepository : IPurchasesRepository
         _context.Purchases.Update(purchase);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<IEnumerable<Supplier>> GetSuppliersAsync(
+        int companyId, 
+        CancellationToken cancellationToken)
+    {
+        return await _context.Set<Supplier>()
+            .AsNoTracking()
+            .Where(s => s.CompanyId == companyId)
+            .OrderBy(s => s.Name)
+            .ToListAsync(cancellationToken);
+    }
 }
