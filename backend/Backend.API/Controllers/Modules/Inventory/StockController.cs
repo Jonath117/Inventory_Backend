@@ -91,4 +91,23 @@ public class StockController : ControllerBase
             return StatusCode(500, new { error = "Ocurrió un error interno en el servidor." });
         }
     }
+
+    [HttpPost("validate")]
+    public async Task<IActionResult> ValidateStock([FromBody] StockValidationContractRequest request)
+    {
+        try
+        {
+            int companyId = _companyProvider.CompanyId;
+            var response = await _movementService.ValidateStockAsync(companyId, request);
+            return Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
 }
