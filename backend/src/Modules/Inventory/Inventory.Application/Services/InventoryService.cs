@@ -29,9 +29,9 @@ public class InventoryService : IInventoryService
         
         return new InventoryDashboardContractDto(
             TotalProducts: totalProducts,
-            TotalStockValue: 0.0, // Placeholder
+            TotalStockValue: 0.0,
             LowStockAlerts: lowStockCount,
-            OutOfStockCount: 0 // Placeholder
+            OutOfStockCount: 0 
         );
     }
 }

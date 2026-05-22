@@ -25,7 +25,7 @@ public class GetProductKardexService :  IGetProductKardexService
             WarehouseName: m.Warehouse!.Name,
             Quantity: (double)m.Quantity,
             Balance: (double)m.NewStock,
-            Source: null, // Depending on where source is stored, maybe m.Source if exists
+            Source: null, 
             ReferenceCen: m.Reference
         ));
     }
