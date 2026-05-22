@@ -19,16 +19,14 @@ public class KardexController : ControllerBase
         _companyProvider = companyProvider;
     }
 
-    [HttpGet("{productId}")]
-    public async Task<IActionResult> GetKardex(int productId, [FromQuery] int? warehouseId)
+    [HttpGet]
+    public async Task<IActionResult> GetKardex(string productCen, [FromQuery] string? warehouseCen, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
     {
         try
         {
             int companyId = _companyProvider.CompanyId;
-            if (productId <= 0) return BadRequest("Id de producto nov valido");
-            //int productId = _productProvider.productId
 
-            var history = await _productKardexService.GetProductKardexAsync(companyId, productId, warehouseId);
+            var history = await _productKardexService.GetProductKardexAsync(companyId, productCen, warehouseCen, from, to);
 
             return Ok(history);
         }
