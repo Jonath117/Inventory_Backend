@@ -4,5 +4,5 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IGetProductKardexService
 {
-    Task<List<MovementHistoryDto>> GetProductKardexAsync(int companyId, int productId, int? warehouseId = null);
+    Task<IEnumerable<KardexMovementContractDto>> GetProductKardexAsync(int companyId, string productCen, string? warehouseCen, DateTime? from = null, DateTime? to = null);
 }

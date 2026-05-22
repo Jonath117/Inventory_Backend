@@ -4,5 +4,5 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IGetStockService
 {
-    Task<List<StockProductDto>> GetCurrentStockAsync(int companyId, int? warehouseId = null);
+    Task<IEnumerable<StockItemContractDto>> GetCurrentStockAsync(int companyId, string? productCen, string? warehouseCen);
 }

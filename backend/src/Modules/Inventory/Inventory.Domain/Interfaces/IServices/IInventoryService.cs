@@ -4,5 +4,5 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface IInventoryService
 {
-    Task<DashboardDto> GetDashboardMetricsAsync(int companyId);
+    Task<InventoryDashboardContractDto> GetDashboardMetricsAsync(int companyId);
 }

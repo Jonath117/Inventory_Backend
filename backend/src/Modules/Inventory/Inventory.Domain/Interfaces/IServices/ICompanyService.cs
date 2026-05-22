@@ -4,5 +4,6 @@ namespace Inventory.Domain.Interfaces.IServices;
 
 public interface ICompanyService
 {
-    public Task<List<CompanyDto>> GetCompanyAsync();
+    Task<IEnumerable<CompanyContractDto>> GetCompanyAsync();
+    Task<CompanyLookupContractDto> GetCompanyByCenAsync(string companyCen);
 }
