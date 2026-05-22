@@ -233,7 +233,6 @@ public class MovementService : IMovementService
     {
         var movements = await _repository.GetMovementsAsync(companyId, documentType, from, to);
         
-        // Group by document cen (UserReference)
         var grouped = movements.GroupBy(m => m.UserReference ?? m.MovementCen);
         
         return grouped.Select(g => {
@@ -244,7 +243,7 @@ public class MovementService : IMovementService
                 first.CreatedAt,
                 first.Warehouse?.WarehouseCen ?? string.Empty,
                 first.Warehouse?.Name ?? "N/A",
-                "N/A", // Source not directly stored in movement entity yet
+                "N/A", 
                 first.Reference ?? string.Empty,
                 first.Reason,
                 g.Select(m => new GeneratedMovementContractDto(
