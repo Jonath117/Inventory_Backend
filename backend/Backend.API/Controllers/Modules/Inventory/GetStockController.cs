@@ -21,13 +21,13 @@ public class GetStockController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetStock([FromQuery] int? warehouseId)
+    public async Task<IActionResult> GetStock([FromQuery] string? productCen, [FromQuery] string? warehouseCen)
     {
         try
         {
             int companyId = _companyProvider.CompanyId;
             
-            var stock = await _getStockService.GetCurrentStockAsync(companyId, warehouseId);
+            var stock = await _getStockService.GetCurrentStockAsync(companyId, productCen, warehouseCen);
             
             return Ok(stock);
         }
