@@ -4,5 +4,5 @@ namespace Inventory.Domain.Interfaces.IRepositories;
 
 public interface IGetProductKardexRepository
 {
-    Task<List<InventoryMovement>> GetMovementsAsync(int companyId, int productId, int? warehouseId);
+    Task<IEnumerable<InventoryMovement>> GetProductKardexAsync(int companyId, string productCen, string? warehouseCen, DateTime? from = null, DateTime? to = null);
 }

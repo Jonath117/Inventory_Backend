@@ -5,4 +5,5 @@ namespace Inventory.Domain.Interfaces.IRepositories;
 public interface ICompanyRepository
 {
     Task<List<Company>> GetActiveCompaniesAsync();
+    Task<Company?> GetByCenAsync(string companyCen);
 }

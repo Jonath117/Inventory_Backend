@@ -21,4 +21,5 @@ public interface IMovementRepository
     Task SaveChangesAsync();
     
     Task<decimal> GetTotalStockAsync(int companyId, int productId);
+    Task<IEnumerable<InventoryMovement>> GetMovementsAsync(int companyId, string? movementType, DateTime? from, DateTime? to);
 }
