@@ -70,4 +70,30 @@ public class MovementRepository : IMovementRepository
             .Where(s => s.CompanyId == companyId && s.ProductId == productId)
             .SumAsync(s => s.CurrentStock);
     }
+
+    public async Task<IEnumerable<InventoryMovement>> GetMovementsAsync(int companyId, string? movementType, DateTime? from, DateTime? to)
+    {
+        var query = _context.InventoryMovements
+            .Include(m => m.Warehouse)
+            .Include(m => m.Product)
+            .Where(m => m.CompanyId == companyId)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(movementType))
+        {
+            query = query.Where(m => m.MovementType == movementType);
+        }
+
+        if (from.HasValue)
+        {
+            query = query.Where(m => m.CreatedAt >= from.Value);
+        }
+
+        if (to.HasValue)
+        {
+            query = query.Where(m => m.CreatedAt <= to.Value);
+        }
+
+        return await query.ToListAsync();
+    }
 }

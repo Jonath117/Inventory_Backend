@@ -20,4 +20,9 @@ public class CompanyRepository : ICompanyRepository
             .Where(c => c.IsActive)
             .ToListAsync();
     }
+
+    public async Task<Company?> GetByCenAsync(string companyCen)
+    {
+        return await _context.Companies.FirstOrDefaultAsync(c => c.Cen == companyCen);
+    }
 }

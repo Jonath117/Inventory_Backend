@@ -64,6 +64,62 @@ public class ProductRepository : IProductRepository
 
     public async Task<(int Id, string Name, string UnitName)> GetProductInfoByCenAsync(int companyId, string productCen)
     {
-        throw new NotImplementedException();
+        var product = await _context.Products
+            .Include(p => p.Unit)
+            .AsNoTracking()
+            .Where(p => p.CompanyId == companyId && p.ProductCen == productCen)
+            .Select(p => new { p.Id, p.Name, UnitName = p.Unit!.Name })
+            .FirstOrDefaultAsync();
+
+        if (product == null) return (0, string.Empty, string.Empty);
+        return (product.Id, product.Name, product.UnitName);
+    }
+
+    public async Task<IEnumerable<Product>> LookupProductsAsync(int companyId, List<string>? productCens, List<string>? skus)
+    {
+        var query = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Unit)
+            .Where(p => p.CompanyId == companyId)
+            .AsQueryable();
+
+        if (productCens != null && productCens.Any())
+        {
+            query = query.Where(p => productCens.Contains(p.ProductCen));
+        }
+
+        if (skus != null && skus.Any())
+        {
+            query = query.Where(p => skus.Contains(p.Sku));
+        }
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsByQueryAsync(int companyId, string? search, string? categoryCen, string? status)
+    {
+        var query = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Unit)
+            .Where(p => p.CompanyId == companyId)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(p => p.Name.Contains(search) || p.Sku.Contains(search));
+        }
+
+        if (!string.IsNullOrEmpty(categoryCen))
+        {
+            query = query.Where(p => p.Category!.CategoryCen == categoryCen);
+        }
+
+        if (!string.IsNullOrEmpty(status))
+        {
+            bool isActive = status.Equals("ACTIVE", StringComparison.OrdinalIgnoreCase);
+            query = query.Where(p => p.IsActive == isActive);
+        }
+
+        return await query.ToListAsync();
     }
 }

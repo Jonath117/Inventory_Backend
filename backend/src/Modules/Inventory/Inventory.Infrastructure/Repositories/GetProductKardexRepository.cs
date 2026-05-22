@@ -14,17 +14,29 @@ public class GetProductKardexRepository : IGetProductKardexRepository
         _context = context;
     }
 
-    public async Task<List<InventoryMovement>> GetMovementsAsync(int companyId, int productId, int? warehouseId)
+    public async Task<IEnumerable<InventoryMovement>> GetProductKardexAsync(int companyId, string productCen, string? warehouseCen, DateTime? from = null, DateTime? to = null)
     {
         var query = _context.InventoryMovements
             .Include(m => m.Warehouse)
-            .Where(m => m.CompanyId == companyId && m.ProductId == productId)
+            .Include(m => m.Product)
+            .Where(m => m.CompanyId == companyId && m.Product!.ProductCen == productCen)
             .AsQueryable();
 
-        if (warehouseId.HasValue && warehouseId.Value > 0)
+        if (!string.IsNullOrEmpty(warehouseCen))
         {
-            query = query.Where(m => m.WarehouseId == warehouseId.Value);
+            query = query.Where(m => m.Warehouse!.WarehouseCen == warehouseCen);
         }
+
+        if (from.HasValue)
+        {
+            query = query.Where(m => m.CreatedAt >= from.Value);
+        }
+
+        if (to.HasValue)
+        {
+            query = query.Where(m => m.CreatedAt <= to.Value);
+        }
+
         return await query
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();

@@ -14,7 +14,7 @@ public class GetStockRepository: IGetStockRepository
         _context = context;
     }
 
-    public async Task<List<InventoryStock>> GetStockAsync(int companyId, int? warehouseId)
+    public async Task<IEnumerable<InventoryStock>> GetCurrentStockAsync(int companyId, string? productCen, string? warehouseCen)
     {
         var query = _context.InventoryStocks
             .Include(s => s.Product)
@@ -23,9 +23,14 @@ public class GetStockRepository: IGetStockRepository
             .Where(s => s.CompanyId == companyId)
             .AsQueryable();
 
-        if (warehouseId.HasValue && warehouseId.Value > 0)
+        if (!string.IsNullOrEmpty(warehouseCen))
         {
-            query = query.Where(s => s.WarehouseId == warehouseId);
+            query = query.Where(s => s.Warehouse != null && s.Warehouse.WarehouseCen == warehouseCen);
+        }
+
+        if (!string.IsNullOrEmpty(productCen))
+        {
+            query = query.Where(s => s.Product!.ProductCen == productCen);
         }
         
         return await query.ToListAsync();
