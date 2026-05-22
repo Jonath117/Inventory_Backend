@@ -23,15 +23,29 @@ public class CompanyController : ControllerBase
         try
         {
             var companies = await _inventoryService.GetCompanyAsync();
-            if (!companies.Any())
-            {
-                return NoContent();
-            }
             return Ok(companies);
         }  
         catch (Exception ex)
         {
             Console.WriteLine($"error: {ex.ToString()}");
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("{companyCen}")]
+    public async Task<IActionResult> GetCompanyByCen(string companyCen)
+    {
+        try
+        {
+            var company = await _inventoryService.GetCompanyByCenAsync(companyCen);
+            return Ok(company);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
             return StatusCode(500, new { error = ex.Message });
         }
     }
