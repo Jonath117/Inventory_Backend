@@ -12,3 +12,15 @@ public class MovementHistoryDto
     public string? Reference { get; set; }
     public string WareHouseName { get; set; } = string.Empty;
 }
+
+public record KardexMovementContractDto(
+    string MovementCen,
+    string MovementType,
+    DateTime Date,
+    string WarehouseCen,
+    string WarehouseName,
+    double Quantity,
+    double Balance,
+    string? Source,
+    string? ReferenceCen
+);

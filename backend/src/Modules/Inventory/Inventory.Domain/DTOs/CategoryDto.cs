@@ -14,4 +14,4 @@ public record CategoryContractDto(
     bool IsActive
 );
 
-public record CreateCategoryRequest(string Name, string? Description);
+public record CreateCategoryContractRequest(string Name, string? Description);

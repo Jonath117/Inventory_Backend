@@ -104,3 +104,20 @@ public record ProductContractDto(
     string Status, 
     string? StationCode
 );
+
+public record ProductLookupContractRequest(
+    List<string>? ProductCens,
+    List<string>? Skus
+);
+
+public record SellableProductContractDto(
+    string ProductCen,
+    string Sku,
+    string Name,
+    string? Description,
+    string CategoryName,
+    string UnitName,
+    double SalePrice,
+    double AvailableStock,
+    bool IsAvailable
+);
