@@ -117,4 +117,40 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = "Ocurrio un error interno." });
         }
     }
+
+    [HttpPost("lookup")]
+    public async Task<IActionResult> LookupProducts([FromBody] ProductLookupContractRequest request)
+    {
+        try
+        {
+            int companyId = _currentCompanyProvider.CompanyId;
+            var products = await _service.LookupProductsAsync(companyId, request);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("/api/inventory/companies/{companyCen}/sellable-products")]
+    public async Task<IActionResult> GetSellableProducts(
+        [FromQuery] string? search, 
+        [FromQuery] string? categoryCen, 
+        [FromQuery] string? warehouseCen, 
+        [FromQuery] bool onlyAvailable = true, 
+        [FromQuery] int page = 1, 
+        [FromQuery] int pageSize = 50)
+    {
+        try
+        {
+            int companyId = _currentCompanyProvider.CompanyId;
+            var products = await _service.GetSellableProductsAsync(companyId, search, categoryCen, warehouseCen, onlyAvailable, page, pageSize);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
 }
