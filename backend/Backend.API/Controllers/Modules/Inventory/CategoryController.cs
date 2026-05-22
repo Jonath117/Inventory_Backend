@@ -36,7 +36,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
+    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryContractRequest request)
     {
         try
         {
@@ -55,7 +55,7 @@ public class CategoryController : ControllerBase
     }
     
     [HttpPut("{categoryCen}")]
-    public async Task<IActionResult> UpdateCategory(string categoryCen, [FromBody] CreateCategoryRequest request)
+    public async Task<IActionResult> UpdateCategory(string categoryCen, [FromBody] CreateCategoryContractRequest request)
     {
         try
         {
