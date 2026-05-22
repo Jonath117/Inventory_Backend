@@ -14,20 +14,29 @@ public class CompanyService: ICompanyService
         _repository = repository;
     }
 
-    public async Task<List<CompanyDto>> GetCompanyAsync()
+    public async Task<IEnumerable<CompanyContractDto>> GetCompanyAsync()
     {
         var companies = await _repository.GetActiveCompaniesAsync();
 
-        if (companies == null || companies.Count == 0)
+        return companies.Select(c => new CompanyContractDto(
+            CompanyCen: c.Cen,
+            Name: c.Name,
+            IsActive: c.IsActive
+        ));
+    }
+
+    public async Task<CompanyLookupContractDto> GetCompanyByCenAsync(string companyCen)
+    {
+        var company = await _repository.GetByCenAsync(companyCen);
+        if (company == null)
         {
-            return new List<CompanyDto>();
+            throw new KeyNotFoundException($"Company with CEN {companyCen} not found.");
         }
 
-        return companies.Select(c => new CompanyDto
-        {
-            Id = c.Id,
-            CompanyCen = c.Cen,
-            Name = c.Name
-        }).ToList();
+        return new CompanyLookupContractDto(
+            CompanyId: company.Id,
+            CompanyCen: company.Cen,
+            Name: company.Name
+        );
     }
 }

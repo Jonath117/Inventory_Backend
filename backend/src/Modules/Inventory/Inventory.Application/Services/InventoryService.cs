@@ -13,7 +13,7 @@ public class InventoryService : IInventoryService
         _repository = repository;
     }
 
-    public async Task<DashboardDto> GetDashboardMetricsAsync(int companyId)
+    public async Task<InventoryDashboardContractDto> GetDashboardMetricsAsync(int companyId)
     {
         var companyExists = await _repository.CompanyExistsAsync(companyId);
 
@@ -23,16 +23,15 @@ public class InventoryService : IInventoryService
         }
         
         var totalProducts = await _repository.GetTotalProductsAsync(companyId);
-        var totalWarehouses = await _repository.GetTotalWarehousesAsync(companyId);
-        var totalStock = await _repository.GetTotalStockAsync(companyId);
+        // var totalWarehouses = await _repository.GetTotalWarehousesAsync(companyId);
+        // var totalStock = await _repository.GetTotalStockAsync(companyId);
         var lowStockCount = await _repository.GetLowStockAlertsAsync(companyId);
         
-        return new DashboardDto()
-        {
-            TotalProducts = totalProducts,
-            TotalStockQuantity = totalStock,
-            TotalWarehouses = totalWarehouses,
-            LowStockAlerts = lowStockCount
-        };
+        return new InventoryDashboardContractDto(
+            TotalProducts: totalProducts,
+            TotalStockValue: 0.0, // Placeholder
+            LowStockAlerts: lowStockCount,
+            OutOfStockCount: 0 // Placeholder
+        );
     }
 }

@@ -13,22 +13,20 @@ public class GetProductKardexService :  IGetProductKardexService
         _repository = repository;
     }
 
-    public async Task<List<MovementHistoryDto>> GetProductKardexAsync(int companyId, int productId, int? warehouseId = null)
+    public async Task<IEnumerable<KardexMovementContractDto>> GetProductKardexAsync(int companyId, string productCen, string? warehouseCen, DateTime? from = null, DateTime? to = null)
     {
-        var movements = await _repository
-            .GetMovementsAsync(companyId, productId, warehouseId);
+        var movements = await _repository.GetProductKardexAsync(companyId, productCen, warehouseCen, from, to);
         
-        return movements.Select(m => new MovementHistoryDto
-        {
-            Id = m.Id,
-            Date = m.CreatedAt,
-            MovementType = m.MovementType,
-            Quantity = m.Quantity,
-            PreviousStock = m.PreviousStock,
-            NewStock = m.NewStock,
-            Reason = m.Reason,
-            Reference = m.Reference,
-            WareHouseName = m.Warehouse!.Name
-        }).ToList();
+        return movements.Select(m => new KardexMovementContractDto(
+            MovementCen: m.MovementCen,
+            MovementType: m.MovementType,
+            Date: m.CreatedAt,
+            WarehouseCen: m.Warehouse!.WarehouseCen,
+            WarehouseName: m.Warehouse!.Name,
+            Quantity: (double)m.Quantity,
+            Balance: (double)m.NewStock,
+            Source: null, // Depending on where source is stored, maybe m.Source if exists
+            ReferenceCen: m.Reference
+        ));
     }
 }

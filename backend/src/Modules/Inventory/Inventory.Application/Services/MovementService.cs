@@ -149,6 +149,142 @@ public class MovementService : IMovementService
         }
     }
 
+    public async Task<InventoryDocumentContractDto> CreateDocumentAsync(int companyId, InventoryDocumentContractRequest request)
+    {
+        // For simplicity, we can use IncreaseStockAsync or ConsumeStockAsync logic here
+        // But the contract asks for a unified Document creation.
+        // For now, let's just implement it directly.
+        
+        var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
+        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+
+        await _repository.BeginTransactionAsync();
+        try
+        {
+            string documentCen = $"DOC-{Guid.NewGuid():N}";
+            var generatedMovements = new List<GeneratedMovementContractDto>();
+
+            foreach (var item in request.Items)
+            {
+                var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
+                if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+
+                var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
+                decimal previousStock = stockRecord?.CurrentStock ?? 0;
+                
+                decimal quantity = item.Quantity;
+                if (request.DocumentType == "OUT" || request.DocumentType == "SALE") // Simplified logic
+                {
+                    quantity = -item.Quantity;
+                }
+
+                decimal newStock = previousStock + quantity;
+
+                if (stockRecord == null)
+                {
+                    stockRecord = new InventoryStock(companyId, warehouseInfo.Id, productInfo.Id, newStock);
+                    await _repository.AddStockAsync(stockRecord);
+                }
+                else
+                {
+                    stockRecord.AdjustStock(newStock);
+                    await _repository.UpdateStockAsync(stockRecord);
+                }
+
+                var movement = new InventoryMovement(
+                    companyId, warehouseInfo.Id, productInfo.Id, request.DocumentType, quantity, previousStock, newStock, 
+                    request.Reason, request.ReferenceCen, documentCen
+                );
+                
+                await _repository.AddMovementAsync(movement);
+                
+                generatedMovements.Add(new GeneratedMovementContractDto(
+                    movement.MovementCen,
+                    item.ProductCen,
+                    request.WarehouseCen,
+                    item.Quantity,
+                    request.DocumentType
+                ));
+            }
+
+            await _repository.SaveChangesAsync();
+            await _repository.CommitTransactionAsync();
+
+            return new InventoryDocumentContractDto(
+                documentCen,
+                request.DocumentType,
+                DateTime.UtcNow,
+                request.WarehouseCen,
+                warehouseInfo.Name,
+                request.Source,
+                request.ReferenceCen,
+                request.Reason,
+                generatedMovements
+            );
+        }
+        catch
+        {
+            await _repository.RollbackTransactionAsync();
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<InventoryDocumentContractDto>> GetDocumentsAsync(int companyId, string? documentType, DateTime? from, DateTime? to)
+    {
+        var movements = await _repository.GetMovementsAsync(companyId, documentType, from, to);
+        
+        // Group by document cen (UserReference)
+        var grouped = movements.GroupBy(m => m.UserReference ?? m.MovementCen);
+        
+        return grouped.Select(g => {
+            var first = g.First();
+            return new InventoryDocumentContractDto(
+                g.Key,
+                first.MovementType,
+                first.CreatedAt,
+                first.Warehouse?.WarehouseCen ?? string.Empty,
+                first.Warehouse?.Name ?? "N/A",
+                "N/A", // Source not directly stored in movement entity yet
+                first.Reference ?? string.Empty,
+                first.Reason,
+                g.Select(m => new GeneratedMovementContractDto(
+                    m.MovementCen,
+                    m.Product?.ProductCen ?? string.Empty,
+                    m.Warehouse?.WarehouseCen ?? string.Empty,
+                    m.Quantity,
+                    m.MovementType
+                )).ToList()
+            );
+        });
+    }
+
+    public async Task<StockValidationContractResponse> ValidateStockAsync(int companyId, StockValidationContractRequest request)
+    {
+        var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
+        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+
+        var requirements = new List<StockRequirementContractDto>();
+        
+        foreach (var item in request.Items)
+        {
+            var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
+            if (productInfo.Id == 0) continue;
+
+            var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
+            decimal currentStock = stockRecord?.CurrentStock ?? 0;
+
+            if (currentStock < item.Quantity)
+            {
+                requirements.Add(new StockRequirementContractDto(
+                    item.ProductCen, productInfo.Name, request.WarehouseCen, item.Quantity, currentStock, 
+                    item.Quantity - currentStock, productInfo.UnitName, "Stock insuficiente"
+                ));
+            }
+        }
+
+        return new StockValidationContractResponse(!requirements.Any(), requirements);
+    }
+
     public Task RegisterMovement(int companyId, MovementDto request)
     {
         throw new NotImplementedException();

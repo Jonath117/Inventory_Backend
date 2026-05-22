@@ -12,21 +12,21 @@ public class GetStockService: IGetStockService
         _repository = repository;
     }
 
-    public async Task<List<StockProductDto>> GetCurrentStockAsync(int companyId, int? warehouseId = null)
+    public async Task<IEnumerable<StockItemContractDto>> GetCurrentStockAsync(int companyId, string? productCen, string? warehouseCen)
     {
-        var stocks = await _repository.GetStockAsync(companyId, warehouseId);
+        var stocks = await _repository.GetCurrentStockAsync(companyId, productCen, warehouseCen);
         
-        return stocks.Select(s => new StockProductDto
+        return stocks.Select(s => new StockItemContractDto
         (
             s.Product!.ProductCen,
             s.Product!.Sku,
             s.Product.Name,
+            s.Warehouse!.WarehouseCen,
             s.Warehouse!.Name,
-            s.CurrentStock,
+            (double)s.CurrentStock,
             s.Product.Unit?.Name ?? "Sin unidad",
-            s.Product.MinStockAlert,
             s.LastUpdated
-        )).ToList();
+        ));
     }
     
 }
