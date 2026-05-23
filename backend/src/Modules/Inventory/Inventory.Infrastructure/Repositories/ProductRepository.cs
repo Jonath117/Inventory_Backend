@@ -122,4 +122,10 @@ public class ProductRepository : IProductRepository
 
         return await query.ToListAsync();
     }
+    
+    public async Task<Product?> GetByCenAsync(int companyId, string productCen)
+    {
+        return await _context.Products
+            .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.ProductCen == productCen);
+    }
 }

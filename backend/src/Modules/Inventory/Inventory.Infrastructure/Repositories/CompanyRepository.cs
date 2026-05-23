@@ -23,6 +23,6 @@ public class CompanyRepository : ICompanyRepository
 
     public async Task<Company?> GetByCenAsync(string companyCen)
     {
-        return await _context.Companies.FirstOrDefaultAsync(c => c.Cen == companyCen);
+        return await _context.Companies.FirstOrDefaultAsync(c => c.CompanyCen == companyCen);
     }
 }

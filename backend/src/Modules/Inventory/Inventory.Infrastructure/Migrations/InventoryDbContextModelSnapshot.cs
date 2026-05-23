@@ -34,8 +34,8 @@ namespace Inventory.Infrastructure.Migrations
 
                     b.Property<string>("CategoryCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("category_cen");
 
                     b.Property<int>("CompanyId")
@@ -236,8 +236,8 @@ namespace Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ProductCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("product_cen");
 
                     b.Property<decimal>("SalePrice")
@@ -311,8 +311,8 @@ namespace Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UnitCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("unit_cen");
 
                     b.HasKey("Id")
@@ -361,8 +361,8 @@ namespace Inventory.Infrastructure.Migrations
 
                     b.Property<string>("WarehouseCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("warehouse_cen");
 
                     b.HasKey("Id")
@@ -384,10 +384,10 @@ namespace Inventory.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Cen")
+                    b.Property<string>("CompanyCen")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("cen");
+                        .HasColumnName("company_cen");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -409,7 +409,10 @@ namespace Inventory.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_companies");
 
-                    b.ToTable("companies", "core");
+                    b.ToTable("companies", "core", t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("Inventory.Domain.Entities.Category", b =>

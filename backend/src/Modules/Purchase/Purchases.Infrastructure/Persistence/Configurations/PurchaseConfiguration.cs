@@ -11,9 +11,9 @@ public class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
         builder.ToTable("purchases", "purchases");
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.OrderCen).IsRequired().HasMaxLength(50);
-        builder.Property(e => e.SupplierCen).IsRequired().HasMaxLength(50);
-        builder.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(50);
+        builder.Property(e => e.OrderCen).IsRequired().HasMaxLength(150);
+        builder.Property(e => e.SupplierCen).IsRequired().HasMaxLength(150);
+        builder.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(150);
 
         builder.HasIndex(e => new { e.CompanyId, e.OrderCen }).IsUnique();
 

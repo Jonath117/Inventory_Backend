@@ -10,4 +10,6 @@ public interface IProductService
     Task<ProductContractDto> UpdateProductStatusAsync(int companyId, string productCen, string status);
     Task<IEnumerable<ProductContractDto>> LookupProductsAsync(int companyId, ProductLookupContractRequest request);
     Task<IEnumerable<SellableProductContractDto>> GetSellableProductsAsync(int companyId, string? search, string? categoryCen, string? warehouseCen, bool onlyAvailable, int page, int pageSize);
+    
+    Task<ProductDetailsContractResponse?> GetProductDetailsByCenAsync(int companyId, string productCen);
 }

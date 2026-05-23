@@ -121,3 +121,10 @@ public record SellableProductContractDto(
     double AvailableStock,
     bool IsAvailable
 );
+
+public record ProductDetailsContractResponse(
+    string ProductCen,
+    string Name,
+    decimal SalePrice,
+    bool IsAvailable
+);

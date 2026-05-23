@@ -46,8 +46,8 @@ namespace Purchases.Infrastructure.Migrations
 
                     b.Property<string>("OrderCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("order_cen");
 
                     b.Property<int>("Status")
@@ -56,14 +56,14 @@ namespace Purchases.Infrastructure.Migrations
 
                     b.Property<string>("SupplierCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("supplier_cen");
 
                     b.Property<string>("WarehouseCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("warehouse_cen");
 
                     b.HasKey("Id")
@@ -129,8 +129,8 @@ namespace Purchases.Infrastructure.Migrations
 
                     b.Property<string>("SupplierCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("supplier_cen");
 
                     b.HasKey("Id")

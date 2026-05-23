@@ -19,7 +19,7 @@ public class CompanyService: ICompanyService
         var companies = await _repository.GetActiveCompaniesAsync();
 
         return companies.Select(c => new CompanyContractDto(
-            CompanyCen: c.Cen,
+            CompanyCen: c.CompanyCen,
             Name: c.Name,
             IsActive: c.IsActive
         ));
@@ -35,7 +35,7 @@ public class CompanyService: ICompanyService
 
         return new CompanyLookupContractDto(
             CompanyId: company.Id,
-            CompanyCen: company.Cen,
+            CompanyCen: company.CompanyCen,
             Name: company.Name
         );
     }

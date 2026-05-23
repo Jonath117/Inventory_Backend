@@ -1,4 +1,4 @@
-using Backend.API.Filters;
+//using Backend.API.Filters;
 using Inventory.Application;
 using Inventory.Infrastructure;
 using Microsoft.OpenApi;
@@ -49,7 +49,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers(options => 
 {
-    options.Filters.Add<CompanyTenantFilter>();
+    //options.Filters.Add<CompanyTenantFilter>();
 });
 
 var app = builder.Build();

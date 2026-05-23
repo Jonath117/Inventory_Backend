@@ -133,7 +133,7 @@ public class ProductController : ControllerBase
         }
     }
 
-    [HttpGet("/api/inventory/companies/{companyCen}/sellable-products")]
+    [HttpGet("~/api/inventory/companies/{companyCen}/sellable-products")]
     public async Task<IActionResult> GetSellableProducts(
         [FromQuery] string? search, 
         [FromQuery] string? categoryCen, 

@@ -12,6 +12,8 @@ public class ComandaItemConfiguration : IEntityTypeConfiguration<ComandaItem>
 
         builder.HasKey(ci => ci.Id);
         
+        builder.Property(ci => ci.TicketItemCen).HasMaxLength(150).IsRequired();
+        
         builder.Property(ci => ci.Station).IsRequired();
         builder.Property(ci => ci.Status).IsRequired();
     }

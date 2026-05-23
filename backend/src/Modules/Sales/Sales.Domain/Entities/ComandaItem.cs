@@ -6,17 +6,20 @@ public class ComandaItem
 {
     public int Id { get; private set; }
     public int TicketId { get; private set; }
-    public int TicketItemId { get; private set; }
+    // public int TicketItemId { get; private set; }
+    
+    public string TicketItemCen { get; private set; } = null!;
+    
     public KdsStation Station { get; private set; }
     public KdsItemStatus Status { get; private set; }
     public DateTime SentAt { get; private set; }
     
     private ComandaItem() { }
 
-    internal ComandaItem(int ticketId, int ticketItemId, KdsStation station)
+    internal ComandaItem(int ticketId, string ticketItemCen, KdsStation station)
     {
         TicketId = ticketId;
-        TicketItemId = ticketItemId;
+        TicketItemCen = ticketItemCen;
         Station = station;
         Status = KdsItemStatus.Pending;
         SentAt = DateTime.UtcNow;

@@ -32,11 +32,11 @@ namespace Shared.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Cen")
+                    b.Property<string>("CompanyCen")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("cen");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("company_cen");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -58,9 +58,9 @@ namespace Shared.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_companies");
 
-                    b.HasIndex("Cen")
+                    b.HasIndex("CompanyCen")
                         .IsUnique()
-                        .HasDatabaseName("ix_companies_cen");
+                        .HasDatabaseName("ix_companies_company_cen");
 
                     b.ToTable("companies", "core");
                 });

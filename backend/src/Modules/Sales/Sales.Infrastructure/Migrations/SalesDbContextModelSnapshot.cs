@@ -48,9 +48,11 @@ namespace Sales.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("ticket_id");
 
-                    b.Property<int>("TicketItemId")
-                        .HasColumnType("integer")
-                        .HasColumnName("ticket_item_id");
+                    b.Property<string>("TicketItemCen")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("ticket_item_cen");
 
                     b.HasKey("Id")
                         .HasName("pk_comanda_items");
@@ -115,6 +117,12 @@ namespace Sales.Infrastructure.Migrations
                         .HasColumnType("numeric(5,2)")
                         .HasColumnName("tax_rate");
 
+                    b.Property<string>("TicketCen")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("ticket_cen");
+
                     b.Property<string>("TicketNumber")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -126,10 +134,21 @@ namespace Sales.Infrastructure.Migrations
                         .HasColumnType("numeric(18,2)")
                         .HasColumnName("total");
 
+                    b.Property<string>("WaiterCen")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("waiter_cen");
+
                     b.Property<string>("WaiterName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("waiter_name");
+
+                    b.Property<string>("WarehouseCen")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("warehouse_cen");
 
                     b.HasKey("Id")
                         .HasName("pk_tickets");
@@ -151,9 +170,11 @@ namespace Sales.Infrastructure.Migrations
                         .HasColumnType("character varying(250)")
                         .HasColumnName("note");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer")
-                        .HasColumnName("product_id");
+                    b.Property<string>("ProductCen")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("product_cen");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -169,6 +190,12 @@ namespace Sales.Infrastructure.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("integer")
                         .HasColumnName("ticket_id");
+
+                    b.Property<string>("TicketItemCen")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("ticket_item_cen");
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)

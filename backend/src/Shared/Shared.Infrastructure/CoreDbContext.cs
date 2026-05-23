@@ -17,8 +17,8 @@ public class CoreDbContext : DbContext
         modelBuilder.Entity<Company>(entity =>
         {
             entity.ToTable("companies");
-            entity.Property(c => c.Cen).HasMaxLength(50).IsRequired();
-            entity.HasIndex(c => c.Cen).IsUnique();
+            entity.Property(c => c.CompanyCen).HasMaxLength(150).IsRequired();
+            entity.HasIndex(c => c.CompanyCen).IsUnique();
         });
     }
 }

@@ -14,6 +14,12 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
 
 
         builder.Property(t => t.CompanyId).IsRequired();
+        
+        builder.Property(t => t.WarehouseCen).HasMaxLength(150).IsRequired();
+        
+        builder.Property(t => t.TicketCen).HasMaxLength(150).IsRequired();
+        builder.Property(t => t.WaiterCen).HasMaxLength(150);
+        
         builder.Property(t => t.TicketNumber).HasMaxLength(20).IsRequired();
         builder.Property(t => t.WaiterName).HasMaxLength(100);
         builder.Property(t => t.CustomerName).HasMaxLength(100);

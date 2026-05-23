@@ -33,4 +33,22 @@ public class SalesRepository : ISalesRepository
     {
         return await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Ticket?> GetByCenAsync(int companyId, string ticketCen, CancellationToken cancellationToken)
+    {
+        return await _context.Tickets
+            .Include(t => t.Items)
+            .Include(t => t.ComandaItems)
+            .FirstOrDefaultAsync(t => t.CompanyId == companyId && t.TicketCen == ticketCen, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Ticket>> GetDailyTicketsAsync(int companyId, CancellationToken cancellationToken)
+    {
+        var today = DateTime.UtcNow.Date;
+        return await _context.Tickets
+            .Include(t => t.Items)
+            .Include(t => t.ComandaItems) 
+            .Where(t => t.CompanyId == companyId && t.CreatedAt >= today)
+            .ToListAsync(cancellationToken);
+    }
 }

@@ -11,6 +11,12 @@ public class TicketItemConfiguration : IEntityTypeConfiguration<TicketItem>
         builder.ToTable("ticket_items");
 
         builder.HasKey(ti => ti.Id);
+        
+        builder.Property(ti => ti.TicketItemCen).HasMaxLength(150).IsRequired();
+        
+        builder.Property(ti => ti.ProductCen)
+            .IsRequired()
+            .HasMaxLength(150);
 
         builder.Property(ti => ti.ProductName).HasMaxLength(150).IsRequired();
         builder.Property(ti => ti.Note).HasMaxLength(250);

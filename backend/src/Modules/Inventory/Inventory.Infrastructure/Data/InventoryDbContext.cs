@@ -25,7 +25,9 @@ public class InventoryDbContext : DbContext
         modelBuilder.HasDefaultSchema("inventory");
         
         // Mapeos básicos
-        modelBuilder.Entity<Company>().ToTable("companies", "core");
+        //modelBuilder.Entity<Company>().ToTable("companies", "core");
+        
+        modelBuilder.Entity<Company>().ToTable("companies", "core", t => t.ExcludeFromMigrations());
         modelBuilder.Entity<Warehouse>().ToTable("warehouses");
         modelBuilder.Entity<InventoryStock>().ToTable("inventory_stock");
         modelBuilder.Entity<InventoryMovement>().ToTable("inventory_movements");
@@ -36,7 +38,7 @@ public class InventoryDbContext : DbContext
             entity.ToTable("categories");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.CategoryCen).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.CategoryCen).IsRequired().HasMaxLength(150);
             entity.HasIndex(e => new { e.CompanyId, e.CategoryCen }).IsUnique();
         });
         
@@ -46,7 +48,7 @@ public class InventoryDbContext : DbContext
             entity.ToTable("units");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.UnitCen).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.UnitCen).IsRequired().HasMaxLength(150);
             
             // Reglas de negocio
             entity.HasIndex(e => new { e.CompanyId, e.Name }).IsUnique();
@@ -56,7 +58,7 @@ public class InventoryDbContext : DbContext
         // Almacenes (Bodegas)
         modelBuilder.Entity<Warehouse>(entity => 
         {
-            entity.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.WarehouseCen).IsRequired().HasMaxLength(150);
             entity.HasIndex(e => new { e.CompanyId, e.WarehouseCen }).IsUnique();
         });
 
@@ -73,7 +75,7 @@ public class InventoryDbContext : DbContext
             entity.Property(e => e.MinStockAlert).HasColumnType("decimal(18,2)");
 
             // Configuración CEN
-            entity.Property(e => e.ProductCen).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ProductCen).IsRequired().HasMaxLength(150);
             entity.Property(e => e.StationCode).HasMaxLength(50);
 
             // Índices Únicos

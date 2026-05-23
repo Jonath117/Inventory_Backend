@@ -18,4 +18,6 @@ public interface IProductRepository
     Task<(int Id, string Name, string UnitName)> GetProductInfoByCenAsync(int companyId, string productCen);
     Task<IEnumerable<Product>> LookupProductsAsync(int companyId, List<string>? productCens, List<string>? skus);
     Task<IEnumerable<Product>> GetProductsByQueryAsync(int companyId, string? search, string? categoryCen, string? status);
+    
+    Task<Product?> GetByCenAsync(int companyId, string productCen);
 }

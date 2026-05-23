@@ -10,15 +10,18 @@ public class ProductService : IProductService
     private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitRepository _unitRepository;
+    private readonly IGetStockRepository _stockRepository;
 
     public ProductService(
         IProductRepository productRepository, 
         ICategoryRepository categoryRepository,
-        IUnitRepository unitRepository)
+        IUnitRepository unitRepository,
+        IGetStockRepository stockRepository)
     {
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
         _unitRepository = unitRepository;
+        _stockRepository = stockRepository;
     }
 
     public async Task<IEnumerable<ProductContractDto>> GetProductsAsync(int companyId)
@@ -190,18 +193,22 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<SellableProductContractDto>> GetSellableProductsAsync(int companyId, string? search, string? categoryCen, string? warehouseCen, bool onlyAvailable, int page, int pageSize)
     {
-        // For simplicity, we'll get products and then filter availability
-        // A better implementation would join with InventoryStock in the repository
+
         var products = await _productRepository.GetProductsByQueryAsync(companyId, search, categoryCen, "ACTIVE");
         
-        // Paging would normally happen in the repository
+        var stocks = await _stockRepository.GetCurrentStockAsync(companyId, null, warehouseCen);
+        var stockMap = stocks.GroupBy(s => s.Product!.ProductCen)
+                             .ToDictionary(g => g.Key, g => (double)g.Sum(s => s.CurrentStock));
+
         var pagedProducts = products.Skip((page - 1) * pageSize).Take(pageSize);
 
         var result = new List<SellableProductContractDto>();
         foreach (var p in pagedProducts)
         {
-            // This is inefficient but works for now as a refactor step
-            // In a real scenario, we should have a repository method for this
+            stockMap.TryGetValue(p.ProductCen, out double availableStock);
+
+            if (onlyAvailable && availableStock <= 0) continue;
+
             result.Add(new SellableProductContractDto(
                 p.ProductCen,
                 p.Sku,
@@ -210,11 +217,24 @@ public class ProductService : IProductService
                 p.Category?.Name ?? "Sin Categoría",
                 p.Unit?.Name ?? "Sin Unidad",
                 (double)p.SalePrice,
-                0.0, // Should be actual stock
-                true // Should be based on stock if onlyAvailable is true
+                availableStock,
+                availableStock > 0
             ));
         }
-
         return result;
+    }
+    
+    public async Task<ProductDetailsContractResponse?> GetProductDetailsByCenAsync(int companyId, string productCen)
+    {
+        var product = await _productRepository.GetByCenAsync(companyId, productCen);
+    
+        if (product == null) return null;
+
+        return new ProductDetailsContractResponse(
+            ProductCen: product.ProductCen,
+            Name: product.Name,
+            SalePrice: product.SalePrice,
+            IsAvailable: product.IsActive 
+        );
     }
 }
