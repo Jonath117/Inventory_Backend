@@ -160,4 +160,15 @@ public class Ticket
             throw new InvalidOperationException("Solo se puedenc cancelar tickets abiertos");
         Status = TicketStatus.Cancelled;
     }
+    
+    public void UpdateItemNote(string productCent, string? note)
+    {
+        if (Status != TicketStatus.Open)
+            throw new InvalidOperationException("No se pueden modificar notas en una cuenta cerrada");
+        
+        var item = _items.FirstOrDefault(i => i.ProductCen == productCent);
+        if (item == null)
+            throw new InvalidOperationException("El item no existe en el ticket");
+        item.SetNote(note ?? string.Empty);
+    }
 }
