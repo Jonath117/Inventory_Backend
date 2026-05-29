@@ -1,3 +1,4 @@
+using Inventory.Api.Middlewares;
 using Inventory.Application;
 using Inventory.Infrastructure;
 using Microsoft.OpenApi;
@@ -8,6 +9,9 @@ using Shared.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddInventoryInfrastructure(builder.Configuration);
 builder.Services.AddInventoryApplication();
 
