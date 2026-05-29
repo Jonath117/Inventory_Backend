@@ -2,12 +2,13 @@ using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
 using Sales.Application.Interfaces.ExternalServices;
+using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
-public record AddItemToTicketCommand(int CompanyId, string CompanyCen, string TicketCen, CreateTicketItemContractRequest Item) : IRequest<TicketItemContractResponse?>;
+public record AddItemToTicketCommand(int CompanyId, string CompanyCen, string TicketCen, CreateTicketItemContractRequest Item) : IRequest<TicketItemContractResponse>;
 
-public class AddItemToTicketCommandHandler : IRequestHandler<AddItemToTicketCommand, TicketItemContractResponse?>
+public class AddItemToTicketCommandHandler : IRequestHandler<AddItemToTicketCommand, TicketItemContractResponse>
 {
     private readonly ISalesRepository _repository;
     private readonly IInventoryHttpClient _inventoryClient;
@@ -18,18 +19,25 @@ public class AddItemToTicketCommandHandler : IRequestHandler<AddItemToTicketComm
         _inventoryClient = inventoryClient;
     }
 
-    public async Task<TicketItemContractResponse?> Handle(AddItemToTicketCommand request,
+    public async Task<TicketItemContractResponse> Handle(AddItemToTicketCommand request,
         CancellationToken cancellationToken)
     {
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
-        if (ticket == null) return null;
+        if (ticket == null)
+        {
+            throw new NotFoundException("Ticket", request.TicketCen);
+        }
 
         var productDetails = await _inventoryClient.GetProductDetailsAsync(request.CompanyCen, request.Item.ProductCen);
 
-        if (productDetails == null || !productDetails.IsAvailable)
+        if (productDetails == null)
         {
-            throw new InvalidOperationException(
-                $"El producto con CEN {request.Item.ProductCen} no existe o no está disponible para la venta.");
+            throw new NotFoundException("Producto en Inventario", request.Item.ProductCen);
+        }
+
+        if (!productDetails.IsAvailable)
+        {
+            throw new BadRequestException($"El producto {productDetails.Name} no está disponible para la venta.");
         }
 
         ticket.AddOrUpdateItem(

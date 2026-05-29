@@ -2,10 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Interfaces;
 using Sales.Application.Features.Tickets;
-using Sales.Application.Features.Tickets.CancelTicket;
-using Sales.Application.Features.Tickets.CreateTicket;
-using Sales.Application.Features.Tickets.UpdateTicketItem;
-using CreateTicketContractRequest = Sales.Application.Features.Tickets.CreateTicketContractRequest;
 
 namespace Sales.Api.Controllers;
 
@@ -42,7 +38,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> GetTicketByCen(string companyCen, string ticketCen) 
     {
         var ticket = await _mediator.Send(new GetTicketByCenQuery(_companyProvider.CompanyId, ticketCen));
-        if (ticket == null) return NotFound();
         return Ok(ticket);
     }
 
@@ -58,7 +53,6 @@ public class TicketsController : ControllerBase
     {
         var companyId = _companyProvider.CompanyId;
         var item = await _mediator.Send(new AddItemToTicketCommand(companyId, companyCen, ticketCen, request));
-        if (item == null) return NotFound();
         return StatusCode(201, item);
     }
 
@@ -66,7 +60,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> UpdateTicketItem(string companyCen, string ticketCen, string ticketItemCen, [FromBody] UpdateTicketItemContractRequest request) 
     {
         var item = await _mediator.Send(new UpdateTicketItemCommand(_companyProvider.CompanyId, ticketCen, ticketItemCen, request));
-        if (item == null) return NotFound();
         return Ok(item);
     }
 
@@ -74,7 +67,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> AssignWaiter(string companyCen, string ticketCen, [FromBody] AssignTicketWaiterContractRequest request) 
     {
         var response = await _mediator.Send(new AssignWaiterCommand(_companyProvider.CompanyId, ticketCen, request));
-        if (response == null) return NotFound();
         return Ok(response);
     }
 
@@ -83,7 +75,6 @@ public class TicketsController : ControllerBase
     {
         int companyId = _companyProvider.CompanyId;
         var response = await _mediator.Send(new PayTicketCommand(companyId, companyCen, ticketCen, request));
-        if (response == null) return NotFound();
         return Ok(response);
     }
 
@@ -91,7 +82,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> CancelTicket(string companyCen, string ticketCen, [FromBody] CancelTicketContractRequest? request) 
     {
         var response = await _mediator.Send(new CancelTicketCommand(_companyProvider.CompanyId, ticketCen, request));
-        if (response == null) return NotFound();
         return Ok(response);
     }
 
@@ -99,7 +89,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> SendToKds(string companyCen, string ticketCen) 
     {
         var items = await _mediator.Send(new SendToKdsCommand(_companyProvider.CompanyId, ticketCen));
-        if (items == null) return NotFound();
         return Ok(items);
     }
 
@@ -107,7 +96,6 @@ public class TicketsController : ControllerBase
     public async Task<IActionResult> GetTicketTotals(string companyCen, string ticketCen) 
     {
         var totals = await _mediator.Send(new GetTicketTotalsQuery(_companyProvider.CompanyId, ticketCen));
-        if (totals == null) return NotFound();
         return Ok(totals);
     }
 }

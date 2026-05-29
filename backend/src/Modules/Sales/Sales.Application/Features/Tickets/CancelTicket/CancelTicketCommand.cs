@@ -1,12 +1,13 @@
 using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
+using Sales.Domain.Exceptions;
 
-namespace Sales.Application.Features.Tickets.CancelTicket;
+namespace Sales.Application.Features.Tickets;
 
-public record CancelTicketCommand(int CompanyId, string TicketCen, CancelTicketContractRequest? Request) : IRequest<CancelTicketContractResponse?>;
+public record CancelTicketCommand(int CompanyId, string TicketCen, CancelTicketContractRequest? Request) : IRequest<CancelTicketContractResponse>;
 
-public class CancelTicketCommandHandler : IRequestHandler<CancelTicketCommand, CancelTicketContractResponse?>
+public class CancelTicketCommandHandler : IRequestHandler<CancelTicketCommand, CancelTicketContractResponse>
 {
     private readonly ISalesRepository _repository;
 
@@ -15,10 +16,13 @@ public class CancelTicketCommandHandler : IRequestHandler<CancelTicketCommand, C
         _repository = repository;
     }
 
-    public async Task<CancelTicketContractResponse?> Handle(CancelTicketCommand request, CancellationToken cancellationToken)
+    public async Task<CancelTicketContractResponse> Handle(CancelTicketCommand request, CancellationToken cancellationToken)
     {
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
-        if (ticket == null) return null;
+        if (ticket == null)
+        {
+            throw new NotFoundException("Ticket", request.TicketCen);
+        }
 
         ticket.Cancel();
         

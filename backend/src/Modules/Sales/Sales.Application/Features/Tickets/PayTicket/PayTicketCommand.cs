@@ -3,12 +3,13 @@ using Sales.Application.Interfaces;
 using Sales.Domain.Enums;
 using Sales.Application.Features.Tickets;
 using Sales.Application.Interfaces.ExternalServices;
+using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
-public record PayTicketCommand(int CompanyId, string CompanyCen, string TicketCen, PayTicketContractRequest Request) : IRequest<PayTicketContractResponse?>;
+public record PayTicketCommand(int CompanyId, string CompanyCen, string TicketCen, PayTicketContractRequest Request) : IRequest<PayTicketContractResponse>;
 
-public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTicketContractResponse?>
+public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTicketContractResponse>
 {
     private readonly ISalesRepository _repository;
     private readonly IInventoryHttpClient _inventoryClient;
@@ -19,10 +20,13 @@ public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTick
         _inventoryClient = inventoryClient;
     }
 
-    public async Task<PayTicketContractResponse?> Handle(PayTicketCommand request, CancellationToken cancellationToken)
+    public async Task<PayTicketContractResponse> Handle(PayTicketCommand request, CancellationToken cancellationToken)
     {
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
-        if (ticket == null) return null;
+        if (ticket == null)
+        {
+            throw new NotFoundException("Ticket", request.TicketCen);
+        }
 
         var consumeRequest = new StockConsumeRequestDto(
             WarehouseCen: ticket.WarehouseCen,
@@ -36,7 +40,7 @@ public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTick
 
         if (!consumeResult.Success)
         {
-            throw new InvalidOperationException("No se pudo completar la venta por falta de stock en Inventario.");
+            throw new BadRequestException("No se pudo completar la venta por falta de stock en Inventario.");
         }
 
         ticket.Pay((PaymentMethod)request.Request.PaymentMethodId);

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Interfaces;
 using Sales.Application.Features.Kds;
 using Sales.Application.Features.Tickets;
-using Sales.Application.Features.Kds.UpdateKdsItemStatus;
 
 namespace Sales.Api.Controllers;
 
@@ -38,8 +37,7 @@ public class KdsController : ControllerBase
     [HttpPatch("items/{ticketItemCen}/status")]
     public async Task<IActionResult> UpdateKdsItemStatus(string ticketItemCen, [FromBody] UpdateKdsItemStatusContractRequest request)
     {
-        var success = await _mediator.Send(new UpdateKdsItemStatusCommand(_companyProvider.CompanyId, ticketItemCen, request));
-        if (!success) return NotFound();
+        await _mediator.Send(new UpdateKdsItemStatusCommand(_companyProvider.CompanyId, ticketItemCen, request));
         return Ok();
     }
 }

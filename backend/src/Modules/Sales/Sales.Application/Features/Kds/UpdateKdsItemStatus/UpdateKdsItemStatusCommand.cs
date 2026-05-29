@@ -1,12 +1,13 @@
 using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
+using Sales.Domain.Exceptions;
 
-namespace Sales.Application.Features.Kds.UpdateKdsItemStatus;
+namespace Sales.Application.Features.Kds;
 
-public record UpdateKdsItemStatusCommand(int CompanyId, string TicketItemCen, UpdateKdsItemStatusContractRequest Request) : IRequest<bool>;
+public record UpdateKdsItemStatusCommand(int CompanyId, string TicketItemCen, UpdateKdsItemStatusContractRequest Request) : IRequest;
 
-public class UpdateKdsItemStatusCommandHandler : IRequestHandler<UpdateKdsItemStatusCommand, bool>
+public class UpdateKdsItemStatusCommandHandler : IRequestHandler<UpdateKdsItemStatusCommand>
 {
     private readonly ISalesRepository _repository;
 
@@ -15,7 +16,7 @@ public class UpdateKdsItemStatusCommandHandler : IRequestHandler<UpdateKdsItemSt
         _repository = repository;
     }
 
-    public async Task<bool> Handle(UpdateKdsItemStatusCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateKdsItemStatusCommand request, CancellationToken cancellationToken)
     {
         var tickets = await _repository.GetDailyTicketsAsync(request.CompanyId, cancellationToken);
     
@@ -31,10 +32,10 @@ public class UpdateKdsItemStatusCommandHandler : IRequestHandler<UpdateKdsItemSt
                     item.MarksAsReady(); 
             
                 await _repository.SaveChangesAsync(cancellationToken);
-                return true;
+                return;
             }
         }
 
-        return false;
+        throw new NotFoundException("Ítem de Comanda", request.TicketItemCen);
     }
 }

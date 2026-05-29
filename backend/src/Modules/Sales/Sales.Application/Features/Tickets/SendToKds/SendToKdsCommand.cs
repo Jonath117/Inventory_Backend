@@ -1,12 +1,13 @@
 using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
+using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
-public record SendToKdsCommand(int CompanyId, string TicketCen) : IRequest<IEnumerable<TicketItemContractResponse>?>;
+public record SendToKdsCommand(int CompanyId, string TicketCen) : IRequest<IEnumerable<TicketItemContractResponse>>;
 
-public class SendToKdsCommandHandler : IRequestHandler<SendToKdsCommand, IEnumerable<TicketItemContractResponse>?>
+public class SendToKdsCommandHandler : IRequestHandler<SendToKdsCommand, IEnumerable<TicketItemContractResponse>>
 {
     private readonly ISalesRepository _repository;
 
@@ -15,10 +16,13 @@ public class SendToKdsCommandHandler : IRequestHandler<SendToKdsCommand, IEnumer
         _repository = repository;
     }
 
-    public async Task<IEnumerable<TicketItemContractResponse>?> Handle(SendToKdsCommand request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TicketItemContractResponse>> Handle(SendToKdsCommand request, CancellationToken cancellationToken)
     {
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
-        if (ticket == null) return null;
+        if (ticket == null)
+        {
+            throw new NotFoundException("Ticket", request.TicketCen);
+        }
 
         foreach (var item in ticket.Items)
         {
