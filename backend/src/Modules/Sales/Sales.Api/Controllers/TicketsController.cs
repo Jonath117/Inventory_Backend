@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Interfaces;
 using Sales.Application.Features.Tickets;
+using Sales.Application.Features.Tickets.CancelTicket;
 using Sales.Application.Features.Tickets.CreateTicket;
 using Sales.Application.Features.Tickets.UpdateTicketItem;
 using CreateTicketContractRequest = Sales.Application.Features.Tickets.CreateTicketContractRequest;
