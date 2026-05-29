@@ -20,7 +20,7 @@ public class AssignWaiterCommandHandler : IRequestHandler<AssignWaiterCommand, A
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
         if (ticket == null) return null;
 
-        string waiterName = $"Waiter {request.Request.WaiterCen}";
+        string waiterName = $"{request.Request.WaiterCen}";
         
         ticket.AssignWaiter(request.Request.WaiterCen, waiterName);
         
