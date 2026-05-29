@@ -2,7 +2,7 @@ using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
 
-namespace Sales.Application.Features.Tickets;
+namespace Sales.Application.Features.Tickets.CancelTicket;
 
 public record CancelTicketCommand(int CompanyId, string TicketCen, CancelTicketContractRequest? Request) : IRequest<CancelTicketContractResponse?>;
 
