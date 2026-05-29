@@ -10,11 +10,11 @@ public class GetWaitersQueryHandler : IRequestHandler<GetWaitersQuery, IEnumerab
 {
     public async Task<IEnumerable<WaiterContractResponse>> Handle(GetWaitersQuery request, CancellationToken cancellationToken)
     {
-        // Mocking waiters for now
         return new List<WaiterContractResponse>
         {
             new WaiterContractResponse("W-001", "Juan Perez", true),
-            new WaiterContractResponse("W-002", "Maria Garcia", true)
+            new WaiterContractResponse("W-002", "Maria Garcia", true),
+            new WaiterContractResponse("W-003", "Matias Molina", true)
         };
     }
 }
