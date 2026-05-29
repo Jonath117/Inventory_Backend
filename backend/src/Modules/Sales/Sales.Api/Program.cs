@@ -1,4 +1,5 @@
 using Microsoft.OpenApi;
+using Sales.Api.Middlewares;
 using Sales.Application;
 using Sales.Infrastructure;
 using Shared.API.Filters;
@@ -8,6 +9,9 @@ using Shared.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddSalesInfrastructure(builder.Configuration);
 builder.Services.AddSalesApplication();
 
@@ -57,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+app.UseExceptionHandler();
 
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
