@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Sales.Domain.Exceptions;
 
 namespace Sales.Api.Middlewares;
 
@@ -13,52 +12,62 @@ public class GlobalExceptionHandler : IExceptionHandler
         _logger = logger;
     }
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext, 
+        Exception exception, 
+        CancellationToken cancellationToken)
     {
-        _logger.LogError(exception, "Excepcion capturada : {Message}", exception.Message);
+        _logger.LogError(exception, "Excepción no controlada capturada: {Message}", exception.Message);
 
         var problemDetails = new ProblemDetails
         {
-            Instance = httpContext.Request.Path,
-            Extensions = new Dictionary<string, object?>
-            {
-                { "traceId", httpContext.TraceIdentifier },
-            }
+            Instance = httpContext.Request.Path
         };
+
+        problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
 
         switch (exception)
         {
-            case NotFoundException notFoundEx:
+            case KeyNotFoundException keyNotFoundEx:
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Recurso no encontrado";
-                problemDetails.Detail = notFoundEx.Message;
+                problemDetails.Detail = keyNotFoundEx.Message;
                 problemDetails.Status = StatusCodes.Status404NotFound;
                 break;
-            
-            case BadRequestException badRequestEx:
-                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                problemDetails.Title = "Solicitud incorrecta o regla de negocio violada";
-                problemDetails.Detail = badRequestEx.Message;
-                problemDetails.Status = StatusCodes.Status400BadRequest;
-                break;
-            
-            case InvalidOperationException invEx:
+
             case ArgumentException argEx:
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                problemDetails.Title = "Operación de dominio inválida";
-                problemDetails.Detail = exception.Message;
+                problemDetails.Title = "Argumento invalido";
+                problemDetails.Detail = argEx.Message;
                 problemDetails.Status = StatusCodes.Status400BadRequest;
                 break;
-            
+
+            case InvalidOperationException invEx:
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Operacion invalida";
+                problemDetails.Detail = invEx.Message;
+                problemDetails.Status = StatusCodes.Status400BadRequest;
+                break;
+
+            case UnauthorizedAccessException unauthEx:
+                httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                problemDetails.Title = "Acceso denegado";
+                problemDetails.Detail = unauthEx.Message;
+                problemDetails.Status = StatusCodes.Status403Forbidden;
+                break;
+
             default:
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 problemDetails.Title = "Error interno del servidor";
-                problemDetails.Detail = "Ocurrio un error inesperado al procesar la solicitud en el servidor de Ventas.";
+                problemDetails.Detail = "Ocurrio un error inesperado. Intenta nuevamente o contacta a soporte.";
                 problemDetails.Status = StatusCodes.Status500InternalServerError;
                 break;
         }
+
+        httpContext.Response.ContentType = "application/problem+json";
         
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
-        return true;
+
+        return true; 
     }
 }
