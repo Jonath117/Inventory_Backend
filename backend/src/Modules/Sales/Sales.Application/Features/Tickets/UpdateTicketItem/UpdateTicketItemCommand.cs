@@ -2,7 +2,7 @@ using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
 
-namespace Sales.Application.Features.Tickets;
+namespace Sales.Application.Features.Tickets.UpdateTicketItem;
 
 public record UpdateTicketItemCommand(int CompanyId, string TicketCen, string TicketItemCen, UpdateTicketItemContractRequest Request) : IRequest<TicketItemContractResponse?>;
 
@@ -28,8 +28,12 @@ public class UpdateTicketItemCommandHandler : IRequestHandler<UpdateTicketItemCo
         var item = ticket.Items.FirstOrDefault(i => i.TicketItemCen == request.TicketItemCen);
         if (item == null) return null;
 
-        item.UpdateQuantity(request.Request.Quantity);
-        // item.SetNote(request.Request.Note); // If entity supports it
+        ticket.UpdateItemQuantity(item.ProductCen, request.Request.Quantity);
+
+        if (request.Request.Note != null)
+        {
+            ticket.UpdateItemNote(item.ProductCen, request.Request.Note);
+        }
 
         await _repository.SaveChangesAsync(cancellationToken);
 
