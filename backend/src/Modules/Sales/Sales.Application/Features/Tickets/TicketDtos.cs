@@ -39,7 +39,7 @@ public record TicketTotalsContractResponse(
 );
 
 public record PayTicketContractRequest(
-    int PaymentMethodId // 1: Cash, 2: Qr, 3: Card
+    int PaymentMethodId 
 );
 
 public record PayTicketContractResponse(
