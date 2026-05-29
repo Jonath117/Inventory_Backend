@@ -33,4 +33,9 @@ public class TicketItem
         if (newQuantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero");
         Quantity = newQuantity;
     }
+
+    public void SetNote(string note)
+    {
+        Note = note;
+    }
 }
