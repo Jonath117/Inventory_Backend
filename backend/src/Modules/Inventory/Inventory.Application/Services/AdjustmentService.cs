@@ -21,7 +21,7 @@ public class AdjustmentService : IAdjustmentService
     public async Task<InventoryAdjustmentContractResponse> RegisterAdjustmentAsync(int companyId, InventoryAdjustmentContractRequest request)
     {
         var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
-        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+        if (warehouseInfo.Id == 0) throw new KeyNotFoundException($"La bodega '{request.WarehouseCen}' no existe.");
 
         var generatedMovements = new List<GeneratedMovementContractDto>();
         string adjustmentCen = $"ADJ-{Guid.NewGuid():N}";
@@ -32,10 +32,10 @@ public class AdjustmentService : IAdjustmentService
             foreach (var line in request.Lines)
             {
                 if (line.Quantity <= 0) throw new ArgumentException("La cantidad no puede ser cero o negativa");
-                if (line.AdjustmentType != "IN" && line.AdjustmentType != "OUT") throw new ArgumentException("Tipo debe ser IN u OUT");
+                if (line.AdjustmentType != "IN" && line.AdjustmentType != "OUT") throw new ArgumentException("Tipo de ajuste debe ser IN u OUT");
 
                 var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, line.ProductCen);
-                if (productInfo.Id == 0) throw new ArgumentException($"Producto {line.ProductCen} no válido");
+                if (productInfo.Id == 0) throw new KeyNotFoundException($"El producto '{line.ProductCen}' no existe.");
 
                 var stockRecord = await _repository.GetStockAsync(productInfo.Id, warehouseInfo.Id);
                 decimal previousStock = stockRecord?.CurrentStock ?? 0;

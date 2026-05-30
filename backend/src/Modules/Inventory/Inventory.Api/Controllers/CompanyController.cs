@@ -1,4 +1,3 @@
-
 using Backend.API.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Inventory.Domain.Interfaces.IServices;
@@ -21,34 +20,14 @@ public class CompanyController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetActiveCompanies()
     {
-        try
-        {
-            var companies = await _inventoryService.GetCompanyAsync();
-            return Ok(companies);
-        }  
-        catch (Exception ex)
-        {
-            Console.WriteLine($"error: {ex.ToString()}");
-            return StatusCode(500, new { error = ex.Message });
-        }
+        var companies = await _inventoryService.GetCompanyAsync();
+        return Ok(companies);
     }
 
     [HttpGet("{companyCen}")]
     public async Task<IActionResult> GetCompanyByCen(string companyCen)
     {
-        try
-        {
-            var company = await _inventoryService.GetCompanyByCenAsync(companyCen);
-            return Ok(company);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        var company = await _inventoryService.GetCompanyByCenAsync(companyCen);
+        return Ok(company);
     }
-
 }

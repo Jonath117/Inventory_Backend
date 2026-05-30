@@ -10,21 +10,12 @@ namespace Inventory.Api.Controllers;
 [Route("api/inventory/companies/{companyCen}/units")]
 public class UnitController(IUnitService _unitService, ICurrentCompanyProvider _companyProvider) : ControllerBase
 {
-    
     [HttpGet]
     public async Task<IActionResult> GetUnits()
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-
-            var units = await _unitService.GetUnitsAsync(companyId);
-            return Ok(units);
-            
-        } catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Ocurrio un error interno en el servidor." });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var units = await _unitService.GetUnitsAsync(companyId);
+        return Ok(units);
     }
 
     [HttpPost]
@@ -42,6 +33,4 @@ public class UnitController(IUnitService _unitService, ICurrentCompanyProvider _
         var updatedUnit = await _unitService.UpdateUnitAsync(companyId, unitCen, request);
         return Ok(updatedUnit);
     }
-    
-
 }

@@ -1,6 +1,5 @@
 using MediatR;
 using Sales.Application.Interfaces;
-using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
@@ -21,7 +20,7 @@ public class GetTicketTotalsQueryHandler : IRequestHandler<GetTicketTotalsQuery,
 
         if (ticket == null)
         {
-            throw new NotFoundException("Ticket", request.TicketCen);
+            throw new KeyNotFoundException($"El ticket '{request.TicketCen}' no existe.");
         }
 
         return new TicketTotalsContractResponse(

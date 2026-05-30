@@ -56,10 +56,10 @@ public class ProductService : IProductService
         if (skuExists) throw new ArgumentException($"Ya existe un producto con el codigo SKU: {request.Sku}");
         
         var categoryInfo = await _categoryRepository.GetInfoByCenAsync(companyId, request.CategoryCen);
-        if (categoryInfo.Id == 0) throw new ArgumentException("Categoría no válida");
+        if (categoryInfo.Id == 0) throw new KeyNotFoundException($"La categoría con código {request.CategoryCen} no existe.");
 
         var unitInfo = await _unitRepository.GetInfoByCenAsync(companyId, request.UnitCen);
-        if (unitInfo.Id == 0) throw new ArgumentException("Unidad no válida");
+        if (unitInfo.Id == 0) throw new KeyNotFoundException($"La unidad con código {request.UnitCen} no existe.");
 
 
         var newProduct = new Product(
@@ -97,16 +97,16 @@ public class ProductService : IProductService
     public async Task<ProductContractDto> EditProductAsync(int companyId, string productCen, UpdateProductContractRequest request)
     {
         var product = await _productRepository.GetByProductCenAsync(companyId, productCen);
-        if (product == null) throw new KeyNotFoundException("El producto no existe");
+        if (product == null) throw new KeyNotFoundException($"El producto con código {productCen} no existe.");
         
         bool skuExists = await _productRepository.ExistsBySkuAsync(companyId, request.Sku, productCen);
-        if (skuExists) throw new InvalidOperationException($"El codigo SKU {request.Sku} ya esta en uso por otro producto");
+        if (skuExists) throw new ArgumentException($"El codigo SKU {request.Sku} ya esta en uso por otro producto");
         
         var categoryInfo = await _categoryRepository.GetInfoByCenAsync(companyId, request.CategoryCen);
-        if (categoryInfo.Id == 0) throw new ArgumentException("Categoría no válida");
+        if (categoryInfo.Id == 0) throw new KeyNotFoundException($"La categoría con código {request.CategoryCen} no existe.");
 
         var unitInfo = await _unitRepository.GetInfoByCenAsync(companyId, request.UnitCen);
-        if (unitInfo.Id == 0) throw new ArgumentException("Unidad no válida");
+        if (unitInfo.Id == 0) throw new KeyNotFoundException($"La unidad con código {request.UnitCen} no existe.");
         
         product.Update(
             sku: request.Sku,
@@ -143,7 +143,7 @@ public class ProductService : IProductService
     public async Task<ProductContractDto> UpdateProductStatusAsync(int companyId, string productCen, string status)
     {
         var product = await _productRepository.GetByProductCenAsync(companyId, productCen);
-        if (product == null) throw new KeyNotFoundException("El producto no existe");
+        if (product == null) throw new KeyNotFoundException($"El producto con código {productCen} no existe.");
 
         if (status.Equals("ACTIVE", StringComparison.OrdinalIgnoreCase))
             product.Activate();
@@ -224,11 +224,11 @@ public class ProductService : IProductService
         return result;
     }
     
-    public async Task<ProductDetailsContractResponse?> GetProductDetailsByCenAsync(int companyId, string productCen)
+    public async Task<ProductDetailsContractResponse> GetProductDetailsByCenAsync(int companyId, string productCen)
     {
         var product = await _productRepository.GetByCenAsync(companyId, productCen);
     
-        if (product == null) return null;
+        if (product == null) throw new KeyNotFoundException($"El producto con código {productCen} no existe.");
 
         return new ProductDetailsContractResponse(
             ProductCen: product.ProductCen,

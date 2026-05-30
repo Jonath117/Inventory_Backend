@@ -1,7 +1,6 @@
 using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
-using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
@@ -21,7 +20,7 @@ public class CancelTicketCommandHandler : IRequestHandler<CancelTicketCommand, C
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
         if (ticket == null)
         {
-            throw new NotFoundException("Ticket", request.TicketCen);
+            throw new KeyNotFoundException($"El ticket '{request.TicketCen}' no existe.");
         }
 
         ticket.Cancel();

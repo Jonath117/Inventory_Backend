@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
 using Shared.Application.Interfaces;
 
@@ -23,17 +21,8 @@ public class GetStockController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetStock([FromQuery] string? productCen, [FromQuery] string? warehouseCen)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            
-            var stock = await _getStockService.GetCurrentStockAsync(companyId, productCen, warehouseCen);
-            
-            return Ok(stock);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var stock = await _getStockService.GetCurrentStockAsync(companyId, productCen, warehouseCen);
+        return Ok(stock);
     }
 }

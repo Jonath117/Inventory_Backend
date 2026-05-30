@@ -27,86 +27,32 @@ public class StockController : ControllerBase
     [HttpPost("consume")]
     public async Task<IActionResult> ConsumeStock([FromBody] StockConsumeContractRequest request)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var response = await _movementService.ConsumeStockAsync(companyId, request);
-            
-            return Ok(response);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error consumiendo stock: {ex}");
-            return StatusCode(500, new { error = "Ocurrió un error interno en el servidor." });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var response = await _movementService.ConsumeStockAsync(companyId, request);
+        return Ok(response);
     }
     
     [HttpPost("increase")]
     public async Task<IActionResult> IncreaseStock([FromBody] StockIncreaseContractRequest request)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var documentCen = await _movementService.IncreaseStockAsync(companyId, request);
-            
-            return Ok(documentCen);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error incrementando stock: {ex}");
-            return StatusCode(500, new { error = "Ocurrió un error interno en el servidor." });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var documentCen = await _movementService.IncreaseStockAsync(companyId, request);
+        return Ok(documentCen);
     }
     
     [HttpPost("adjustments")]
     public async Task<IActionResult> CreateAdjustment([FromBody] InventoryAdjustmentContractRequest request)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var response = await _adjustmentService.RegisterAdjustmentAsync(companyId, request);
-            
-            return StatusCode(201, response);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error registrando ajuste: {ex}");
-            return StatusCode(500, new { error = "Ocurrió un error interno en el servidor." });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var response = await _adjustmentService.RegisterAdjustmentAsync(companyId, request);
+        return StatusCode(201, response);
     }
 
     [HttpPost("validate")]
     public async Task<IActionResult> ValidateStock([FromBody] StockValidationContractRequest request)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var response = await _movementService.ValidateStockAsync(companyId, request);
-            return Ok(response);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var response = await _movementService.ValidateStockAsync(companyId, request);
+        return Ok(response);
     }
 }

@@ -22,76 +22,41 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetProducts(string companyCen) 
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var productList = await _service.GetProductsAsync(companyId);
-            return Ok(productList);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Ocurrió un error interno al listar los productos." });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var productList = await _service.GetProductsAsync(companyId);
+        return Ok(productList);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateProduct(string companyCen, [FromBody] CreateProductContractRequest request) 
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var createdProduct = await _service.CreateProductAsync(companyId, request);
-            return Created("", createdProduct);
-        } 
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var createdProduct = await _service.CreateProductAsync(companyId, request);
+        return Created("", createdProduct);
     }
 
     [HttpPut("{productCen}")]
     public async Task<IActionResult> EditProduct(string companyCen, string productCen, [FromBody] UpdateProductContractRequest request) 
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var updatedProduct = await _service.EditProductAsync(companyId, productCen, request);
-            return Ok(updatedProduct);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var updatedProduct = await _service.EditProductAsync(companyId, productCen, request);
+        return Ok(updatedProduct);
     }
 
     [HttpPatch("{productCen}/status")]
     public async Task<IActionResult> UpdateProductStatus(string companyCen, string productCen, [FromBody] UpdateProductStatusContractRequest request)
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var updatedProduct = await _service.UpdateProductStatusAsync(companyId, productCen, request.Status);
-            return Ok(updatedProduct); 
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var updatedProduct = await _service.UpdateProductStatusAsync(companyId, productCen, request.Status);
+        return Ok(updatedProduct); 
     }
 
     [HttpPost("lookup")]
     public async Task<IActionResult> LookupProducts(string companyCen, [FromBody] ProductLookupContractRequest request) 
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var products = await _service.LookupProductsAsync(companyId, request);
-            return Ok(products);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var products = await _service.LookupProductsAsync(companyId, request);
+        return Ok(products);
     }
 
     [HttpGet("sellable")]
@@ -104,36 +69,16 @@ public class ProductController : ControllerBase
         [FromQuery] int page = 1, 
         [FromQuery] int pageSize = 50)
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var products = await _service.GetSellableProductsAsync(companyId, search, categoryCen, warehouseCen, onlyAvailable, page, pageSize);
-            return Ok(products);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var products = await _service.GetSellableProductsAsync(companyId, search, categoryCen, warehouseCen, onlyAvailable, page, pageSize);
+        return Ok(products);
     }
     
     [HttpGet("{productCen}")]
-    public async Task<IActionResult> GetProductDetails(string companyCen, string productCen) // <-- Agregado
+    public async Task<IActionResult> GetProductDetails(string companyCen, string productCen) 
     {
-        try
-        {
-            int companyId = _currentCompanyProvider.CompanyId;
-            var product = await _service.GetProductDetailsByCenAsync(companyId, productCen);
-            
-            if (product == null)
-            {
-                return NotFound(new { error = $"El producto con código {productCen} no existe." });
-            }
-
-            return Ok(product);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Ocurrió un error interno en el servidor." });
-        }
+        int companyId = _currentCompanyProvider.CompanyId;
+        var product = await _service.GetProductDetailsByCenAsync(companyId, productCen);
+        return Ok(product);
     }
 }

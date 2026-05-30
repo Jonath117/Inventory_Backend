@@ -22,34 +22,16 @@ public class DocumentController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateDocument([FromBody] InventoryDocumentContractRequest request)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var document = await _movementService.CreateDocumentAsync(companyId, request);
-            return StatusCode(201, document);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var document = await _movementService.CreateDocumentAsync(companyId, request);
+        return StatusCode(201, document);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetDocuments([FromQuery] string? documentType, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-            var documents = await _movementService.GetDocumentsAsync(companyId, documentType, from, to);
-            return Ok(documents);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        int companyId = _companyProvider.CompanyId;
+        var documents = await _movementService.GetDocumentsAsync(companyId, documentType, from, to);
+        return Ok(documents);
     }
 }

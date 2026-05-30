@@ -21,7 +21,7 @@ public class MovementService : IMovementService
     public async Task<StockConsumeContractResponse> ConsumeStockAsync(int companyId, StockConsumeContractRequest request)
     {
         var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
-        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+        if (warehouseInfo.Id == 0) throw new KeyNotFoundException($"La bodega '{request.WarehouseCen}' no existe.");
 
         var requirements = new List<StockRequirementContractDto>();
         var movementsToSave = new List<InventoryMovement>();
@@ -29,10 +29,10 @@ public class MovementService : IMovementService
         
         foreach (var item in request.Items)
         {
-            if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero");
+            if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero.");
 
             var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
-            if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+            if (productInfo.Id == 0) throw new KeyNotFoundException($"El producto '{item.ProductCen}' no existe.");
 
             var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
             decimal currentStock = stockRecord?.CurrentStock ?? 0;
@@ -96,7 +96,7 @@ public class MovementService : IMovementService
     public async Task<string> IncreaseStockAsync(int companyId, StockIncreaseContractRequest request)
     {
         var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
-        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+        if (warehouseInfo.Id == 0) throw new KeyNotFoundException($"La bodega '{request.WarehouseCen}' no existe.");
 
         await _repository.BeginTransactionAsync();
         try
@@ -105,10 +105,10 @@ public class MovementService : IMovementService
 
             foreach (var item in request.Items)
             {
-                if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero");
+                if (item.Quantity <= 0) throw new ArgumentException("La cantidad debe ser mayor a cero.");
 
                 var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
-                if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+                if (productInfo.Id == 0) throw new KeyNotFoundException($"El producto '{item.ProductCen}' no existe.");
 
                 var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
                 decimal previousStock = stockRecord?.CurrentStock ?? 0;
@@ -151,12 +151,8 @@ public class MovementService : IMovementService
 
     public async Task<InventoryDocumentContractDto> CreateDocumentAsync(int companyId, InventoryDocumentContractRequest request)
     {
-        // For simplicity, we can use IncreaseStockAsync or ConsumeStockAsync logic here
-        // But the contract asks for a unified Document creation.
-        // For now, let's just implement it directly.
-        
         var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
-        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+        if (warehouseInfo.Id == 0) throw new KeyNotFoundException($"La bodega '{request.WarehouseCen}' no existe.");
 
         await _repository.BeginTransactionAsync();
         try
@@ -167,13 +163,13 @@ public class MovementService : IMovementService
             foreach (var item in request.Items)
             {
                 var productInfo = await _productRepository.GetProductInfoByCenAsync(companyId, item.ProductCen);
-                if (productInfo.Id == 0) throw new ArgumentException($"Producto {item.ProductCen} no válido");
+                if (productInfo.Id == 0) throw new KeyNotFoundException($"El producto '{item.ProductCen}' no existe.");
 
                 var stockRecord = await _repository.GetStockAsync(companyId, productInfo.Id, warehouseInfo.Id);
                 decimal previousStock = stockRecord?.CurrentStock ?? 0;
                 
                 decimal quantity = item.Quantity;
-                if (request.DocumentType == "OUT" || request.DocumentType == "SALE") // Simplified logic
+                if (request.DocumentType == "OUT" || request.DocumentType == "SALE") 
                 {
                     quantity = -item.Quantity;
                 }
@@ -260,7 +256,7 @@ public class MovementService : IMovementService
     public async Task<StockValidationContractResponse> ValidateStockAsync(int companyId, StockValidationContractRequest request)
     {
         var warehouseInfo = await _warehouseRepository.GetInfoByCenAsync(companyId, request.WarehouseCen);
-        if (warehouseInfo.Id == 0) throw new ArgumentException("Bodega no válida");
+        if (warehouseInfo.Id == 0) throw new KeyNotFoundException($"La bodega '{request.WarehouseCen}' no existe.");
 
         var requirements = new List<StockRequirementContractDto>();
         

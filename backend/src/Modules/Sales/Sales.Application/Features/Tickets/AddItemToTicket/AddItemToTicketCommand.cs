@@ -2,7 +2,6 @@ using MediatR;
 using Sales.Application.Interfaces;
 using Sales.Application.Features.Tickets;
 using Sales.Application.Interfaces.ExternalServices;
-using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
@@ -25,19 +24,19 @@ public class AddItemToTicketCommandHandler : IRequestHandler<AddItemToTicketComm
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
         if (ticket == null)
         {
-            throw new NotFoundException("Ticket", request.TicketCen);
+            throw new KeyNotFoundException($"El ticket '{request.TicketCen}' no existe.");
         }
 
         var productDetails = await _inventoryClient.GetProductDetailsAsync(request.CompanyCen, request.Item.ProductCen);
 
         if (productDetails == null)
         {
-            throw new NotFoundException("Producto en Inventario", request.Item.ProductCen);
+            throw new KeyNotFoundException($"El producto '{request.Item.ProductCen}' no existe en el inventario.");
         }
 
         if (!productDetails.IsAvailable)
         {
-            throw new BadRequestException($"El producto {productDetails.Name} no está disponible para la venta.");
+            throw new ArgumentException($"El producto {productDetails.Name} no está disponible para la venta.");
         }
 
         ticket.AddOrUpdateItem(

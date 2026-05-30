@@ -50,7 +50,7 @@ public class CategoryService : ICategoryService
 
         if (category == null)
         {
-            throw new ArgumentException("Categoria no encontrada");
+            throw new KeyNotFoundException($"La categoría con código {dto.CategoryCen} no existe.");
         }
         
         category.Update(dto.Name, dto.Description);

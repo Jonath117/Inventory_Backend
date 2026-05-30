@@ -19,7 +19,7 @@ public class InventoryService : IInventoryService
 
         if (!companyExists)
         {
-            throw new Exception("La compañia no existe");
+            throw new KeyNotFoundException($"La compañía con ID {companyId} no existe.");
         }
         
         var totalProducts = await _repository.GetTotalProductsAsync(companyId);

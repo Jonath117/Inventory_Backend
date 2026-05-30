@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Inventory.Domain.Interfaces;
 using Inventory.Domain.Interfaces.IServices;
 using Shared.Application.Interfaces;
 
@@ -22,19 +21,8 @@ public class InventoryController : ControllerBase
     [HttpGet("dashboard")]
     public async Task<IActionResult> GetDashboard()
     {
-        try
-        {
-            int companyId = _companyProvider.CompanyId;
-
-            var dashboard = await _inventoryService.GetDashboardMetricsAsync(companyId);
-
-            return Ok(dashboard);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new {error = ex.Message});
-        }
+        int companyId = _companyProvider.CompanyId;
+        var dashboard = await _inventoryService.GetDashboardMetricsAsync(companyId);
+        return Ok(dashboard);
     }
-    
-
 }

@@ -3,7 +3,6 @@ using Sales.Application.Interfaces;
 using Sales.Domain.Enums;
 using Sales.Application.Features.Tickets;
 using Sales.Application.Interfaces.ExternalServices;
-using Sales.Domain.Exceptions;
 
 namespace Sales.Application.Features.Tickets;
 
@@ -25,7 +24,7 @@ public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTick
         var ticket = await _repository.GetByCenAsync(request.CompanyId, request.TicketCen, cancellationToken);
         if (ticket == null)
         {
-            throw new NotFoundException("Ticket", request.TicketCen);
+            throw new KeyNotFoundException($"El ticket '{request.TicketCen}' no existe.");
         }
 
         var consumeRequest = new StockConsumeRequestDto(
@@ -40,7 +39,14 @@ public class PayTicketCommandHandler : IRequestHandler<PayTicketCommand, PayTick
 
         if (!consumeResult.Success)
         {
-            throw new BadRequestException("No se pudo completar la venta por falta de stock en Inventario.");
+            string missingDetails = "Revisa el inventario.";
+            if (consumeResult.Requirements != null && consumeResult.Requirements.Any())
+            {
+                var missingItems = consumeResult.Requirements
+                    .Select(r => $"{r.ProductName} (Faltan {r.MissingQuantity})");
+                missingDetails = string.Join(", ", missingItems);
+            }
+            throw new InvalidOperationException($"No se pudo cobrar. Stock insuficiente para: {missingDetails}");
         }
 
         ticket.Pay((PaymentMethod)request.Request.PaymentMethodId);
