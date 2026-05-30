@@ -1,0 +1,32 @@
+using Purchases.Domain.Entities;
+
+namespace Purchases.Application.Interfaces.Repositories;
+
+public interface IPurchasesRepository
+{
+    Task<Purchase> CreateAsync(int companyId, Purchase purchase);
+    
+    Task<(int TotalCount, IEnumerable<Purchase> Items)> GetPagedOrdersAsync(
+        int companyId, 
+        int? status, 
+        int page, 
+        int pageSize, 
+        bool sortDescending, 
+        CancellationToken cancellationToken);
+    
+    Task<Purchase?> GetByOrderCenAsync(
+        int companyId, 
+        string orderCen, 
+        CancellationToken cancellationToken);
+    
+    Task<Purchase?> GetByOrderCenForUpdateAsync(
+        int companyId, 
+        string orderCen, 
+        CancellationToken cancellationToken);
+
+    Task UpdateAsync(Purchase purchase);
+    
+    Task<IEnumerable<Supplier>> GetSuppliersAsync(
+        int companyId, 
+        CancellationToken cancellationToken);
+}  

@@ -1,0 +1,65 @@
+### US-01: Obtener lista de empresas activas
+# Esta prueba verifica que el endpoint devuelva las empresas con IsActive = true
+GET http://localhost:5290/api/company
+Accept: application/json
+
+### US-02: Obtener Dashboard (Con US-01: Header de Empresa)
+GET http://localhost:5290/api/inventory/dashboard
+x-company-id: 1
+Accept: application/json
+
+### US-07: Registrar Ajuste de Stock (Entrada de 10 Laptops)
+POST http://localhost:5290/api/Adjustment
+Content-Type: application/json
+x-company-id: 1
+
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "quantity": 10,
+  "reason": "Compra inicial de inventario"
+}
+
+### Todo el inventario de la Empresa (US-05)
+GET http://localhost:5290/api/GetStock
+x-company-id: 1
+Accept: application/json
+
+### Filtrado solo por la Bodega Central (US-06)
+GET http://localhost:5290/api/GetStock?warehouseId=1
+x-company-id: 1
+Accept: application/json
+
+### US-08: Ver Kardex del Producto 1 (La Laptop)
+GET http://localhost:5290/api/Kardex/1
+x-company-id: 1
+Accept: application/json
+
+
+### Ingreso de Producto (Compra)
+POST http://localhost:5290/api/Movement
+Content-Type: application/json
+x-company-id: 1
+
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "movementType": "IN",
+  "quantity": 50,
+  "reference": "Factura FAC-9900",
+  "reason": "Compra mensual a distribuidor"
+}
+
+### Salida de Producto (Venta)
+POST http://localhost:5290/api/Movement
+Content-Type: application/json
+x-company-id: 1
+
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "movementType": "OUT",
+  "quantity": 2,
+  "reference": "Ticket T-0012",
+  "reason": "Venta al cliente final"
+}

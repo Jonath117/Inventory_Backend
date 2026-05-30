@@ -1,0 +1,37 @@
+using Inventory.Domain.DTOs;
+using Inventory.Domain.Interfaces.IRepositories;
+using Inventory.Domain.Interfaces.IServices;
+
+namespace Inventory.Application.Services;
+
+public class InventoryService : IInventoryService
+{
+    private readonly IInventoryRepository _repository;
+
+    public InventoryService(IInventoryRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<InventoryDashboardContractDto> GetDashboardMetricsAsync(int companyId)
+    {
+        var companyExists = await _repository.CompanyExistsAsync(companyId);
+
+        if (!companyExists)
+        {
+            throw new KeyNotFoundException($"La compañía con ID {companyId} no existe.");
+        }
+        
+        var totalProducts = await _repository.GetTotalProductsAsync(companyId);
+        // var totalWarehouses = await _repository.GetTotalWarehousesAsync(companyId);
+        // var totalStock = await _repository.GetTotalStockAsync(companyId);
+        var lowStockCount = await _repository.GetLowStockAlertsAsync(companyId);
+        
+        return new InventoryDashboardContractDto(
+            TotalProducts: totalProducts,
+            TotalStockValue: 0.0,
+            LowStockAlerts: lowStockCount,
+            OutOfStockCount: 0 
+        );
+    }
+}

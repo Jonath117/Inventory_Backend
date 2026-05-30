@@ -1,0 +1,24 @@
+namespace Shared.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Domain;
+
+public class CoreDbContext : DbContext
+{
+    public CoreDbContext(DbContextOptions<CoreDbContext> options) : base(options){ }
+    
+    public DbSet<Company> Companies { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.HasDefaultSchema("core");
+
+        modelBuilder.Entity<Company>(entity =>
+        {
+            entity.ToTable("companies");
+            entity.Property(c => c.CompanyCen).HasMaxLength(150).IsRequired();
+            entity.HasIndex(c => c.CompanyCen).IsUnique();
+        });
+    }
+}
