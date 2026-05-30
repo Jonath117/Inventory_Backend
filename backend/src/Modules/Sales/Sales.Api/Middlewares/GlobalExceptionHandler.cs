@@ -55,6 +55,14 @@ public class GlobalExceptionHandler : IExceptionHandler
                 problemDetails.Detail = unauthEx.Message;
                 problemDetails.Status = StatusCodes.Status403Forbidden;
                 break;
+            
+            case HttpRequestException httpEx:
+            case TaskCanceledException taskEx:
+                httpContext.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                problemDetails.Title = "Servicio no disponible";
+                problemDetails.Detail = "No se pudo establecer conexión con el sistema de inventario. Verifica que el servicio esté en línea.";
+                problemDetails.Status = StatusCodes.Status503ServiceUnavailable;
+                break;
 
             default:
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;

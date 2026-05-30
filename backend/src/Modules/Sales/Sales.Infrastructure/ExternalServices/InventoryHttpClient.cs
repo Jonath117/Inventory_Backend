@@ -16,9 +16,6 @@ public class InventoryHttpClient : IInventoryHttpClient
     public async Task<StockConsumeResponseDto> ConsumeStockAsync(string companyCen, StockConsumeRequestDto request)
     {
         string endpoint = $"api/inventory/companies/{companyCen}/stock/consume";
-
-        try 
-        {
             var response = await _httpClient.PostAsJsonAsync(endpoint, request);
 
             if (!response.IsSuccessStatusCode)
@@ -34,11 +31,6 @@ public class InventoryHttpClient : IInventoryHttpClient
             });
 
             return result ?? throw new InvalidOperationException("La respuesta de inventario fue nula.");
-        }
-        catch (Exception ex) when (ex is not InvalidOperationException)
-        {
-            throw new Exception($"No se pudo contactar con el módulo de Inventario: {ex.Message}");
-        }
     }
     
     public async Task<ProductDetailsDto?> GetProductDetailsAsync(string companyCen, string productCen)
