@@ -5,7 +5,13 @@ using Shared.API.Filters;
 using Shared.Application;
 using Shared.Infrastructure;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddPurchaseInfrastructure(builder.Configuration);
 builder.Services.AddPurchaseApplication();
 
@@ -39,10 +45,6 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<CompanyTenantFilter>();
 });
-
-DotNetEnv.Env.Load();
-
-builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 

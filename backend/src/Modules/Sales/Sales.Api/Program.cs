@@ -9,6 +9,9 @@ using Shared.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+DotNetEnv.Env.Load();
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
@@ -44,10 +47,6 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<CompanyTenantFilter>();
 });
-
-DotNetEnv.Env.Load();
-
-builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
