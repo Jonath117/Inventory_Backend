@@ -16,6 +16,10 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<CompanyTenantFilter>();
 });
 
+DotNetEnv.Env.Load();
+
+builder.Configuration.AddEnvironmentVariables();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

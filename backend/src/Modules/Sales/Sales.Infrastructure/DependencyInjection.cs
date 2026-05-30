@@ -23,7 +23,8 @@ public static class DependencyInjection
         services.AddScoped<ISalesRepository, SalesRepository>();
         services.AddHttpClient<IInventoryHttpClient, InventoryHttpClient>(client =>
         {
-            client.BaseAddress = new Uri("http://localhost:5224/"); 
+            var inventoryUrl = configuration["INVENTORY_API_URL"];
+            client.BaseAddress = new Uri(inventoryUrl); 
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
         return services;
