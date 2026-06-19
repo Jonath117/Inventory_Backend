@@ -18,11 +18,12 @@ public class InventoryHttpClient : IInventoryHttpClient
         
         var response = await _httpClient.PostAsJsonAsync(endpoint, request);
         
-        if (!response.IsSuccessStatusCode)
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            string error = await response.Content.ReadAsStringAsync();
-            throw new InvalidOperationException($"Error al comunicar con Inventario. Status: {response.StatusCode}. Detalle: {error}");
+            throw new KeyNotFoundException("No se pudo aumentar el stock: El producto o el almacén especificado no existen en el sistema de Inventario.");
         }
+        
+        response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadAsStringAsync(); 
     }

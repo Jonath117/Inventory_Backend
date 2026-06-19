@@ -22,7 +22,8 @@ public static class DependencyInjection
         
         services.AddHttpClient<IInventoryHttpClient, InventoryHttpClient>(client =>
         {
-            client.BaseAddress = new Uri("https://localhost:5153/"); 
+            var inventoryUrl = configuration["INVENTORY_API_URL"];
+            if (inventoryUrl != null) client.BaseAddress = new Uri(inventoryUrl);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
 
