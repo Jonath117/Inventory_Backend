@@ -98,4 +98,18 @@ public class TicketsController : ControllerBase
         var totals = await _mediator.Send(new GetTicketTotalsQuery(_companyProvider.CompanyId, ticketCen));
         return Ok(totals);
     }
+
+    [HttpPost("{ticketCen}/items/{ticketItemCen}/resend")]
+    public async Task<IActionResult> ResendTicketItem(string companyCen, string ticketCen, string ticketItemCen) 
+    {
+        // TODO: Implement logic according to requirements
+        return Ok();
+    }
+
+    [HttpGet("{ticketCen}/print")]
+    public async Task<IActionResult> PrintTicket(string companyCen, string ticketCen) 
+    {
+        // TODO: Implement logic according to requirements
+        return Ok();
+    }
 }

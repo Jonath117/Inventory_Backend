@@ -20,6 +20,8 @@ public static class DependencyInjection
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IWarehouseService, WarehouseService>();
         
+        services.AddSingleton(System.Threading.Channels.Channel.CreateUnbounded<Domain.DTOs.RestockEvent>());
+        
         return services;
     }
 }
