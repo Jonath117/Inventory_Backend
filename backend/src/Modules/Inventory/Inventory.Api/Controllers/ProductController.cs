@@ -59,7 +59,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("sellable")]
+    [HttpGet("~/api/inventory/companies/{companyCen}/sellable-products")]
     public async Task<IActionResult> GetSellableProducts(
         string companyCen, 
         [FromQuery] string? search, 
