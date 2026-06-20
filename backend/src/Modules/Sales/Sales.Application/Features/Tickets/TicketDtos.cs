@@ -100,6 +100,7 @@ public record KdsTeamContractResponse(
 public record KdsItemContractResponse(
     string TicketItemCen,
     string TicketCen,
+    string ProductCen,
     string ProductName,
     int Quantity,
     string? Note,

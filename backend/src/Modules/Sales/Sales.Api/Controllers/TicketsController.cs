@@ -99,11 +99,11 @@ public class TicketsController : ControllerBase
         return Ok(totals);
     }
 
-    [HttpPost("{ticketCen}/items/{ticketItemCen}/resend")]
-    public async Task<IActionResult> ResendTicketItem(string companyCen, string ticketCen, string ticketItemCen) 
+    [HttpPost("{ticketCen}/resend")]
+    public async Task<IActionResult> ResendToKds(string companyCen, string ticketCen) 
     {
-        // TODO: Implement logic according to requirements
-        return Ok();
+        var items = await _mediator.Send(new SendToKdsCommand(_companyProvider.CompanyId, ticketCen));
+        return Ok(items);
     }
 
     [HttpGet("{ticketCen}/print")]

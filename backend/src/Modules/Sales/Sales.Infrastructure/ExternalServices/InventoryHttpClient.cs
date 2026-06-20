@@ -33,25 +33,28 @@ public class InventoryHttpClient : IInventoryHttpClient
             return result ?? throw new InvalidOperationException("La respuesta de inventario fue nula.");
     }
     
+    private record ProductLookupResponseDto(string ProductCen, string Name, double SalePrice, string Status);
+
     public async Task<ProductDetailsDto?> GetProductDetailsAsync(string companyCen, string productCen)
     {
-        string endpoint = $"api/inventory/companies/{companyCen}/products/{productCen}";
-
         try 
         {
-            var response = await _httpClient.GetAsync(endpoint);
+            var requestBody = new { ProductCens = new[] { productCen } };
+            var response = await _httpClient.PostAsJsonAsync($"api/inventory/companies/{companyCen}/products/lookup", requestBody);
+            
+            if (!response.IsSuccessStatusCode) return null;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            var products = await response.Content.ReadFromJsonAsync<List<ProductLookupResponseDto>>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var product = products?.FirstOrDefault();
+            
+            if (product == null) return null;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Error al obtener detalles del producto en Inventario.");
-            }
-
-            return await response.Content.ReadFromJsonAsync<ProductDetailsDto>(new JsonSerializerOptions 
-            { 
-                PropertyNameCaseInsensitive = true 
-            });
+            return new ProductDetailsDto(
+                product.ProductCen,
+                product.Name,
+                (decimal)product.SalePrice,
+                product.Status.Equals("Activo", StringComparison.OrdinalIgnoreCase)
+            );
         }
         catch (Exception ex)
         {

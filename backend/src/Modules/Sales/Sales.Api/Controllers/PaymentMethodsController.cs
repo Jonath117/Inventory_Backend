@@ -1,12 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sales.Application.Features.PaymentMethods;
+using Backend.API.Filters;
 
 namespace Sales.Api.Controllers;
 
 [ApiController]
 [ApiExplorerSettings(GroupName = "sales")]
 [Route("api/sales/payment-methods")]
+[AllowAnonymousTenant]
 public class PaymentMethodsController : ControllerBase
 {
     private readonly IMediator _mediator;

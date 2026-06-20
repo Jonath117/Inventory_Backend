@@ -54,22 +54,14 @@ builder.Services.AddControllers(options =>
 
 var app = builder.Build();
 
+app.MapOpenApi();
+app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/sales/swagger.json", "Modulo Ventas");
-    
     c.SwaggerEndpoint("/swagger/inventory/swagger.json", "Modulo de Inventario");
-    
     c.SwaggerEndpoint("/swagger/purchases/swagger.json", "Modulo de Compras");
 });
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 //app.UseHttpsRedirection();
 

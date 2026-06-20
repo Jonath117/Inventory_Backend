@@ -31,6 +31,7 @@ public class GetKdsItemsQueryHandler : IRequestHandler<GetKdsItemsQuery, IEnumer
                 result.Add(new KdsItemContractResponse(
                     TicketItemCen: item.TicketItemCen, 
                     TicketCen: ticket.TicketCen,
+                    ProductCen: ticketItem.ProductCen,
                     ProductName: ticketItem.ProductName,
                     Quantity: (int)ticketItem.Quantity,
                     Note: ticketItem.Note ?? string.Empty,

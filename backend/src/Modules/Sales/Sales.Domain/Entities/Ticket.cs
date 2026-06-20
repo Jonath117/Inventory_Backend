@@ -79,17 +79,8 @@ public class Ticket
         if (quantity <= 0)
             throw new ArgumentException("La cantidad debe ser mayor a cero");
     
-        var existingItem = _items.FirstOrDefault(i => i.ProductCen == productCen);
-
-        if (existingItem != null)
-        {
-            existingItem.UpdateQuantity(existingItem.Quantity + quantity);
-        }
-        else
-        {
-            string ticketItemCen = Guid.NewGuid().ToString().Substring(0, 8);
-            _items.Add(new TicketItem(Id, ticketItemCen, productCen, productName, quantity, unitPrice, note));
-        }
+        string ticketItemCen = Guid.NewGuid().ToString().Substring(0, 8);
+        _items.Add(new TicketItem(Id, ticketItemCen, productCen, productName, quantity, unitPrice, note));
 
         RecalculateTotals();
     }

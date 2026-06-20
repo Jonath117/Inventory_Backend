@@ -5,6 +5,7 @@ using Sales.Infrastructure;
 using Shared.API.Filters;
 using Shared.Application;
 using Shared.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,9 +37,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.SetIsOriginAllowed(origin => true)
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
@@ -50,18 +52,12 @@ builder.Services.AddControllers(options =>
 
 var app = builder.Build();
 
+app.MapOpenApi();
+app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/sales/swagger.json", "Modulo Ventas");
+    c.SwaggerEndpoint("/swagger/sales/swagger.json", "Modulo de Ventas");
 });
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 //app.UseHttpsRedirection();
 
@@ -70,4 +66,14 @@ app.UseExceptionHandler();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var coreDb = scope.ServiceProvider.GetRequiredService<Shared.Infrastructure.CoreDbContext>();
+    coreDb.Database.Migrate();
+
+    var salesDb = scope.ServiceProvider.GetRequiredService<Sales.Infrastructure.Persistence.SalesDbContext>();
+    salesDb.Database.Migrate();
+}
+
 app.Run();
