@@ -69,7 +69,7 @@ public class InventoryHttpClient : IInventoryHttpClient
         queryParams.Add("page", page.ToString());
         queryParams.Add("pageSize", pageSize.ToString());
 
-        string endpoint = $"api/inventory/companies/{companyCen}/products/sellable?{queryParams}";
+        string endpoint = $"api/inventory/companies/{companyCen}/sellable-products?{queryParams}";
 
         try 
         {
