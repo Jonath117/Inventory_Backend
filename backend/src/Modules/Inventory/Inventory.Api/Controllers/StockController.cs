@@ -33,10 +33,22 @@ public class StockController : ControllerBase
     }
     
     [HttpPost("increase")]
-    public async Task<IActionResult> IncreaseStock([FromBody] StockIncreaseContractRequest request)
+    public async Task<IActionResult> IncreaseStock(
+        [FromServices] System.Threading.Channels.Channel<Inventory.Domain.DTOs.RestockEvent> restockChannel,
+        [FromBody] StockIncreaseContractRequest request)
     {
         int companyId = _companyProvider.CompanyId;
         var documentCen = await _movementService.IncreaseStockAsync(companyId, request);
+        
+        foreach (var item in request.Items)
+        {
+            await restockChannel.Writer.WriteAsync(new Inventory.Domain.DTOs.RestockEvent 
+            { 
+                Producto = item.ProductCen, 
+                Cantidad = item.Quantity 
+            });
+        }
+        
         return Ok(documentCen);
     }
     
