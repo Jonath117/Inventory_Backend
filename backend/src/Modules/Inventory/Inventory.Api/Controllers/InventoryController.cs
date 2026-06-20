@@ -25,4 +25,17 @@ public class InventoryController : ControllerBase
         var dashboard = await _inventoryService.GetDashboardMetricsAsync(companyId);
         return Ok(dashboard);
     }
+
+    [HttpGet("restock-events")]
+    public async Task StreamRestockEvents([FromServices] System.Threading.Channels.Channel<Inventory.Domain.DTOs.RestockEvent> restockChannel, CancellationToken ct)
+    {
+        Response.Headers["Content-Type"] = "text/event-stream";
+        Response.Headers["Cache-Control"] = "no-cache";
+
+        await foreach (var evento in restockChannel.Reader.ReadAllAsync(ct))
+        {
+            await Response.WriteAsync($"data: {System.Text.Json.JsonSerializer.Serialize(evento)}\n\n");
+            await Response.Body.FlushAsync(ct);
+        }
+    }
 }
