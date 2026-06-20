@@ -34,7 +34,8 @@ public class StockController : ControllerBase
     
     [HttpPost("increase")]
     public async Task<IActionResult> IncreaseStock(
-        [FromServices] System.Threading.Channels.Channel<Inventory.Domain.DTOs.RestockEvent> restockChannel,
+        [FromServices] System.Threading.Channels.Channel<RestockEvent> restockChannel,
+        [FromServices] IProductService productService,
         [FromBody] StockIncreaseContractRequest request)
     {
         int companyId = _companyProvider.CompanyId;
@@ -42,9 +43,23 @@ public class StockController : ControllerBase
         
         foreach (var item in request.Items)
         {
-            await restockChannel.Writer.WriteAsync(new Inventory.Domain.DTOs.RestockEvent 
+            string productName = item.ProductCen;
+            try 
+            {
+                var prod = await productService.GetProductDetailsByCenAsync(companyId, item.ProductCen);
+                if (prod != null && !string.IsNullOrEmpty(prod.Name)) 
+                {
+                    productName = prod.Name;
+                }
+            }
+            catch 
+            {
+                // Fallback to CEN if product name cannot be fetched
+            }
+
+            await restockChannel.Writer.WriteAsync(new RestockEvent 
             { 
-                Producto = item.ProductCen, 
+                Producto = productName, 
                 Cantidad = item.Quantity 
             });
         }
